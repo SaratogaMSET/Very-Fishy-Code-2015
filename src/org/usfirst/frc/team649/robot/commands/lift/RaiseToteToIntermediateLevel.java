@@ -2,8 +2,6 @@ package org.usfirst.frc.team649.robot.commands.lift;
 
 import org.usfirst.frc.team649.robot.FishyRobot2015;
 import org.usfirst.frc.team649.robot.subsystems.ChainLiftSubsystem;
-import org.usfirst.frc.team649.robot.subsystems.ChainLiftSubsystem.PIDConstants;
-
 import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;

@@ -273,7 +273,6 @@ public class FishyRobot2015 extends IterativeRobot {
         	containerGrabberSubsystem.setGrabberState(containerGrabberSubsystem.grabberStateBooleanForManualOnly ? Value.kForward: Value.kReverse);
         }
         
-        
         //set the previous states
         prevState5 = oi.operatorJoystick.getRawButton(5);
         prevState6 = oi.operatorJoystick.getRawButton(6);
