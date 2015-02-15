@@ -48,7 +48,7 @@ public class SetIntakeArmPosition extends Command {
 	@Override
 	protected boolean isFinished() {
 		//when both have reached
-		return FishyRobot2015.intakeLeftSubsystem.getPot() == relevantSetpointLeft && FishyRobot2015.intakeRightSubsystem.getPot() == relevantSetpointRight || (FishyRobot2015.intakeLeftSubsystem.isArmLimitPressed() || FishyRobot2015.intakeRightSubsystem.isArmLimitPressed());
+		return pidRight.onTarget() && pidLeft.onTarget(); 
 	}
 
 	@Override

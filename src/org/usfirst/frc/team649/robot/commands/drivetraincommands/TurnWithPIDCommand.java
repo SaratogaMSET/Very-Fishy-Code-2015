@@ -42,7 +42,7 @@ public class TurnWithPIDCommand extends Command {
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
     	//TODO check if this works lol
-        return Math.abs(FishyRobot2015.drivetrainSubsystem.gyro.getAngle() - setAngle) < GyroBasedDriving.GYRO_TOLERANCE;
+        return pid.onTarget();
     }
 
     // Called once after isFinished returns true

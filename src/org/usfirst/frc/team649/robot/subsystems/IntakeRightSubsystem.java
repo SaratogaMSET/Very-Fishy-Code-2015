@@ -1,7 +1,9 @@
 
 package org.usfirst.frc.team649.robot.subsystems;
 
+import org.usfirst.frc.team649.robot.FishyRobot2015;
 import org.usfirst.frc.team649.robot.RobotMap;
+
 import edu.wpi.first.wpilibj.AnalogPotentiometer;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.PIDController;
@@ -86,7 +88,12 @@ public class IntakeRightSubsystem extends PIDSubsystem {
 	@Override
 	protected void usePIDOutput(double output) {
 		// TODO Auto-generated method stub
-		arm.set(output);
+		if (FishyRobot2015.intakeRightSubsystem.isArmLimitPressed()){
+			arm.set(0);
+		}
+		else{
+			arm.set(output);
+		}
 	}
 }
 
