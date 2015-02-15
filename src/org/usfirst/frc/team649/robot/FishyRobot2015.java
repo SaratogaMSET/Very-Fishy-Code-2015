@@ -9,9 +9,9 @@ import org.usfirst.frc.team649.robot.commandgroups.FullLowerTote;
 import org.usfirst.frc.team649.robot.commandgroups.FullRaiseTote;
 import org.usfirst.frc.team649.robot.commandgroups.ScoreTotesOnPlatform;
 import org.usfirst.frc.team649.robot.commands.drivetraincommands.DriveForwardRotate;
-import org.usfirst.frc.team649.robot.commands.grabbercommands.IntakeTote;
-import org.usfirst.frc.team649.robot.commands.grabbercommands.RunRoller;
-import org.usfirst.frc.team649.robot.commands.grabbercommands.SetIntakeArmPosition;
+import org.usfirst.frc.team649.robot.commands.intakecommands.IntakeTote;
+import org.usfirst.frc.team649.robot.commands.intakecommands.RunRoller;
+import org.usfirst.frc.team649.robot.commands.intakecommands.SetIntakeArmPosition;
 import org.usfirst.frc.team649.robot.commands.lift.ChangeOffsetHeight;
 import org.usfirst.frc.team649.robot.commands.lift.RaiseToteToIntermediateLevel;
 import org.usfirst.frc.team649.robot.commands.lift.RunLift;
@@ -198,9 +198,7 @@ public class FishyRobot2015 extends IterativeRobot {
         	new ScoreTotesOnPlatform().start();
         }
         
-        SmartDashboard.putBoolean("Will 5 Run?", (oi.operator.raiseToteButton.get() && !prevState5));
-        SmartDashboard.putBoolean("Will 6 run?", (oi.operator.lowerToteButton.get() && !prevState6));
-        
+    
         
         if(oi.operatorJoystick.getRawButton(5) && !prevState5){
         	new RaiseToteToIntermediateLevel(true).start(); 

@@ -1,7 +1,7 @@
 package org.usfirst.frc.team649.robot.commandgroups;
 
 import org.usfirst.frc.team649.robot.FishyRobot2015;
-import org.usfirst.frc.team649.robot.commands.grabbercommands.SetIntakeArmPosition;
+import org.usfirst.frc.team649.robot.commands.intakecommands.SetIntakeArmPosition;
 import org.usfirst.frc.team649.robot.commands.lift.ChangeOffsetHeight;
 import org.usfirst.frc.team649.robot.subsystems.ChainLiftSubsystem;
 import org.usfirst.frc.team649.robot.subsystems.IntakeRightSubsystem;

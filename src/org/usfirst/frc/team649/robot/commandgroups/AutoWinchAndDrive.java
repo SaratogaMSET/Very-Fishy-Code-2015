@@ -2,7 +2,7 @@ package org.usfirst.frc.team649.robot.commandgroups;
 
 import org.usfirst.frc.team649.robot.commands.autowinchcommands.WinchTotesIn;
 import org.usfirst.frc.team649.robot.commands.drivetraincommands.DriveSetDistanceWithPID;
-import org.usfirst.frc.team649.robot.commands.grabbercommands.SetIntakeArmPosition;
+import org.usfirst.frc.team649.robot.commands.intakecommands.SetIntakeArmPosition;
 import org.usfirst.frc.team649.robot.subsystems.IntakeLeftSubsystem;
 import org.usfirst.frc.team649.robot.subsystems.DrivetrainSubsystem.EncoderBasedDriving;
 

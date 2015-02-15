@@ -1,4 +1,4 @@
-package org.usfirst.frc.team649.robot.commands.grabbercommands;
+package org.usfirst.frc.team649.robot.commands.intakecommands;
 
 import org.usfirst.frc.team649.robot.FishyRobot2015;
 import org.usfirst.frc.team649.robot.subsystems.IntakeLeftSubsystem;
@@ -34,10 +34,6 @@ public class SetIntakeArmPosition extends Command {
 		// TODO Auto-generated method stub
 		pidRight = FishyRobot2015.intakeRightSubsystem.getPIDController();
 		pidLeft = FishyRobot2015.intakeLeftSubsystem.getPIDController();
-	}
-
-	@Override
-	protected void execute() {
 		//for different positions for each arm, this command will need 2 state inputs
 		pidRight.setSetpoint(relevantSetpointRight);
 		pidLeft.setSetpoint(relevantSetpointLeft);
@@ -45,9 +41,14 @@ public class SetIntakeArmPosition extends Command {
 	}
 
 	@Override
+	protected void execute() {
+		
+	}
+
+	@Override
 	protected boolean isFinished() {
 		//when both have reached
-		return true; //FishyRobot2015.commandBase.intakeLeftSubsystem.getPot() == relevantSetpointLeft && FishyRobot2015.commandBase.intakeRightSubsystem.getPot() == relevantSetpointRight;
+		return FishyRobot2015.intakeLeftSubsystem.getPot() == relevantSetpointLeft && FishyRobot2015.intakeRightSubsystem.getPot() == relevantSetpointRight || (FishyRobot2015.intakeLeftSubsystem.isArmLimitPressed() || FishyRobot2015.intakeRightSubsystem.isArmLimitPressed());
 	}
 
 	@Override

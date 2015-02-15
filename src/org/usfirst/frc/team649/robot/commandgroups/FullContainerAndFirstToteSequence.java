@@ -3,7 +3,7 @@ package org.usfirst.frc.team649.robot.commandgroups;
 import org.usfirst.frc.team649.robot.FishyRobot2015;
 import org.usfirst.frc.team649.robot.commands.containergrabbercommands.ClampContainerGrabber;
 import org.usfirst.frc.team649.robot.commands.drivetraincommands.DriveSetDistanceWithPID;
-import org.usfirst.frc.team649.robot.commands.grabbercommands.IntakeTote;
+import org.usfirst.frc.team649.robot.commands.intakecommands.IntakeTote;
 import org.usfirst.frc.team649.robot.commands.lift.ChangeLiftHeight;
 import org.usfirst.frc.team649.robot.commands.lift.FinishRaiseTote;
 import org.usfirst.frc.team649.robot.subsystems.ChainLiftSubsystem;
