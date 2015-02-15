@@ -88,7 +88,7 @@ public class IntakeRightSubsystem extends PIDSubsystem {
 	@Override
 	protected void usePIDOutput(double output) {
 		// TODO Auto-generated method stub
-		if (FishyRobot2015.intakeRightSubsystem.isArmLimitPressed()){
+		if (isArmLimitPressed()){
 			arm.set(0);
 		}
 		else{
