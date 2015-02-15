@@ -18,6 +18,7 @@ import org.usfirst.frc.team649.robot.commands.lift.RunLift;
 import org.usfirst.frc.team649.robot.subsystems.AutoWinchSubsystem;
 import org.usfirst.frc.team649.robot.subsystems.CameraSubsystem;
 import org.usfirst.frc.team649.robot.subsystems.ChainLiftSubsystem;
+import org.usfirst.frc.team649.robot.subsystems.ChainLiftSubsystem.PIDConstants;
 import org.usfirst.frc.team649.robot.subsystems.ContainerGrabberSubsystem;
 import org.usfirst.frc.team649.robot.subsystems.DrivetrainSubsystem;
 import org.usfirst.frc.team649.robot.subsystems.IntakeLeftSubsystem;
@@ -55,7 +56,7 @@ public class FishyRobot2015 extends IterativeRobot {
 	
 	//previous states for button press v hold
 	public boolean prevState5, prevState6;
-	
+	public Command joyChainLift;
 	
 	public SendableChooser autoChooser;
 	public Command autoCommand;
@@ -165,6 +166,17 @@ public class FishyRobot2015 extends IterativeRobot {
     	
     	//FIGURE OUT HOW TO CLEAR SMARTDASHBOARD REMOTELY
     	//chainLiftSubsystem.definePID();
+    	//
+    	//SmartDashboard.n
+        SmartDashboard.putData("Chain Encoder 1", chainLiftSubsystem.encoders[0]);
+        SmartDashboard.putData("Chain Encoder 2", chainLiftSubsystem.encoders[1]);
+        SmartDashboard.putData("Drive Encoder Left", drivetrainSubsystem.encoders[0]);
+        SmartDashboard.putData("Drive Encoder Right", drivetrainSubsystem.encoders[1]);
+        SmartDashboard.putBoolean("Max Hal", chainLiftSubsystem.isMaxLimitPressed());
+        SmartDashboard.putBoolean("Reset Hal", chainLiftSubsystem.isResetLimitPressed());
+        
+        SmartDashboard.putNumber("Chain Height", chainLiftSubsystem.getHeight());
+        SmartDashboard.putNumber("GOAL HEIGHT", chainLiftSubsystem.offsetHeight + chainLiftSubsystem.setpointHeight);
 
     	
     }
@@ -182,23 +194,27 @@ public class FishyRobot2015 extends IterativeRobot {
      */
     public void teleopPeriodic() {
         Scheduler.getInstance().run();
-        SmartDashboard.putNumber("Chain Height", chainLiftSubsystem.getHeight());
         
-        new RunLift(oi.operatorJoystick.getY()).start();
+        if (oi.operator.intakeButton.get()){
+        	new RunLift(oi.operatorJoystick.getY()).start();
+        }
+        oi.operator.intakeButton.whenReleased(new RunLift(0));
         
         new DriveForwardRotate(oi.driver.getDriveForward(), oi.driver.getDriveRotation()).start();
         
         if(oi.operator.purgeButton.get()) {
         	new RunRoller(IntakeLeftSubsystem.INTAKE_ROLLER_SPEED).start();;
         }
-        if(oi.operator.intakeButton.get()) {
-        	new IntakeTote().start();
-        }
+//        if(oi.operator.intakeButton.get()) {
+//        	new IntakeTote().start();
+//        }
         if(oi.operator.scoreAllButton.get()) {
-        	new ScoreTotesOnPlatform().start();
+        	new FullRaiseTote().start();
         }
         
-    
+        if(chainLiftSubsystem.isMaxLimitPressed()) {
+        	SmartDashboard.putString("key", "we are all gonna die");
+        }
         
         if(oi.operatorJoystick.getRawButton(5) && !prevState5){
         	new RaiseToteToIntermediateLevel(true).start(); 
@@ -208,8 +224,7 @@ public class FishyRobot2015 extends IterativeRobot {
         	new RaiseToteToIntermediateLevel(false).start(); 
         }
         
-        
-        
+       
         if(oi.operator.containerButton.get()) {
         	new FullContainerAndFirstToteSequence(true).start();
         }
@@ -230,7 +245,6 @@ public class FishyRobot2015 extends IterativeRobot {
         	new SetIntakeArmPosition(IntakeLeftSubsystem.PIDConstants.STORE_STATE);
         }
         
-        SmartDashboard.putNumber("GOAL HEIGHT", chainLiftSubsystem.offsetHeight + chainLiftSubsystem.setpointHeight);
         
         /****************MANUAL**********************/
         
@@ -279,6 +293,13 @@ public class FishyRobot2015 extends IterativeRobot {
         SmartDashboard.putData("Chain Encoder 2", chainLiftSubsystem.encoders[1]);
         SmartDashboard.putData("Drive Encoder Left", drivetrainSubsystem.encoders[0]);
         SmartDashboard.putData("Drive Encoder Right", drivetrainSubsystem.encoders[1]);
+        SmartDashboard.putBoolean("Max Hal", chainLiftSubsystem.isMaxLimitPressed());
+        SmartDashboard.putBoolean("Reset Hal", chainLiftSubsystem.isResetLimitPressed());
+        
+        SmartDashboard.putNumber("Chain Height", chainLiftSubsystem.getHeight());
+        SmartDashboard.putNumber("GOAL HEIGHT", chainLiftSubsystem.offsetHeight + chainLiftSubsystem.setpointHeight);
+
+        
     }
     
 

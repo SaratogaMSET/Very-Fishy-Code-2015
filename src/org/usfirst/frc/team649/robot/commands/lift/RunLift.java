@@ -32,6 +32,7 @@ public class RunLift extends Command {
 
     // Called once after isFinished returns true
     protected void end() {
+    	FishyRobot2015.chainLiftSubsystem.setpointHeight = FishyRobot2015.chainLiftSubsystem.getHeight();
     }
 
     // Called when another command which requires one or more of the same

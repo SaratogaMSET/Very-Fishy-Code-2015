@@ -3,6 +3,7 @@ package org.usfirst.frc.team649.robot.subsystems;
 import org.usfirst.frc.team649.robot.FishyRobot2015;
 import org.usfirst.frc.team649.robot.RobotMap;
 
+import edu.wpi.first.wpilibj.CounterBase.EncodingType;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.PIDController;
@@ -18,7 +19,7 @@ public class ChainLiftSubsystem extends PIDSubsystem{
     // here. Call these from Commands.
 	Victor[] motors;
 	public Encoder[] encoders;
-	PIDController pid;
+	public PIDController pid;
 
 	DigitalInput limitMax;
 	DigitalInput limitReset;
@@ -36,7 +37,7 @@ public class ChainLiftSubsystem extends PIDSubsystem{
 		public static final double P_VALUE = 0.5;
 		public static final double I_VALUE = 0.0;
 		public static final double D_VALUE = 0.0;
-		public static final double ENCODER_DISTANCE_PER_PULSE = (((22*(3/8)) * (12 / 60) * (18 / 42) * (18 / 42)) / 48);
+		public static final double ENCODER_DISTANCE_PER_PULSE = (((22.0*(3.0/8.0)) * (12.0 / 60.0) * (18.0 / 42.0) * (18 / 42.0)) / 48.0);
 		public static final double ABS_TOLERANCE = 1;
 		//In inches
 		public static final double STORE_TO_STEP_LEVEL_DIFFERENCE = 5.0;
@@ -79,10 +80,10 @@ public class ChainLiftSubsystem extends PIDSubsystem{
     	platformOrStepOffset = true;
     	
     	encoders =  new Encoder[2];
-    	encoders[0] = new Encoder(RobotMap.CHAIN_LIFT.ENCODERS[0], RobotMap.CHAIN_LIFT.ENCODERS[1]);
+    	encoders[0] = new Encoder(RobotMap.CHAIN_LIFT.ENCODERS[0], RobotMap.CHAIN_LIFT.ENCODERS[1], true, EncodingType.k2X);
     	encoders[0].setDistancePerPulse(PIDConstants.ENCODER_DISTANCE_PER_PULSE);
-    	encoders[1] = new Encoder(RobotMap.CHAIN_LIFT.ENCODERS[2], RobotMap.CHAIN_LIFT.ENCODERS[3]);
-    	encoders[1].setDistancePerPulse(PIDConstants.ENCODER_DISTANCE_PER_PULSE);
+    	encoders[1] = new Encoder(RobotMap.CHAIN_LIFT.ENCODERS[2], RobotMap.CHAIN_LIFT.ENCODERS[3], false, EncodingType.k4X);
+    	//encoders[1].setDistancePerPulse(PIDConstants.ENCODER_DISTANCE_PER_PULSE);
         
         limitMax = new DigitalInput(RobotMap.CHAIN_LIFT.MAX_LIM_SWITCH);
         limitReset = new DigitalInput(RobotMap.CHAIN_LIFT.RESET_LIM_SWITCH);
@@ -101,16 +102,16 @@ public class ChainLiftSubsystem extends PIDSubsystem{
     
     //HalEffect Sensors
     public boolean isMaxLimitPressed() {
-    	return true; //!limitMax.get();
+    	return !limitMax.get();
     }
     
     public boolean isResetLimitPressed() {
-    	return true; //!limitReset.get();
+    	return !limitReset.get();
     }
     
     public double getHeight() {
     	//returns the highest encoder value
-    	double encDist1 = encoders[0].getDistance(), encDist2 = encoders[1].getDistance();
+    	double encDist1 = encoders[0].getDistance(), encDist2 = encoders[1].getDistance();//* PIDConstants.ENCODER_DISTANCE_PER_PULSE;
     	return Math.abs(encDist1)>Math.abs(encDist2) ? encDist1: encDist2;
     }
     

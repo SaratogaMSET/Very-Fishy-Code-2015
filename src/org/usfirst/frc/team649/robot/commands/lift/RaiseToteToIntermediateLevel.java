@@ -49,7 +49,7 @@ public class RaiseToteToIntermediateLevel extends Command {
 
 	// Make this return true when this Command no longer needs to run execute()
 	protected boolean isFinished() {
-		return ((FishyRobot2015.chainLiftSubsystem.setpointHeight +  FishyRobot2015.chainLiftSubsystem.offsetHeight) ==  FishyRobot2015.chainLiftSubsystem.getHeight());// ||  FishyRobot2015.chainLiftSubsystem.isMaxLimitPressed() ||  FishyRobot2015.chainLiftSubsystem.isResetLimitPressed());
+		return ((liftPID.onTarget()) ||  FishyRobot2015.chainLiftSubsystem.isMaxLimitPressed() ||  FishyRobot2015.chainLiftSubsystem.isResetLimitPressed());
 	}
 
 	// Called once after isFinished returns true
@@ -57,6 +57,7 @@ public class RaiseToteToIntermediateLevel extends Command {
 		if (upOrDown){
 			FishyRobot2015.chainLiftSubsystem.isAtBase = false;
 		}
+		liftPID.disable();
 	}
 
 	// Called when another command which requires one or more of the same
