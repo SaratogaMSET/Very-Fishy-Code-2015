@@ -33,12 +33,14 @@ public class RunTilResetLimit extends Command {
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
     	//when its reached the bottom
-        return  FishyRobot2015.chainLiftSubsystem.isResetLimitPressed();
+    	
+        return isTimedOut() || FishyRobot2015.chainLiftSubsystem.isResetLimitPressed();
     }
 
     // Called once after isFinished returns true
     protected void end() {
     	 FishyRobot2015.chainLiftSubsystem.resetEncoders();
+    	 FishyRobot2015.chainLiftSubsystem.setPower(0);
     	 FishyRobot2015.chainLiftSubsystem.isAtBase = true;
     }
 

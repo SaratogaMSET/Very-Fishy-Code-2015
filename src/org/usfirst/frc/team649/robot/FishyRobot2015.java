@@ -5,6 +5,7 @@ import org.usfirst.frc.team649.robot.commandgroups.AutoContainerOnly;
 import org.usfirst.frc.team649.robot.commandgroups.AutoWinchAndDrive;
 import org.usfirst.frc.team649.robot.commandgroups.Debug;
 import org.usfirst.frc.team649.robot.commandgroups.FullContainerAndFirstToteSequence;
+import org.usfirst.frc.team649.robot.commandgroups.ScoreAllAndResetFromTop;
 import org.usfirst.frc.team649.robot.commandgroups.ScoreTotesOnPlatform;
 import org.usfirst.frc.team649.robot.commands.drivetraincommands.DriveForwardRotate;
 import org.usfirst.frc.team649.robot.commands.intakecommands.IntakeTote;
@@ -13,6 +14,7 @@ import org.usfirst.frc.team649.robot.commands.intakecommands.SetIntakeArmPositio
 import org.usfirst.frc.team649.robot.commands.lift.ChangeOffsetHeight;
 import org.usfirst.frc.team649.robot.commands.lift.RaiseTote;
 import org.usfirst.frc.team649.robot.commands.lift.RunLift;
+import org.usfirst.frc.team649.robot.commands.lift.RunTilResetLimit;
 import org.usfirst.frc.team649.robot.subsystems.AutoWinchSubsystem;
 import org.usfirst.frc.team649.robot.subsystems.CameraSubsystem;
 import org.usfirst.frc.team649.robot.subsystems.ChainLiftSubsystem;
@@ -171,7 +173,7 @@ public class FishyRobot2015 extends IterativeRobot {
         SmartDashboard.putData("Drive Encoder Left", drivetrainSubsystem.encoders[0]);
         SmartDashboard.putData("Drive Encoder Right", drivetrainSubsystem.encoders[1]);
         SmartDashboard.putBoolean("Max Hal", chainLiftSubsystem.isMaxLimitPressed());
-        SmartDashboard.putBoolean("Reset Hal", chainLiftSubsystem.isResetLimitPressed());
+        SmartDashboard.putBoolean("Reset Ryan Lewis", chainLiftSubsystem.isResetLimitPressed());
         
         SmartDashboard.putNumber("Chain Height", chainLiftSubsystem.getHeight());
         SmartDashboard.putNumber("GOAL HEIGHT", chainLiftSubsystem.offsetHeight + chainLiftSubsystem.setpointHeight);
@@ -193,18 +195,20 @@ public class FishyRobot2015 extends IterativeRobot {
     public void teleopPeriodic() {
         Scheduler.getInstance().run();
         
-//        if (oi.operator.intakeButton.get()){
-//        	new RunLift(oi.operatorJoystick.getY()).start();
-//        }
+       if (oi.operator.intakeButton.get()){
+        	//new RunLift(oi.operatorJoystick.getY()).start();
+    	   FishyRobot2015.intakeRightSubsystem.arm.set(oi.operatorJoystick.getY()/3.0);
+        }
        // new RunRollers(oi.operatorJoystick.getY()).start();
-        FishyRobot2015.intakeLeftSubsystem.arm.set(oi.operatorJoystick.getY()/3.0);
+       
         
-        //oi.operator.intakeButton.whenReleased(new RunLift(0));
+        oi.operator.intakeButton.whenReleased(new RunLift(0));
         
         new DriveForwardRotate(oi.driver.getDriveForward(), oi.driver.getDriveRotation()).start();
         
         if(oi.operator.purgeButton.get()) {
-        	new SetIntakeArmPosition(IntakeRightSubsystem.PIDConstants.STORE_STATE).start();
+        	//new SetIntakeArmPosition(IntakeLeftSubsystem.PIDConstants.RELEASING_STATE).start();
+
         	//new RunRollers(IntakeLeftSubsystem.INTAKE_ROLLER_SPEED).start();;
         }
 //        if(oi.operator.intakeButton.get()) {
@@ -212,14 +216,22 @@ public class FishyRobot2015 extends IterativeRobot {
 //        }
         
         
-        if(oi.operatorJoystick.getRawButton(5) && !prevState5){
+        if(oi.operator.raiseToteButton.get() && !prevState5){
         	new RaiseTote(true).start(); 
         }
         
-        if(oi.operatorJoystick.getRawButton(6) && !prevState6){
+        if(oi.operator.lowerToteButton.get() && !prevState6){
         	new RaiseTote(false).start(); 
         }
         
+        //set the previous states
+        prevState5 = oi.operator.raiseToteButton.get();
+        prevState6 = oi.operator.lowerToteButton.get();
+       
+        if (oi.operator.scoreAllButton.get()){
+        //	new ScoreAllAndResetFromTop().start();
+        	new ScoreAllAndResetFromTop().start();
+        }
 //       
 //        if(oi.operator.containerButton.get()) {
 //        	new FullContainerAndFirstToteSequence(true).start();
@@ -231,15 +243,17 @@ public class FishyRobot2015 extends IterativeRobot {
 //        	new ChangeOffsetHeight(ChainLiftSubsystem.PIDConstants.PLATFORM_HEIGHT);
 //        }
 //        //if(oi.operator.)
-//        if(oi.operator.isGrabArmState()) {
-//        	//new SetIntakeArmPosition(IntakeRightSubsystem.PIDConstants.GRABBING_STATE);
-//        }
-//        if(oi.operator.isReleaseArmState()) {
-//        	//new SetIntakeArmPosition(IntakeRightSubsystem.PIDConstants.RELEASING_STATE);
-//        }
-//        if(oi.operator.isStoreArmState()) {
-//        	//new SetIntakeArmPosition(IntakeRightSubsystem.PIDConstants.STORE_STATE);
-//        }
+        
+        /* WORKING CODE YAY
+        if(oi.operator.isGrabArmState()) {
+        	new SetIntakeArmPosition(IntakeRightSubsystem.PIDConstants.GRABBING_STATE).start();
+        }
+        if(oi.operator.isReleaseArmState()) {
+        	new SetIntakeArmPosition(IntakeRightSubsystem.PIDConstants.RELEASING_STATE).start();
+        }
+        if(oi.operator.isStoreArmState()) {
+        	new SetIntakeArmPosition(IntakeRightSubsystem.PIDConstants.STORE_STATE).start();
+        }*/
         
         
         /****************MANUAL**********************/
@@ -281,16 +295,15 @@ public class FishyRobot2015 extends IterativeRobot {
         	containerGrabberSubsystem.setGrabberState(containerGrabberSubsystem.grabberStateBooleanForManualOnly ? Value.kForward: Value.kReverse);
         }
        }
-        //set the previous states
-        prevState5 = oi.operatorJoystick.getRawButton(5);
-        prevState6 = oi.operatorJoystick.getRawButton(6);
         
         SmartDashboard.putData("Chain Encoder 1", chainLiftSubsystem.encoders[0]);
         SmartDashboard.putData("Chain Encoder 2", chainLiftSubsystem.encoders[1]);
         SmartDashboard.putData("Drive Encoder Left", drivetrainSubsystem.encoders[0]);
         SmartDashboard.putData("Drive Encoder Right", drivetrainSubsystem.encoders[1]);
         SmartDashboard.putBoolean("Max Hal", chainLiftSubsystem.isMaxLimitPressed());
-        SmartDashboard.putBoolean("Reset Hal", chainLiftSubsystem.isResetLimitPressed());
+        SmartDashboard.putBoolean("Reset Ryan Lewis", chainLiftSubsystem.isResetLimitPressed());
+        SmartDashboard.putBoolean("Bumper Right", intakeRightSubsystem.isToteLimitPressed());
+        SmartDashboard.putBoolean("Bumper Left", intakeLeftSubsystem.isToteLimitPressed());
         
         SmartDashboard.putNumber("Chain Height", chainLiftSubsystem.getHeight());
         SmartDashboard.putNumber("GOAL HEIGHT", chainLiftSubsystem.offsetHeight + chainLiftSubsystem.setpointHeight);

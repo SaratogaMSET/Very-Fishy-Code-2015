@@ -29,7 +29,7 @@ public class HalEffectCompensationOffset extends Command {
 	@Override
 	protected boolean isFinished() {
 		// TODO Auto-generated method stub
-		return false;
+		return this.isTimedOut();
 	}
 
 	@Override

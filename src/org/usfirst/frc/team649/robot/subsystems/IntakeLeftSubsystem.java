@@ -27,15 +27,15 @@ public class IntakeLeftSubsystem extends PIDSubsystem {
 		public static final double P = 0.6;
 		public static final double I = 0.0;
 		public static final double D = 0.0;
-		public static final double ABS_TOLERANCE = 0.4;
+		public static final double ABS_TOLERANCE = .01;
 		
 		public static final double CONVERSION_DEGREES_TO_POT = 1.0/270;
 		
-		public static final double ARM_POS_RELEASE = 200 * CONVERSION_DEGREES_TO_POT;
+		public static final double ARM_POS_RELEASE = 70 * CONVERSION_DEGREES_TO_POT;
 		//for pulling in totes
-		public static final double ARM_POS_GRABBING = 225 * CONVERSION_DEGREES_TO_POT;
+		public static final double ARM_POS_GRABBING = 48 * CONVERSION_DEGREES_TO_POT;
 		//for both arms completely back
-		public static final double ARM_POS_STORING = 45 * CONVERSION_DEGREES_TO_POT;
+		public static final double ARM_POS_STORING = 228 * CONVERSION_DEGREES_TO_POT; //228
 		
 		public static final int GRABBING_STATE = 0;
 		public static final int RELEASING_STATE = 1;
@@ -81,12 +81,13 @@ public class IntakeLeftSubsystem extends PIDSubsystem {
 	@Override
 	protected void usePIDOutput(double output) {
 		// TODO Auto-generated method stub
-		if (isArmLimitPressed()){
-			arm.set(0);
-		}
-		else{
-			arm.set(output);
-		}
+//		if (isArmLimitPressed()){
+//			arm.set(0);
+//		}
+//		else{
+//			arm.set(output);
+//		}
+		arm.set(output);
 	}
 
 	@Override

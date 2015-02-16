@@ -29,16 +29,16 @@ public class IntakeRightSubsystem extends PIDSubsystem {
 	public static final double PURGE_ROLLER_SPEED = -0.4;
 
 	public static final class PIDConstants{
-		public static final double P = 0.6;
+		public static final double P = -0.6;
 		public static final double I = 0.0;
 		public static final double D = 0.0;
-		public static final double ABS_TOLERANCE = .04;
+		public static final double ABS_TOLERANCE = .01;
 
 		public static final double CONVERSION_DEGREES_TO_POT = 1.0/270;
 		
-		public static final double ARM_POS_RELEASE = 30.0 * CONVERSION_DEGREES_TO_POT;
-		public static final double ARM_POS_GRABBING = 10.0 * CONVERSION_DEGREES_TO_POT;
-		public static final double ARM_POS_STORING = 100.0 * CONVERSION_DEGREES_TO_POT;
+		public static final double ARM_POS_RELEASE = 89.0 * CONVERSION_DEGREES_TO_POT;
+		public static final double ARM_POS_GRABBING = 72.0 * CONVERSION_DEGREES_TO_POT;
+		public static final double ARM_POS_STORING = 261.0 * CONVERSION_DEGREES_TO_POT;
 		
 		public static final int GRABBING_STATE = 0;
 		public static final int RELEASING_STATE = 1;

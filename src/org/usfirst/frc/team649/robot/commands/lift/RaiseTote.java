@@ -46,7 +46,7 @@ public class RaiseTote extends Command {
 
 	// Make this return true when this Command no longer needs to run execute()
 	protected boolean isFinished() {
-		return ((liftPID.onTarget()) ||  FishyRobot2015.chainLiftSubsystem.isMaxLimitPressed() ||  FishyRobot2015.chainLiftSubsystem.isResetLimitPressed());
+		return liftPID.onTarget() ||  FishyRobot2015.chainLiftSubsystem.isMaxLimitPressed();// ||  FishyRobot2015.chainLiftSubsystem.isResetLimitPressed();
 	}
 
 	// Called once after isFinished returns true

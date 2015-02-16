@@ -43,15 +43,15 @@ public class OI {
 		public Button containerButton = new JoystickButton(operatorJoystick, 10);
 		
 		public boolean isGrabArmState() {
-	        return (operatorJoystick.getThrottle() > 0.9);
+	        return (operatorJoystick.getThrottle() > 0.8);
 		}
 		
 		public boolean isReleaseArmState() {
-	        return (operatorJoystick.getThrottle() >= 0.1 && operatorJoystick.getThrottle() <= 0.9);
+	        return (operatorJoystick.getThrottle() >= -0.8 && operatorJoystick.getThrottle() <= 0.8);
 		}
 		
 		public boolean isStoreArmState() {
-	        return (operatorJoystick.getThrottle() <= 0.1);
+	        return (operatorJoystick.getThrottle() <= -0.8);
 		}
 	}
 

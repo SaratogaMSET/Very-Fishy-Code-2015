@@ -53,8 +53,8 @@ public class ChainLiftSubsystem extends PIDSubsystem{
 		public static final double CONTAINER_REGRIP_LOWER_HEIGHT = -6;
 		
 		//TIMEOUTS
-		public static final double HAL_COMPENSATION_TIME_OUT = 0.5; //in seconds
-		public static final double RESET_TIME_OUT = 10;
+		public static final double HAL_COMPENSATION_TIME_OUT = 0.25; //in seconds
+		public static final double RESET_TIME_OUT = 20;
 		
 		public static final double PLATFORM_DRIVE_OFFSET = 3;
 		public static final double STEP_OFFSET = 8;
@@ -64,7 +64,9 @@ public class ChainLiftSubsystem extends PIDSubsystem{
 		public static final boolean STEP_HEIGHT = false;
 		//Other
 		public static final double UNLOAD_TOTES_MOTOR_POWER = -.5;
-	    private static final double CURRENT_CAP = 10;
+	    public static final double CURRENT_CAP = 10;
+	    public static final double MAX_ENCODER_HEIGHT = 76;
+	    public static final double MAX_LIFT_ENCODER_SPEED = 3;
 
 
 	}
@@ -101,7 +103,7 @@ public class ChainLiftSubsystem extends PIDSubsystem{
         motors[1].set(-power);
     }
     
-    //HalEffect Sensors
+    //Ryan Lewis Sensors
     public boolean isMaxLimitPressed() {
     	return limitMaxLeft.get() || limitMaxRight.get();
     }

@@ -7,6 +7,7 @@ import org.usfirst.frc.team649.robot.subsystems.IntakeRightSubsystem;
 
 import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class SetIntakeArmPosition extends Command {
 	double relevantSetpointRight;
@@ -34,11 +35,11 @@ public class SetIntakeArmPosition extends Command {
 		// TODO Auto-generated method stub
 		pidRight = FishyRobot2015.intakeRightSubsystem.getPIDController();
 		pidRight.enable();
-		pidLeft = FishyRobot2015.intakeLeftSubsystem.getPIDController();
-		//for different positions for each arm, this command will need 2 state inputs
 		pidRight.setSetpoint(relevantSetpointRight);
-		pidLeft.setSetpoint(relevantSetpointLeft);
 		
+		pidLeft = FishyRobot2015.intakeLeftSubsystem.getPIDController();
+		pidLeft.enable();
+		pidLeft.setSetpoint(relevantSetpointLeft);
 	}
 
 	@Override
@@ -57,12 +58,16 @@ public class SetIntakeArmPosition extends Command {
 		// TODO Auto-generated method stub
 		pidRight.disable();
 		pidLeft.disable();
+		
+		FishyRobot2015.intakeLeftSubsystem.arm.set(0);
+		FishyRobot2015.intakeRightSubsystem.arm.set(0);
 	}
 
 	@Override
 	protected void interrupted() {
 		// TODO Auto-generated method stub
-
+		FishyRobot2015.intakeLeftSubsystem.arm.set(0);
+		FishyRobot2015.intakeRightSubsystem.arm.set(0);
 	}
 
 }
