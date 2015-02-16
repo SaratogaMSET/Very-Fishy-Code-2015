@@ -59,7 +59,8 @@ public class OI {
 
 		public static final double MIN_DRIVE_POWER = 0.05;
 		public static final double ROTATION_POWER = 1.5;
-
+		public Button manualOverrideButton1 = new JoystickButton(driveJoystickHorizontal, 2);
+		public Button manualOverrideButton2 = new JoystickButton(driveJoystickVertical, 2);
 		public double getDriveRotation() {
 			final double turnVal = joystickDeadzone(driveJoystickHorizontal.getX(),
 					MIN_DRIVE_POWER);

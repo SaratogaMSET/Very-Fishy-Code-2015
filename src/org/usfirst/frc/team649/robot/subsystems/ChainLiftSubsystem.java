@@ -21,7 +21,8 @@ public class ChainLiftSubsystem extends PIDSubsystem{
 	public Encoder[] encoders;
 	public PIDController pid;
 
-	DigitalInput limitMax;
+	DigitalInput limitMaxLeft;
+	DigitalInput limitMaxRight;
 	public DigitalInput limitResetRight;
 	public DigitalInput limitResetLeft;
 	
@@ -81,9 +82,10 @@ public class ChainLiftSubsystem extends PIDSubsystem{
     	encoders[0] = new Encoder(RobotMap.CHAIN_LIFT.ENCODERS[0], RobotMap.CHAIN_LIFT.ENCODERS[1], true, EncodingType.k2X);
     	encoders[0].setDistancePerPulse(PIDConstants.ENCODER_DISTANCE_PER_PULSE);
     	encoders[1] = new Encoder(RobotMap.CHAIN_LIFT.ENCODERS[2], RobotMap.CHAIN_LIFT.ENCODERS[3], false, EncodingType.k4X);
-    	//encoders[1].setDistancePerPulse(PIDConstants.ENCODER_DISTANCE_PER_PULSE);
+    	encoders[1].setDistancePerPulse(PIDConstants.ENCODER_DISTANCE_PER_PULSE);
         
-        limitMax = new DigitalInput(RobotMap.CHAIN_LIFT.MAX_LIM_SWITCH);
+        limitMaxLeft = new DigitalInput(RobotMap.CHAIN_LIFT.MAX_LIM_SWITCH_LEFT);
+        limitMaxRight = new DigitalInput(RobotMap.CHAIN_LIFT.MAX_LIMIT_SWITCH_RIGHT);
         limitResetRight = new DigitalInput(RobotMap.CHAIN_LIFT.RESET_LIM_SWITCH_RIGHT);
         limitResetLeft = new DigitalInput(RobotMap.CHAIN_LIFT.RESET_LIM_SWITCH_LEFT);
         
@@ -101,7 +103,7 @@ public class ChainLiftSubsystem extends PIDSubsystem{
     
     //HalEffect Sensors
     public boolean isMaxLimitPressed() {
-    	return limitMax.get();
+    	return limitMaxLeft.get() || limitMaxRight.get();
     }
     
     public boolean isResetLimitPressed() {

@@ -36,7 +36,8 @@ public class RobotMap {
         public static final int[] ENCODERS = new int[]{4,5,6,7};
 		public static final int RESET_LIM_SWITCH_LEFT = 13;
 		public static final int RESET_LIM_SWITCH_RIGHT = 19;
-		public static final int MAX_LIM_SWITCH = 12;
+		public static final int MAX_LIM_SWITCH_LEFT = 12;
+		public static final int MAX_LIMIT_SWITCH_RIGHT = 14;
 		
 
 

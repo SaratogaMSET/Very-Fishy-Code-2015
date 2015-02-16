@@ -211,9 +211,6 @@ public class FishyRobot2015 extends IterativeRobot {
 //        	new IntakeTote().start();
 //        }
         
-        if(chainLiftSubsystem.isMaxLimitPressed()) {
-        	SmartDashboard.putString("key", "we are all gonna die");
-        }
         
         if(oi.operatorJoystick.getRawButton(5) && !prevState5){
         	new RaiseTote(true).start(); 
@@ -246,44 +243,44 @@ public class FishyRobot2015 extends IterativeRobot {
         
         
         /****************MANUAL**********************/
+       if(oi.driver.manualOverrideButton1.get() || oi.driver.manualOverrideButton2.get()) {
+       
+        chainLiftSubsystem.setPower((oi.manualJoystick.getAxis(Joystick.AxisType.kY)));
+       
+        if(oi.manual.moveArmsIn.get()) {
+        	intakeLeftSubsystem.arm.set(0.4);
+        	intakeRightSubsystem.arm.set(0.4);
+        } else if(oi.manual.moveArmsOut.get()) {
+        	intakeLeftSubsystem.arm.set(-0.5);
+        	intakeRightSubsystem.arm.set(-0.5);
+        } else {
+        	intakeLeftSubsystem.arm.set(0.0);
+        	intakeRightSubsystem.arm.set(0.0);
+        }
         
-//        chainLiftSubsystem.setPower((oi.manualJoystick.getAxis(Joystick.AxisType.kY)));
-//        
-//        if(oi.manual.moveArmsIn.get()) {
-//        	intakeLeftSubsystem.arm.set(0.4);
-//        	intakeRightSubsystem.arm.set(0.4);
-//        	//setIntakeArmsPower(INTAKE_ARM_IN_POWER);
-//        } else if(oi.manual.moveArmsOut.get()) {
-//        	intakeLeftSubsystem.arm.set(-0.5);
-//        	intakeRightSubsystem.arm.set(-0.5);
-//        } else {
-//        	intakeLeftSubsystem.arm.set(0.0);
-//        	intakeRightSubsystem.arm.set(0.0);
-//        }
-//        
-//        if(oi.manual.runAutoWinch.get()) {
-//        	autoWinchSubsystem.setPower(1.0);
-//        } else {
-//        	autoWinchSubsystem.setPower(0);
-//        }
-//        
-//        if(oi.manual.runRollersIn.get()) {
-//        	intakeLeftSubsystem.roller.set(IntakeLeftSubsystem.INTAKE_ROLLER_SPEED);
-//        	intakeRightSubsystem.roller.set(IntakeRightSubsystem.INTAKE_ROLLER_SPEED);
-//        } else if(oi.manual.runRollersOut.get()) {
-//        	intakeLeftSubsystem.roller.set(IntakeLeftSubsystem.INTAKE_ROLLER_SPEED);
-//        	intakeRightSubsystem.roller.set(IntakeRightSubsystem.PURGE_ROLLER_SPEED);
-//        } else {
-//        	intakeLeftSubsystem.roller.set(IntakeLeftSubsystem.INTAKE_ROLLER_OFF_SPEED);
-//        	intakeRightSubsystem.roller.set(IntakeRightSubsystem.INTAKE_ROLLER_OFF_SPEED);
-//
-//        }
-//        
-//        if(oi.manual.togglePiston.get() && oi.manual.togglePiston.get() != containerGrabberSubsystem.grabberStateBooleanForManualOnly) {
-//        	containerGrabberSubsystem.grabberStateBooleanForManualOnly = !containerGrabberSubsystem.grabberStateBooleanForManualOnly;
-//        	containerGrabberSubsystem.setGrabberState(containerGrabberSubsystem.grabberStateBooleanForManualOnly ? Value.kForward: Value.kReverse);
-//        }
+        if(oi.manual.runAutoWinch.get()) {
+        	autoWinchSubsystem.setPower(1.0);
+        } else {
+        	autoWinchSubsystem.setPower(0);
+        }
         
+        if(oi.manual.runRollersIn.get()) {
+        	intakeLeftSubsystem.roller.set(IntakeLeftSubsystem.INTAKE_ROLLER_SPEED);
+        	intakeRightSubsystem.roller.set(IntakeRightSubsystem.INTAKE_ROLLER_SPEED);
+        } else if(oi.manual.runRollersOut.get()) {
+        	intakeLeftSubsystem.roller.set(IntakeLeftSubsystem.INTAKE_ROLLER_SPEED);
+        	intakeRightSubsystem.roller.set(IntakeRightSubsystem.PURGE_ROLLER_SPEED);
+        } else {
+        	intakeLeftSubsystem.roller.set(IntakeLeftSubsystem.INTAKE_ROLLER_OFF_SPEED);
+        	intakeRightSubsystem.roller.set(IntakeRightSubsystem.INTAKE_ROLLER_OFF_SPEED);
+
+        }
+        
+        if(oi.manual.togglePiston.get() && oi.manual.togglePiston.get() != containerGrabberSubsystem.grabberStateBooleanForManualOnly) {
+        	containerGrabberSubsystem.grabberStateBooleanForManualOnly = !containerGrabberSubsystem.grabberStateBooleanForManualOnly;
+        	containerGrabberSubsystem.setGrabberState(containerGrabberSubsystem.grabberStateBooleanForManualOnly ? Value.kForward: Value.kReverse);
+        }
+       }
         //set the previous states
         prevState5 = oi.operatorJoystick.getRawButton(5);
         prevState6 = oi.operatorJoystick.getRawButton(6);
