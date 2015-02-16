@@ -33,6 +33,7 @@ public class SetIntakeArmPosition extends Command {
 	protected void initialize() {
 		// TODO Auto-generated method stub
 		pidRight = FishyRobot2015.intakeRightSubsystem.getPIDController();
+		pidRight.enable();
 		pidLeft = FishyRobot2015.intakeLeftSubsystem.getPIDController();
 		//for different positions for each arm, this command will need 2 state inputs
 		pidRight.setSetpoint(relevantSetpointRight);
@@ -54,7 +55,8 @@ public class SetIntakeArmPosition extends Command {
 	@Override
 	protected void end() {
 		// TODO Auto-generated method stub
-
+		pidRight.disable();
+		pidLeft.disable();
 	}
 
 	@Override

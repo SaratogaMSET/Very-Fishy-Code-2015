@@ -3,7 +3,7 @@ package org.usfirst.frc.team649.robot.commandgroups;
 import org.usfirst.frc.team649.robot.commands.containergrabbercommands.ClampContainerGrabber;
 import org.usfirst.frc.team649.robot.commands.drivetraincommands.DriveSetDistanceWithPID;
 import org.usfirst.frc.team649.robot.commands.drivetraincommands.TurnWithPIDCommand;
-import org.usfirst.frc.team649.robot.commands.lift.FinishRaiseTote;
+import org.usfirst.frc.team649.robot.commands.lift.RaiseTote;
 import org.usfirst.frc.team649.robot.subsystems.ChainLiftSubsystem;
 import org.usfirst.frc.team649.robot.subsystems.DrivetrainSubsystem.EncoderBasedDriving;
 import org.usfirst.frc.team649.robot.subsystems.DrivetrainSubsystem.GyroBasedDriving;
@@ -30,6 +30,6 @@ public class AutoContainerAndTotePickUp extends CommandGroup {
     	addSequential(new DriveSetDistanceWithPID(EncoderBasedDriving.AUTO_CONTAINER_TO_AUTO_ZONE));
     	//drop the tote, but keep holding container up
     	//Say what? We have the Tote at this point?
-    	addSequential(new FinishRaiseTote(ChainLiftSubsystem.PIDConstants.DOWN)); //check this TODO
+    	addSequential(new RaiseTote(ChainLiftSubsystem.PIDConstants.DOWN)); //check this TODO
     }
 }

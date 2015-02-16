@@ -20,7 +20,7 @@ public class Debug extends CommandGroup {
     	
     	//for chain
     	addSequential(new RunLift(0.5));
-    	addSequential(new WaitCommand(2));
+    	addSequential(new WaitCommand(1.2));
     	addSequential(new RunLift(0));
     }
 }

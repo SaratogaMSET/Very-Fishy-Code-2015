@@ -8,11 +8,11 @@ import org.usfirst.frc.team649.robot.subsystems.IntakeRightSubsystem;
 
 import edu.wpi.first.wpilibj.command.Command;
 
-public class RunRoller extends Command {
+public class RunRollers extends Command {
 
 	public double speed;
 	//allows for a command to stop
-	public RunRoller(double speed){
+	public RunRollers(double speed){
 		this.speed = speed;
 	}
 	@Override
@@ -23,7 +23,7 @@ public class RunRoller extends Command {
 	@Override
 	protected void execute() {
 		FishyRobot2015.intakeLeftSubsystem.roller.set(speed);
-		FishyRobot2015.intakeRightSubsystem.roller.set(speed);
+		FishyRobot2015.intakeRightSubsystem.roller.set(-speed);
 	}
 
 	@Override

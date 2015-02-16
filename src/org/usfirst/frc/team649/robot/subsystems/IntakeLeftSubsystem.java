@@ -24,16 +24,18 @@ public class IntakeLeftSubsystem extends PIDSubsystem {
 	//CONSTANTS
 
 	public static final class PIDConstants{
-		public static final double P = 0.0;
+		public static final double P = 0.6;
 		public static final double I = 0.0;
 		public static final double D = 0.0;
-		public static final double ABS_TOLERANCE = 0;
+		public static final double ABS_TOLERANCE = 0.4;
 		
-		public static final double ARM_POS_RELEASE = 1000000.0;
+		public static final double CONVERSION_DEGREES_TO_POT = 1.0/270;
+		
+		public static final double ARM_POS_RELEASE = 200 * CONVERSION_DEGREES_TO_POT;
 		//for pulling in totes
-		public static final double ARM_POS_GRABBING = 0.0;
+		public static final double ARM_POS_GRABBING = 225 * CONVERSION_DEGREES_TO_POT;
 		//for both arms completely back
-		public static final double ARM_POS_STORING = 6000000.0;
+		public static final double ARM_POS_STORING = 45 * CONVERSION_DEGREES_TO_POT;
 		
 		public static final int GRABBING_STATE = 0;
 		public static final int RELEASING_STATE = 1;
@@ -42,12 +44,10 @@ public class IntakeLeftSubsystem extends PIDSubsystem {
 	
 	public IntakeLeftSubsystem(){
 		super("Grabber Left Subsystem", PIDConstants.P, PIDConstants.I, PIDConstants.D);
-    	/*
-    	 * to do this you have to call the class before its done being built...
-    	 * need a method to assign pids after
-    	pid =  FishyRobot2015.intakeLeftSubsystem.getPIDController();
+    	
+    	pid =  this.getPIDController();
     	pid.setAbsoluteTolerance(PIDConstants.ABS_TOLERANCE);
-    	*/
+    	
     	//potentiometer
     	pot = new AnalogPotentiometer(RobotMap.LEFT_GRABBER.POT);
     	

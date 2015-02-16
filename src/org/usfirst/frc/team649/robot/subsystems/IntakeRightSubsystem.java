@@ -29,14 +29,16 @@ public class IntakeRightSubsystem extends PIDSubsystem {
 	public static final double PURGE_ROLLER_SPEED = -0.4;
 
 	public static final class PIDConstants{
-		public static final double P = 0.0;
+		public static final double P = 0.6;
 		public static final double I = 0.0;
 		public static final double D = 0.0;
-		public static final double ABS_TOLERANCE = 0;
+		public static final double ABS_TOLERANCE = .04;
+
+		public static final double CONVERSION_DEGREES_TO_POT = 1.0/270;
 		
-		public static final double ARM_POS_RELEASE = 1000000.0;
-		public static final double ARM_POS_GRABBING = 0.0;
-		public static final double ARM_POS_STORING = 6000000.0;
+		public static final double ARM_POS_RELEASE = 30.0 * CONVERSION_DEGREES_TO_POT;
+		public static final double ARM_POS_GRABBING = 10.0 * CONVERSION_DEGREES_TO_POT;
+		public static final double ARM_POS_STORING = 100.0 * CONVERSION_DEGREES_TO_POT;
 		
 		public static final int GRABBING_STATE = 0;
 		public static final int RELEASING_STATE = 1;
@@ -45,11 +47,10 @@ public class IntakeRightSubsystem extends PIDSubsystem {
 	
     public IntakeRightSubsystem(){
     	super("Grabber Right Subsystem", PIDConstants.P, PIDConstants.I, PIDConstants.D);
-    	/*
-    	 * see intakeLeftSubsystem
-    	pid = FishyRobot2015.intakeRightSubsystem.getPIDController();
+    	
+    	pid = this.getPIDController();
     	pid.setAbsoluteTolerance(PIDConstants.ABS_TOLERANCE);
-    	*/
+    	
     	//potentiometer
     	pot = new AnalogPotentiometer(RobotMap.RIGHT_GRABBER.POT);
     	
@@ -88,12 +89,12 @@ public class IntakeRightSubsystem extends PIDSubsystem {
 	@Override
 	protected void usePIDOutput(double output) {
 		// TODO Auto-generated method stub
-		if (isArmLimitPressed()){
-			arm.set(0);
-		}
-		else{
+//		if (isArmLimitPressed()){
+//			arm.set(0);
+//		}
+		//else{
 			arm.set(output);
-		}
+		//}
 	}
 }
 

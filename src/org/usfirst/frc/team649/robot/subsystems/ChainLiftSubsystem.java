@@ -22,7 +22,8 @@ public class ChainLiftSubsystem extends PIDSubsystem{
 	public PIDController pid;
 
 	DigitalInput limitMax;
-	DigitalInput limitReset;
+	public DigitalInput limitResetRight;
+	public DigitalInput limitResetLeft;
 	
 	public double setpointHeight;
 	public double offsetHeight;
@@ -34,7 +35,7 @@ public class ChainLiftSubsystem extends PIDSubsystem{
 	
 	public static class PIDConstants {
 		//PID
-		public static final double P_VALUE = 0.5;
+		public static final double P_VALUE = 0.3;
 		public static final double I_VALUE = 0.0;
 		public static final double D_VALUE = 0.0;
 		public static final double ENCODER_DISTANCE_PER_PULSE = (((22.0*(3.0/8.0)) * (12.0 / 60.0) * (18.0 / 42.0) * (18 / 42.0)) / 48.0);
@@ -42,12 +43,9 @@ public class ChainLiftSubsystem extends PIDSubsystem{
 		//In inches
 		public static final double STORE_TO_STEP_LEVEL_DIFFERENCE = 5.0;
 		
-		//MUST add up to 16 (hook separation)
-		public static final double STORE_TO_INTERMEDIATE_DIFFERENCE = 12.0;
-		public static final double INTERMEDIATE_TO_STORE_DIFFERENCE = 4;
+		//MUST be 16 (hook separation)
+		public static final double TOTE_PICK_UP_HEIGHT = 16.0;
 		
-		//MUST be distance between reset position and intermediate step
-		public static final double FIRST_TOTE_STORE_TO_INTERMEDIATE = 7;
 		
 		//MUST add up to intermediate height difference
 		public static final double CONTAINER_PICK_UP_RAISE_HEIGHT = 18;
@@ -86,7 +84,8 @@ public class ChainLiftSubsystem extends PIDSubsystem{
     	//encoders[1].setDistancePerPulse(PIDConstants.ENCODER_DISTANCE_PER_PULSE);
         
         limitMax = new DigitalInput(RobotMap.CHAIN_LIFT.MAX_LIM_SWITCH);
-        limitReset = new DigitalInput(RobotMap.CHAIN_LIFT.RESET_LIM_SWITCH);
+        limitResetRight = new DigitalInput(RobotMap.CHAIN_LIFT.RESET_LIM_SWITCH_RIGHT);
+        limitResetLeft = new DigitalInput(RobotMap.CHAIN_LIFT.RESET_LIM_SWITCH_LEFT);
         
         isAtBase = false; //TODO we hopefully call reset at the beginning of the program
 
@@ -102,11 +101,11 @@ public class ChainLiftSubsystem extends PIDSubsystem{
     
     //HalEffect Sensors
     public boolean isMaxLimitPressed() {
-    	return !limitMax.get();
+    	return limitMax.get();
     }
     
     public boolean isResetLimitPressed() {
-    	return !limitReset.get();
+    	return limitResetRight.get() || limitResetLeft.get();
     }
     
     public double getHeight() {

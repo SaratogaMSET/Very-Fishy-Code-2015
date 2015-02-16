@@ -2,6 +2,8 @@ package org.usfirst.frc.team649.robot.commands.lift;
 
 import org.usfirst.frc.team649.robot.FishyRobot2015;
 import org.usfirst.frc.team649.robot.subsystems.ChainLiftSubsystem;
+import org.usfirst.frc.team649.robot.subsystems.ChainLiftSubsystem.PIDConstants;
+
 import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -9,24 +11,19 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 /**
  *
  */
-public class RaiseToteToIntermediateLevel extends Command {
+public class RaiseTote extends Command {
 
 	private PIDController liftPID;
 	private boolean upOrDown;
 	
 	public double heightChangeReference;
 
-	public RaiseToteToIntermediateLevel(boolean up) {
+	public RaiseTote(boolean up) {
 		upOrDown = up;
 		// Use requires() here to declare subsystem dependencies
 		// eg. requires(chassis);
 		
-		if (FishyRobot2015.chainLiftSubsystem.isAtBase){
-			heightChangeReference = ChainLiftSubsystem.PIDConstants.FIRST_TOTE_STORE_TO_INTERMEDIATE;
-		}
-		else {
-			heightChangeReference = ChainLiftSubsystem.PIDConstants.STORE_TO_INTERMEDIATE_DIFFERENCE;
-		}
+		heightChangeReference = PIDConstants.TOTE_PICK_UP_HEIGHT;
 		
 		liftPID =  FishyRobot2015.chainLiftSubsystem.getPIDController();
 		if (upOrDown) {
