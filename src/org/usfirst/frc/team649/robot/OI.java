@@ -33,14 +33,15 @@ public class OI {
 	}
 
 	public class Operator {
-		public Button purgeButton = new JoystickButton(operatorJoystick, 1);
-		public Button intakeButton = new JoystickButton(operatorJoystick, 2);
-		public Button raiseToteButton = new JoystickButton(operatorJoystick, 5);
-		public Button lowerToteButton = new JoystickButton(operatorJoystick, 6);
-		public Button scoreAllButton = new JoystickButton(operatorJoystick, 7);
-		public Button stepButton = new JoystickButton(operatorJoystick, 8);
-		public Button storeButton = new JoystickButton(operatorJoystick, 9);
-		public Button containerButton = new JoystickButton(operatorJoystick, 10);
+		public Button purgeButton = new JoystickButton(operatorJoystick, 5);
+		public Button intakeButton = new JoystickButton(operatorJoystick, 3); 
+		
+		public Button raiseToteButton = new JoystickButton(operatorJoystick, 6); 
+		public Button lowerToteButton = new JoystickButton(operatorJoystick, 4); 
+		
+		public Button scoreAllButton = new JoystickButton(operatorJoystick, 1);
+
+		public Button throttleOverrideButton = new JoystickButton(operatorJoystick, 11);
 		
 		public boolean isGrabArmState() {
 	        return (operatorJoystick.getThrottle() > 0.8);
@@ -84,11 +85,16 @@ public class OI {
 	}
 	
 	public class Manual {
-		public Button moveArmsIn = new JoystickButton(manualJoystick, 6);
-		public Button moveArmsOut = new JoystickButton(manualJoystick, 1);
-		public Button runRollersIn = new JoystickButton(manualJoystick, 2);
-		public Button runRollersOut = new JoystickButton(manualJoystick, 3);
-		public Button togglePiston = new JoystickButton(manualJoystick, 4);
-		public Button runAutoWinch = new JoystickButton(manualJoystick, 5);
+		public Button rollersIn = new JoystickButton(manualJoystick, 2);
+		public Button rollersOut = new JoystickButton(manualJoystick, 3);
+		public Button leftHardStopIn = new JoystickButton(manualJoystick, 5);
+		public Button leftHardStopOut = new JoystickButton(manualJoystick, 7);
+		public Button rightHardStopIn = new JoystickButton(manualJoystick, 6);
+		public Button rightHardStopOut = new JoystickButton(manualJoystick, 8);
+		
+		public double getLiftPower() {
+			return manualJoystick.getRawAxis(3);
+		}
+		
 	}
 }

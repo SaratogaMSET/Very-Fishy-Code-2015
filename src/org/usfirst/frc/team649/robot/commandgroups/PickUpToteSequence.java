@@ -13,13 +13,12 @@ import edu.wpi.first.wpilibj.command.WaitCommand;
 /**
  *
  */
-public class PickUpToteSequance extends CommandGroup {
+public class PickUpToteSequence extends CommandGroup {
     
-    public  PickUpToteSequance() {
-    	addParallel(new SetIntakeArmPosition(IntakeLeftSubsystem.PIDConstants.GRABBING_STATE));
-    	addSequential(new IntakeTote());
-    	addSequential(new WaitCommand(0.2));
-    	addSequential(new SetIntakeArmPosition(IntakeLeftSubsystem.PIDConstants.RELEASING_STATE));
-    	addSequential(new RaiseTote(ChainLiftSubsystem.PIDConstants.UP));
+    public  PickUpToteSequence() {
+    	if (FishyRobot2015.intakeRightSubsystem.isToteLimitPressed()){
+    		addSequential(new SetIntakeArmPosition(IntakeLeftSubsystem.PIDConstants.RELEASING_STATE));
+    		addSequential(new RaiseTote(ChainLiftSubsystem.PIDConstants.UP));
+    	}
     }
 }

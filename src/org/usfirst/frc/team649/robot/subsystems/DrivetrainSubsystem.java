@@ -162,7 +162,7 @@ public class DrivetrainSubsystem extends PIDSubsystem implements PIDSource, PIDO
 	@Override
 	public double pidGet() {
 		// TODO Auto-generated method stub
-		return gyro.getAngle();
+		return 360-gyro.getAngle();
 	}
 }
 

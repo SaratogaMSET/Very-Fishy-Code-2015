@@ -38,7 +38,7 @@ public class ChainLiftSubsystem extends PIDSubsystem{
 		//PID
 		public static final double P_VALUE = 0.3;
 		public static final double I_VALUE = 0.0;
-		public static final double D_VALUE = 0.0;
+		public static final double D_VALUE = 0.2;
 		public static final double ENCODER_DISTANCE_PER_PULSE = (((22.0*(3.0/8.0)) * (12.0 / 60.0) * (18.0 / 42.0) * (18 / 42.0)) / 48.0);
 		public static final double ABS_TOLERANCE = 1;
 		//In inches
@@ -54,19 +54,17 @@ public class ChainLiftSubsystem extends PIDSubsystem{
 		
 		//TIMEOUTS
 		public static final double HAL_COMPENSATION_TIME_OUT = 0.25; //in seconds
-		public static final double RESET_TIME_OUT = 20;
+		public static final double RESET_TIME_OUT = 10;
 		
-		public static final double PLATFORM_DRIVE_OFFSET = 3;
-		public static final double STEP_OFFSET = 8;
 		public static final boolean UP = true;
 		public static final boolean DOWN = false;
-		public static final boolean PLATFORM_HEIGHT = true;
-		public static final boolean STEP_HEIGHT = false;
 		//Other
-		public static final double UNLOAD_TOTES_MOTOR_POWER = -.5;
+		public static final double UNLOAD_TOTES_MOTOR_POWER = -.4;
 	    public static final double CURRENT_CAP = 10;
 	    public static final double MAX_ENCODER_HEIGHT = 76;
 	    public static final double MAX_LIFT_ENCODER_SPEED = 3;
+	    
+	    public static final double ENCODER_RESET_OFFSET = -4;
 
 
 	}
@@ -78,7 +76,6 @@ public class ChainLiftSubsystem extends PIDSubsystem{
             motors[i] = new Victor(RobotMap.CHAIN_LIFT.MOTORS[i]);
         }
     
-    	platformOrStepOffset = true;
     	
     	encoders =  new Encoder[2];
     	encoders[0] = new Encoder(RobotMap.CHAIN_LIFT.ENCODERS[0], RobotMap.CHAIN_LIFT.ENCODERS[1], true, EncodingType.k2X);
@@ -128,6 +125,7 @@ public class ChainLiftSubsystem extends PIDSubsystem{
         for (int x = 0; x < encoders.length; x++) {
             encoders[x].reset();
         }
+        setpointHeight = 0;
     }
     
     
