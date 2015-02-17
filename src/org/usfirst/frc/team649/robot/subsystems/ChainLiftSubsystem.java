@@ -32,20 +32,21 @@ public class ChainLiftSubsystem extends PIDSubsystem{
 	//true for platform, false for step
 	public boolean platformOrStepOffset;
 	public boolean isAtBase;
+	public boolean isPastTop;
 
 	
 	public static class PIDConstants {
 		//PID
 		public static final double P_VALUE = 0.3;
-		public static final double I_VALUE = 0.0;
-		public static final double D_VALUE = 0.2;
+		public static final double I_VALUE = 0.00;
+		public static final double D_VALUE = 0.000;
 		public static final double ENCODER_DISTANCE_PER_PULSE = (((22.0*(3.0/8.0)) * (12.0 / 60.0) * (18.0 / 42.0) * (18 / 42.0)) / 48.0);
 		public static final double ABS_TOLERANCE = 1;
 		//In inches
 		public static final double STORE_TO_STEP_LEVEL_DIFFERENCE = 5.0;
 		
 		//MUST be 16 (hook separation)
-		public static final double TOTE_PICK_UP_HEIGHT = 16.0;
+		public static final double TOTE_PICK_UP_HEIGHT = 16.125;
 		
 		
 		//MUST add up to intermediate height difference
@@ -53,7 +54,7 @@ public class ChainLiftSubsystem extends PIDSubsystem{
 		public static final double CONTAINER_REGRIP_LOWER_HEIGHT = -6;
 		
 		//TIMEOUTS
-		public static final double HAL_COMPENSATION_TIME_OUT = 0.25; //in seconds
+		public static final double HAL_COMPENSATION_TIME_OUT = 0.1; //in seconds
 		public static final double RESET_TIME_OUT = 10;
 		
 		public static final boolean UP = true;
@@ -64,8 +65,7 @@ public class ChainLiftSubsystem extends PIDSubsystem{
 	    public static final double MAX_ENCODER_HEIGHT = 76;
 	    public static final double MAX_LIFT_ENCODER_SPEED = 3;
 	    
-	    public static final double ENCODER_RESET_OFFSET = -4;
-
+	    public static final double ENCODER_RESET_OFFSET = 3.5;
 
 	}
 
@@ -89,7 +89,7 @@ public class ChainLiftSubsystem extends PIDSubsystem{
         limitResetLeft = new DigitalInput(RobotMap.CHAIN_LIFT.RESET_LIM_SWITCH_LEFT);
         
         isAtBase = false; //TODO we hopefully call reset at the beginning of the program
-
+        isPastTop = false;
         
 		pid = this.getPIDController();
     	pid.setAbsoluteTolerance(PIDConstants.ABS_TOLERANCE);
@@ -126,6 +126,7 @@ public class ChainLiftSubsystem extends PIDSubsystem{
             encoders[x].reset();
         }
         setpointHeight = 0;
+        isPastTop = false;
     }
     
     

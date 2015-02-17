@@ -14,7 +14,7 @@ public class ScoreAllAndResetFromTop extends CommandGroup {
 		//up first and then down to score all
 		addSequential(new HalEffectCompensationOffset(true));
 		addSequential(new RunTilResetLimit());
-		addSequential(new ChangeLiftHeight(ChainLiftSubsystem.PIDConstants.ENCODER_RESET_OFFSET));
+		//addSequential(new ChangeLiftHeight(ChainLiftSubsystem.PIDConstants.ENCODER_RESET_OFFSET));
 		addSequential(new ResetEncoders());
 	}
 }

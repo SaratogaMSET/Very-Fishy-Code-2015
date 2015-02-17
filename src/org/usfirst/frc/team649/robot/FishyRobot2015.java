@@ -197,9 +197,9 @@ public class FishyRobot2015 extends IterativeRobot {
 		Scheduler.getInstance().run();
 
 		if (oi.operator.intakeButton.get()) {
-			//new RunLift(oi.operatorJoystick.getY()).start();
+			new RunLift(oi.operatorJoystick.getY()).start();
 			// FishyRobot2015.intakeRightSubsystem.arm.set(oi.operatorJoystick.getY()/3.0);
-			 FishyRobot2015.intakeLeftSubsystem.arm.set(-oi.operatorJoystick.getY() / 3.0);
+			 //FishyRobot2015.intakeLeftSubsystem.arm.set(-oi.operatorJoystick.getY() / 3.0);
 		}
 		// new RunRollers(oi.operatorJoystick.getY()).start();
 
@@ -256,17 +256,17 @@ public class FishyRobot2015 extends IterativeRobot {
 		/**************** MANUAL **********************/
 
 		// throttle
-		if (oi.operator.throttleOverrideButton.get()) {
-			if (oi.operator.isGrabArmState()) {
-				new SetIntakeArmPosition(IntakeRightSubsystem.PIDConstants.GRABBING_STATE).start();
-			}
-			if (oi.operator.isReleaseArmState()) {
-				new SetIntakeArmPosition(IntakeRightSubsystem.PIDConstants.RELEASING_STATE).start();
-			}
-			if (oi.operator.isStoreArmState()) {
-				new SetIntakeArmPosition(IntakeRightSubsystem.PIDConstants.STORE_STATE).start();
-			}
-		}
+//		if (oi.operator.throttleOverrideButton.get()) {
+//			if (oi.operator.isGrabArmState()) {
+//				new SetIntakeArmPosition(IntakeRightSubsystem.PIDConstants.GRABBING_STATE).start();
+//			}
+//			if (oi.operator.isReleaseArmState()) {
+//				new SetIntakeArmPosition(IntakeRightSubsystem.PIDConstants.RELEASING_STATE).start();
+//			}
+//			if (oi.operator.isStoreArmState()) {
+//				new SetIntakeArmPosition(IntakeRightSubsystem.PIDConstants.STORE_STATE).start();
+//			}
+//		}
 
 		if (oi.driver.manualOverrideButton1.get() || oi.driver.manualOverrideButton2.get()) {
 
@@ -317,6 +317,8 @@ public class FishyRobot2015 extends IterativeRobot {
 		SmartDashboard.putBoolean("Bumper Left", intakeLeftSubsystem.isToteLimitPressed());
 		SmartDashboard.putBoolean("Arm Left Limit", intakeLeftSubsystem.isArmLimitPressed());
 		SmartDashboard.putBoolean("Arm Right Limit", intakeRightSubsystem.isArmLimitPressed());
+		
+		SmartDashboard.putBoolean("IS PAST TOP", chainLiftSubsystem.isPastTop);
 
 		SmartDashboard.putNumber("Chain Height", chainLiftSubsystem.getHeight());
 		SmartDashboard.putNumber("GOAL HEIGHT", chainLiftSubsystem.offsetHeight + chainLiftSubsystem.setpointHeight);

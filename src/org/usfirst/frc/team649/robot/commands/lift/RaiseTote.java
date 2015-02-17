@@ -25,6 +25,9 @@ public class RaiseTote extends Command {
 		
 		heightChangeReference = PIDConstants.TOTE_PICK_UP_HEIGHT;
 		
+		if (FishyRobot2015.chainLiftSubsystem.isPastTop && upOrDown){
+			heightChangeReference = 0;
+		}
 		liftPID =  FishyRobot2015.chainLiftSubsystem.getPIDController();
 		if (upOrDown) {
 			 FishyRobot2015.chainLiftSubsystem.setpointHeight += heightChangeReference;
@@ -46,13 +49,20 @@ public class RaiseTote extends Command {
 
 	// Make this return true when this Command no longer needs to run execute()
 	protected boolean isFinished() {
-		return liftPID.onTarget() ||  FishyRobot2015.chainLiftSubsystem.isMaxLimitPressed();// ||  FishyRobot2015.chainLiftSubsystem.isResetLimitPressed();
+		return liftPID.onTarget() ||  (FishyRobot2015.chainLiftSubsystem.isMaxLimitPressed() && upOrDown) ||  (FishyRobot2015.chainLiftSubsystem.isResetLimitPressed() && !upOrDown);
 	}
 
 	// Called once after isFinished returns true
 	protected void end() {
 		if (upOrDown){
 			FishyRobot2015.chainLiftSubsystem.isAtBase = false;
+			if (FishyRobot2015.chainLiftSubsystem.isMaxLimitPressed()){
+				FishyRobot2015.chainLiftSubsystem.isPastTop = true;
+			}
+			SmartDashboard.putBoolean("Reached", true);
+		}
+		else{
+			FishyRobot2015.chainLiftSubsystem.isPastTop = false;
 		}
 		liftPID.disable();
 	}
@@ -60,5 +70,6 @@ public class RaiseTote extends Command {
 	// Called when another command which requires one or more of the same
 	// subsystems is scheduled to run
 	protected void interrupted() {
+		
 	}
 }
