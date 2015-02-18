@@ -3,8 +3,8 @@
 package org.usfirst.frc.team649.robot.commands.intakecommands;
 
 import org.usfirst.frc.team649.robot.FishyRobot2015;
-import org.usfirst.frc.team649.robot.subsystems.IntakeLeftSubsystem;
-import org.usfirst.frc.team649.robot.subsystems.IntakeRightSubsystem;
+import org.usfirst.frc.team649.robot.subsystems.IntakePortSubsystem;
+import org.usfirst.frc.team649.robot.subsystems.IntakeStarboardSubsystem;
 
 import edu.wpi.first.wpilibj.command.Command;
 

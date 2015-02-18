@@ -6,7 +6,7 @@ import org.usfirst.frc.team649.robot.commands.drivetraincommands.TurnWithPIDComm
 import org.usfirst.frc.team649.robot.commands.intakecommands.SetIntakeArmPosition;
 import org.usfirst.frc.team649.robot.commands.lift.RaiseTote;
 import org.usfirst.frc.team649.robot.subsystems.ChainLiftSubsystem;
-import org.usfirst.frc.team649.robot.subsystems.IntakeLeftSubsystem;
+import org.usfirst.frc.team649.robot.subsystems.IntakePortSubsystem;
 import org.usfirst.frc.team649.robot.subsystems.DrivetrainSubsystem.EncoderBasedDriving;
 import org.usfirst.frc.team649.robot.subsystems.DrivetrainSubsystem.GyroBasedDriving;
 
@@ -21,7 +21,7 @@ public class AutoContainerAndTotePickUp extends CommandGroup {
 	 //part of full sequence
     //pick up container and tote only, separation need bc of parallel v sequential issues...fix this TODO
     public AutoContainerAndTotePickUp() {
-    	addParallel(new SetIntakeArmPosition(IntakeLeftSubsystem.PIDConstants.ARM_POS_RELEASE));
+    	addParallel(new SetIntakeArmPosition(IntakePortSubsystem.PIDConstants.ARM_POS_RELEASE));
     	addSequential(new DriveSetDistanceWithPID(EncoderBasedDriving.AUTO_START_TO_CONTAINER));
     	addSequential(new WaitCommand(.3));
     	addSequential(new FullContainerAndFirstToteSequence(true));

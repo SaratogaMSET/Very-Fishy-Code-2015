@@ -11,15 +11,17 @@ public class ClampContainerGrabber extends Command {
 
 	
 	private Value referencePos;
+	public WaitCommand wait;
 	
 	public ClampContainerGrabber(boolean clamp){
 		referencePos = clamp ? ContainerGrabberSubsystem.GRABBER_CLOSED_STATE : ContainerGrabberSubsystem.GRABBER_OPENED_STATE;
 		FishyRobot2015.containerGrabberSubsystem.setGrabberState(referencePos);
+		wait = new WaitCommand(ContainerGrabberSubsystem.TIME_TO_CLOSE_PISTONS);
 	}
 	@Override
 	protected void initialize() {
 		// TODO Auto-generated method stub
-		
+		wait.start();
 	}
 
 	@Override
@@ -31,7 +33,7 @@ public class ClampContainerGrabber extends Command {
 	@Override
 	protected boolean isFinished() {
 		// TODO Auto-generated method stub
-		while(new WaitCommand(ContainerGrabberSubsystem.TIME_TO_CLOSE_PISTONS).isRunning()) {
+		while(wait.isRunning() && !FishyRobot2015.oi.driver.isManualOverride()) {
 			
 		}
 		return true;

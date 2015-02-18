@@ -29,7 +29,7 @@ public class HalEffectCompensationOffset extends Command {
 	@Override
 	protected boolean isFinished() {
 		// TODO Auto-generated method stub
-		return this.isTimedOut();
+		return this.isTimedOut() || FishyRobot2015.oi.driver.isManualOverride();
 	}
 
 	@Override

@@ -1,5 +1,7 @@
 package org.usfirst.frc.team649.robot;
 
+import org.usfirst.frc.team649.robot.subsystems.IntakePortSubsystem;
+
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
@@ -54,6 +56,13 @@ public class OI {
 		public boolean isStoreArmState() {
 	        return (operatorJoystick.getThrottle() <= -0.8);
 		}
+		//override built in to joystick
+		public double getSafeJoyY(){
+			if (!FishyRobot2015.intakeLeftSubsystem.isArmLimitPressed() && !FishyRobot2015.intakeRightSubsystem.isArmLimitPressed() && FishyRobot2015.intakeLeftSubsystem.withinBounds() && FishyRobot2015.intakeRightSubsystem.withinBounds()){
+				return operatorJoystick.getY();
+			}
+			return 0.0;
+		}
 	}
 
 	public class Driver {
@@ -80,6 +89,10 @@ public class OI {
 				value = 0;
 			}
 			return value;
+		}
+		
+		public boolean isManualOverride(){
+			return manualOverrideButton1.get() || manualOverrideButton2.get();
 		}
 
 	}

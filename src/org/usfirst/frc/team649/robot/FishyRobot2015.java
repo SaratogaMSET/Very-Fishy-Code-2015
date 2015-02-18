@@ -21,8 +21,8 @@ import org.usfirst.frc.team649.robot.subsystems.ChainLiftSubsystem;
 import org.usfirst.frc.team649.robot.subsystems.ChainLiftSubsystem.PIDConstants;
 import org.usfirst.frc.team649.robot.subsystems.ContainerGrabberSubsystem;
 import org.usfirst.frc.team649.robot.subsystems.DrivetrainSubsystem;
-import org.usfirst.frc.team649.robot.subsystems.IntakeLeftSubsystem;
-import org.usfirst.frc.team649.robot.subsystems.IntakeRightSubsystem;
+import org.usfirst.frc.team649.robot.subsystems.IntakePortSubsystem;
+import org.usfirst.frc.team649.robot.subsystems.IntakeStarboardSubsystem;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Joystick;
@@ -46,8 +46,8 @@ public class FishyRobot2015 extends IterativeRobot {
 	public static OI oi;
 	public static DrivetrainSubsystem drivetrainSubsystem;
 	public static ChainLiftSubsystem chainLiftSubsystem;
-	public static IntakeLeftSubsystem intakeLeftSubsystem;
-	public static IntakeRightSubsystem intakeRightSubsystem;
+	public static IntakePortSubsystem intakeLeftSubsystem;
+	public static IntakeStarboardSubsystem intakeRightSubsystem;
 	public static AutoWinchSubsystem autoWinchSubsystem;
 	public static ContainerGrabberSubsystem containerGrabberSubsystem;
 	public static CameraSubsystem cameraSubsystem;
@@ -71,8 +71,8 @@ public class FishyRobot2015 extends IterativeRobot {
 	public void robotInit() {
 		drivetrainSubsystem = new DrivetrainSubsystem();
 		chainLiftSubsystem = new ChainLiftSubsystem();
-		intakeLeftSubsystem = new IntakeLeftSubsystem();
-		intakeRightSubsystem = new IntakeRightSubsystem();
+		intakeLeftSubsystem = new IntakePortSubsystem();
+		intakeRightSubsystem = new IntakeStarboardSubsystem();
 		pdp = new PowerDistributionPanel();
 		// autoWinchSubsystem = new AutoWinchSubsystem();
 		containerGrabberSubsystem = new ContainerGrabberSubsystem();
@@ -177,9 +177,9 @@ public class FishyRobot2015 extends IterativeRobot {
 		// SmartDashboard.n
 
 		new RunLift(0).start();
-		new SetIntakeArmPosition(intakeRightSubsystem.getPosition());
-		new DriveForwardRotate(0, 0);
-		new RunRollers(0);
+		new DriveForwardRotate(0, 0).start();
+		new SetIntakeArmPosition(IntakePortSubsystem.PIDConstants.CURRENT_STATE).start();
+		new RunRollers(0).start();
 	}
 
 	/**
@@ -187,7 +187,9 @@ public class FishyRobot2015 extends IterativeRobot {
 	 * to reset subsystems before shutting down.
 	 */
 	public void disabledInit() {
-
+		new RunLift(0).start();
+		new DriveForwardRotate(0, 0).start();
+		new RunRollers(0).start();
 	}
 
 	/**
@@ -196,17 +198,17 @@ public class FishyRobot2015 extends IterativeRobot {
 	public void teleopPeriodic() {
 		Scheduler.getInstance().run();
 
-		if (oi.operator.intakeButton.get()) {
-			new RunLift(oi.operatorJoystick.getY()).start();
-			// FishyRobot2015.intakeRightSubsystem.arm.set(oi.operatorJoystick.getY()/3.0);
-			 //FishyRobot2015.intakeLeftSubsystem.arm.set(-oi.operatorJoystick.getY() / 3.0);
-		}
+		//if (oi.operator.intakeButton.get()) {
+			//new RunLift(oi.operatorJoystick.getY()).start();
+		//	FishyRobot2015.intakeRightSubsystem.arm.set(oi.operatorJoystick.getY()/2.0);
+			
+		//	FishyRobot2015.intakeLeftSubsystem.arm.set(-oi.operatorJoystick.getY()/ 2.0);
+		//}
 		// new RunRollers(oi.operatorJoystick.getY()).start();
 
-		oi.operator.intakeButton.whenReleased(new RunLift(0));
+		//oi.operator.intakeButton.whenReleased(new RunLift(0));
 
-		new DriveForwardRotate(oi.driver.getDriveForward(),
-				oi.driver.getDriveRotation()).start();
+		new DriveForwardRotate(oi.driver.getDriveForward(), oi.driver.getDriveRotation()).start();
 
 		// if(oi.operator.purgeButton.get()) {
 		// //new
@@ -214,8 +216,10 @@ public class FishyRobot2015 extends IterativeRobot {
 		//
 		// //new RunRollers(IntakeLeftSubsystem.INTAKE_ROLLER_SPEED).start();;
 		// }
-		if (oi.operator.purgeButton.get()) {
+		if (oi.operator.intakeButton.get()) {
 			new RunRollers(1).start();
+		} else if (oi.operator.purgeButton.get()) {
+			new RunRollers(-1).start();
 		} else {
 			new RunRollers(0).start();
 		}
@@ -237,6 +241,9 @@ public class FishyRobot2015 extends IterativeRobot {
 			new ScoreAllAndResetFromTop().start();
 		}
 
+		if (oi.operatorJoystick.getRawButton(12)){
+		//	new SetIntakeArmPosition(3).start();
+		}
 		// if (oi.operator.intakeButton.get()){
 		// new PickUpToteSequence().start();
 		// }
@@ -258,17 +265,17 @@ public class FishyRobot2015 extends IterativeRobot {
 		// throttle
 //		if (oi.operator.throttleOverrideButton.get()) {
 //			if (oi.operator.isGrabArmState()) {
-//				new SetIntakeArmPosition(IntakeRightSubsystem.PIDConstants.GRABBING_STATE).start();
+//				new SetIntakeArmPosition(IntakeStarboardSubsystem.PIDConstants.GRABBING_STATE).start();
 //			}
 //			if (oi.operator.isReleaseArmState()) {
-//				new SetIntakeArmPosition(IntakeRightSubsystem.PIDConstants.RELEASING_STATE).start();
+//				new SetIntakeArmPosition(IntakeStarboardSubsystem.PIDConstants.RELEASING_STATE).start();
 //			}
 //			if (oi.operator.isStoreArmState()) {
-//				new SetIntakeArmPosition(IntakeRightSubsystem.PIDConstants.STORE_STATE).start();
+//				new SetIntakeArmPosition(IntakeStarboardSubsystem.PIDConstants.STORE_STATE).start();
 //			}
 //		}
 
-		if (oi.driver.manualOverrideButton1.get() || oi.driver.manualOverrideButton2.get()) {
+		if (oi.driver.isManualOverride()) {
 
 			chainLiftSubsystem.setPower(oi.manual.getLiftPower());
 
@@ -295,14 +302,14 @@ public class FishyRobot2015 extends IterativeRobot {
 			}
 
 			if (oi.manual.rollersIn.get()) {
-				intakeLeftSubsystem.roller.set(IntakeLeftSubsystem.INTAKE_ROLLER_SPEED);
-				intakeRightSubsystem.roller.set(IntakeRightSubsystem.INTAKE_ROLLER_SPEED);
+				intakeLeftSubsystem.roller.set(IntakePortSubsystem.INTAKE_ROLLER_SPEED);
+				intakeRightSubsystem.roller.set(IntakeStarboardSubsystem.INTAKE_ROLLER_SPEED);
 			} else if (oi.manual.rollersOut.get()) {
-				intakeLeftSubsystem.roller.set(IntakeLeftSubsystem.INTAKE_ROLLER_SPEED);
-				intakeRightSubsystem.roller.set(IntakeRightSubsystem.PURGE_ROLLER_SPEED);
+				intakeLeftSubsystem.roller.set(IntakePortSubsystem.INTAKE_ROLLER_SPEED);
+				intakeRightSubsystem.roller.set(IntakeStarboardSubsystem.PURGE_ROLLER_SPEED);
 			} else {
-				intakeLeftSubsystem.roller.set(IntakeLeftSubsystem.INTAKE_ROLLER_OFF_SPEED);
-				intakeRightSubsystem.roller.set(IntakeRightSubsystem.INTAKE_ROLLER_OFF_SPEED);
+				intakeLeftSubsystem.roller.set(IntakePortSubsystem.INTAKE_ROLLER_OFF_SPEED);
+				intakeRightSubsystem.roller.set(IntakeStarboardSubsystem.INTAKE_ROLLER_OFF_SPEED);
 
 			}
 		}
@@ -319,6 +326,7 @@ public class FishyRobot2015 extends IterativeRobot {
 		SmartDashboard.putBoolean("Arm Right Limit", intakeRightSubsystem.isArmLimitPressed());
 		
 		SmartDashboard.putBoolean("IS PAST TOP", chainLiftSubsystem.isPastTop);
+		SmartDashboard.putBoolean("IS PAST BOTTOM", chainLiftSubsystem.isPastBottom);
 
 		SmartDashboard.putNumber("Chain Height", chainLiftSubsystem.getHeight());
 		SmartDashboard.putNumber("GOAL HEIGHT", chainLiftSubsystem.offsetHeight + chainLiftSubsystem.setpointHeight);

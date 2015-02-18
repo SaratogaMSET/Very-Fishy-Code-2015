@@ -15,12 +15,12 @@ public class Debug extends CommandGroup {
     public  Debug() {
     	//for raw motor
     	addSequential(new DriveForwardRotate(0.4, 0));
-    	addSequential(new WaitCommand(2));
+    	addSequential(new WaitCommand(0.5));
     	addSequential(new DriveForwardRotate(0,0));
     	
     	//for chain
     	addSequential(new RunLift(0.5));
-    	addSequential(new WaitCommand(1.2));
+    	addSequential(new WaitCommand(0.5));
     	addSequential(new RunLift(0));
     }
 }

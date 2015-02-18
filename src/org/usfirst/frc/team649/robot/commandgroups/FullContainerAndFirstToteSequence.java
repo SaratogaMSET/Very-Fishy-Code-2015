@@ -9,7 +9,7 @@ import org.usfirst.frc.team649.robot.commands.lift.ChangeLiftHeight;
 import org.usfirst.frc.team649.robot.commands.lift.RaiseTote;
 import org.usfirst.frc.team649.robot.subsystems.ChainLiftSubsystem;
 import org.usfirst.frc.team649.robot.subsystems.DrivetrainSubsystem.EncoderBasedDriving;
-import org.usfirst.frc.team649.robot.subsystems.IntakeLeftSubsystem;
+import org.usfirst.frc.team649.robot.subsystems.IntakePortSubsystem;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.WaitCommand;
@@ -41,7 +41,7 @@ public class FullContainerAndFirstToteSequence extends CommandGroup {
 		while (!FishyRobot2015.oi.operator.purgeButton.get()) {
 			
 		}
-		addParallel(new SetIntakeArmPosition(IntakeLeftSubsystem.PIDConstants.GRABBING_STATE));
+		addParallel(new SetIntakeArmPosition(IntakePortSubsystem.PIDConstants.GRABBING_STATE));
 
 		// pull in tote and unclamp
 		addSequential(new IntakeTote());
@@ -54,7 +54,7 @@ public class FullContainerAndFirstToteSequence extends CommandGroup {
 		addSequential(new ClampContainerGrabber(true));
 		// continue to drive height offset (you should be at intermediate step
 		// here), hopefully you catch the tote
-		addParallel(new SetIntakeArmPosition(IntakeLeftSubsystem.PIDConstants.RELEASING_STATE));
+		addParallel(new SetIntakeArmPosition(IntakePortSubsystem.PIDConstants.RELEASING_STATE));
 		addSequential(new WaitCommand(.2));
 		addSequential(new RaiseTote(ChainLiftSubsystem.PIDConstants.UP));
 	}

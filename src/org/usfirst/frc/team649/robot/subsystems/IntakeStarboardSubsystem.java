@@ -3,6 +3,7 @@ package org.usfirst.frc.team649.robot.subsystems;
 
 import org.usfirst.frc.team649.robot.FishyRobot2015;
 import org.usfirst.frc.team649.robot.RobotMap;
+import org.usfirst.frc.team649.robot.subsystems.IntakePortSubsystem.PIDConstants;
 
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.AnalogPotentiometer;
@@ -15,7 +16,7 @@ import edu.wpi.first.wpilibj.interfaces.Potentiometer;
 /**
  * 
  */
-public class IntakeRightSubsystem extends PIDSubsystem {
+public class IntakeStarboardSubsystem extends PIDSubsystem {
     
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
@@ -30,30 +31,34 @@ public class IntakeRightSubsystem extends PIDSubsystem {
 	public static final double PURGE_ROLLER_SPEED = -0.4;
 
 	public static final class PIDConstants{
-		public static final double P_CLOSE = -0.1;
-		public static final double I_CLOSE = 0.0;
-		public static final double D_CLOSE = 0.0;
+		public static final double P_REGULAR = -0.18;
+		public static final double I_REGULAR = -0.01;
+		public static final double D_REGULAR = -0.01;
 		
-		public static final double P_OPEN = -0.6;
-		public static final double I_OPEN = 0.0;
-		public static final double D_OPEN = 0.0;
+		public static final double P_GRABBER_TO_RELEASE = -2;
+		public static final double I_GRABBER_TO_RELEASE = -0.01;
+		public static final double D_GRABBER_TO_RELEASE = -0.19;
 		
 		
 		public static final double ABS_TOLERANCE = .01;
 
 		public static final double CONVERSION_DEGREES_TO_POT = 1.0/270;
 		
-		public static final double ARM_POS_RELEASE = 1.72; //89.0 * CONVERSION_DEGREES_TO_POT;
-		public static final double ARM_POS_GRABBING = 1.6; //* CONVERSION_DEGREES_TO_POT;
-		public static final double ARM_POS_STORING = 4.42; // * CONVERSION_DEGREES_TO_POT; //261
+		public static final double ARM_POS_RELEASE = 1.50; //89.0 * CONVERSION_DEGREES_TO_POT;
+		public static final double ARM_POS_GRABBING = 1.3; //* CONVERSION_DEGREES_TO_POT;
+		public static final double ARM_POS_STORING = 3.1; // * CONVERSION_DEGREES_TO_POT; //261
 		
 		public static final int GRABBING_STATE = 0;
 		public static final int RELEASING_STATE = 1;
 		public static final int STORE_STATE = 2;
+		public static final int CURRENT_STATE = 3;
+		
+		public static final double MAX_REASONABLE_VOLTAGE = 4.7;
+		public static final double MIN_REASONABLE_VOLTAGE = 1.2;
 	}	
 	
-    public IntakeRightSubsystem(){
-    	super("Grabber Right Subsystem", PIDConstants.P_CLOSE, PIDConstants.I_CLOSE, PIDConstants.D_CLOSE);
+    public IntakeStarboardSubsystem(){
+    	super("Grabber Right Subsystem", PIDConstants.P_REGULAR, PIDConstants.I_REGULAR, PIDConstants.D_REGULAR);
     	
     	pid = this.getPIDController();
     	pid.setAbsoluteTolerance(PIDConstants.ABS_TOLERANCE);
@@ -91,6 +96,10 @@ public class IntakeRightSubsystem extends PIDSubsystem {
 	protected double returnPIDInput() {
 		// TODO Auto-generated method stub
 		return getPot();
+	}
+	
+	public boolean withinBounds(){
+		return getPot() < PIDConstants.MAX_REASONABLE_VOLTAGE && getPot() > PIDConstants.MIN_REASONABLE_VOLTAGE;
 	}
 
 	@Override

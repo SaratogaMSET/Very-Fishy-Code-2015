@@ -33,6 +33,7 @@ public class ChainLiftSubsystem extends PIDSubsystem{
 	public boolean platformOrStepOffset;
 	public boolean isAtBase;
 	public boolean isPastTop;
+	public boolean isPastBottom;
 
 	
 	public static class PIDConstants {
@@ -46,7 +47,7 @@ public class ChainLiftSubsystem extends PIDSubsystem{
 		public static final double STORE_TO_STEP_LEVEL_DIFFERENCE = 5.0;
 		
 		//MUST be 16 (hook separation)
-		public static final double TOTE_PICK_UP_HEIGHT = 16.125;
+		public static final double TOTE_PICK_UP_HEIGHT = 16;
 		
 		
 		//MUST add up to intermediate height difference
@@ -62,10 +63,10 @@ public class ChainLiftSubsystem extends PIDSubsystem{
 		//Other
 		public static final double UNLOAD_TOTES_MOTOR_POWER = -.4;
 	    public static final double CURRENT_CAP = 10;
-	    public static final double MAX_ENCODER_HEIGHT = 76;
+	    public static final double MAX_ENCODER_HEIGHT = 65;
 	    public static final double MAX_LIFT_ENCODER_SPEED = 3;
 	    
-	    public static final double ENCODER_RESET_OFFSET = 3.5;
+	    public static final double ENCODER_RESET_OFFSET = 3.0;
 
 	}
 
@@ -80,7 +81,7 @@ public class ChainLiftSubsystem extends PIDSubsystem{
     	encoders =  new Encoder[2];
     	encoders[0] = new Encoder(RobotMap.CHAIN_LIFT.ENCODERS[0], RobotMap.CHAIN_LIFT.ENCODERS[1], true, EncodingType.k2X);
     	encoders[0].setDistancePerPulse(PIDConstants.ENCODER_DISTANCE_PER_PULSE);
-    	encoders[1] = new Encoder(RobotMap.CHAIN_LIFT.ENCODERS[2], RobotMap.CHAIN_LIFT.ENCODERS[3], false, EncodingType.k4X);
+    	encoders[1] = new Encoder(RobotMap.CHAIN_LIFT.ENCODERS[2], RobotMap.CHAIN_LIFT.ENCODERS[3], false, EncodingType.k2X);
     	encoders[1].setDistancePerPulse(PIDConstants.ENCODER_DISTANCE_PER_PULSE);
         
         limitMaxLeft = new DigitalInput(RobotMap.CHAIN_LIFT.MAX_LIM_SWITCH_LEFT);
@@ -90,6 +91,7 @@ public class ChainLiftSubsystem extends PIDSubsystem{
         
         isAtBase = false; //TODO we hopefully call reset at the beginning of the program
         isPastTop = false;
+        isPastBottom = false;
         
 		pid = this.getPIDController();
     	pid.setAbsoluteTolerance(PIDConstants.ABS_TOLERANCE);
@@ -127,6 +129,7 @@ public class ChainLiftSubsystem extends PIDSubsystem{
         }
         setpointHeight = 0;
         isPastTop = false;
+        isPastBottom = true;
     }
     
     
@@ -146,11 +149,11 @@ public class ChainLiftSubsystem extends PIDSubsystem{
 		// TODO Auto-generated method stub
 		//if(FishyRobot2015.pdp.getCurrent(channel))
 		double avgCurrent = ((FishyRobot2015.pdp.getCurrent(13) + FishyRobot2015.pdp.getCurrent(12)) / 2); 
-    	if(avgCurrent > PIDConstants.CURRENT_CAP && Math.abs(this.getVelocity()) < 0.2 ) {
-    		this.setPower(0);
-    	} else{
+    	//if(avgCurrent > PIDConstants.CURRENT_CAP && Math.abs(this.getVelocity()) < 0.2 ) {
+    	//	this.setPower(0);
+    	//} else{
     		this.setPower(output);
-    	}
+    	//}
 	}
 }
 

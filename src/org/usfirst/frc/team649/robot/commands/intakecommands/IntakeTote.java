@@ -1,8 +1,8 @@
 package org.usfirst.frc.team649.robot.commands.intakecommands;
 
 import org.usfirst.frc.team649.robot.FishyRobot2015;
-import org.usfirst.frc.team649.robot.subsystems.IntakeLeftSubsystem;
-import org.usfirst.frc.team649.robot.subsystems.IntakeRightSubsystem;
+import org.usfirst.frc.team649.robot.subsystems.IntakePortSubsystem;
+import org.usfirst.frc.team649.robot.subsystems.IntakeStarboardSubsystem;
 
 import edu.wpi.first.wpilibj.command.Command;
 
@@ -11,8 +11,8 @@ public class IntakeTote extends Command {
 	@Override
 	protected void initialize() {
 		// TODO Auto-generated method stub
-		FishyRobot2015.intakeLeftSubsystem.roller.set(IntakeLeftSubsystem.INTAKE_ROLLER_SPEED);
-		FishyRobot2015.intakeRightSubsystem.roller.set(-IntakeRightSubsystem.INTAKE_ROLLER_SPEED);
+		FishyRobot2015.intakeLeftSubsystem.roller.set(IntakePortSubsystem.INTAKE_ROLLER_SPEED);
+		FishyRobot2015.intakeRightSubsystem.roller.set(-IntakeStarboardSubsystem.INTAKE_ROLLER_SPEED);
 	}
 
 	@Override
@@ -31,7 +31,7 @@ public class IntakeTote extends Command {
 	@Override
 	protected boolean isFinished() {
 		// TODO Auto-generated method stub
-		return FishyRobot2015.intakeRightSubsystem.isToteLimitPressed();
+		return FishyRobot2015.intakeRightSubsystem.isToteLimitPressed() || FishyRobot2015.oi.driver.isManualOverride() || !FishyRobot2015.intakeLeftSubsystem.withinBounds();
 	}
 
 	@Override

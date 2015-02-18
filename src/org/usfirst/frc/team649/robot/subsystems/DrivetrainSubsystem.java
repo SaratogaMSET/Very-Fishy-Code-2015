@@ -98,6 +98,8 @@ public class DrivetrainSubsystem extends PIDSubsystem implements PIDSource, PIDO
 
     public void rawDrive(double left, double right) {
         int i = 0;
+        left /= 1.5;//left > 0 ? Math.pow(left, 2)/2 : -Math.pow(left, 2)/2;
+        right /= 1.5;//right > 0 ? Math.pow(right, 2)/2 : -Math.pow(right, 2)/2;
         for (; i < motors.length / 2; i++) {
             motors[i].set(left);
         }

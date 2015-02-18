@@ -2,7 +2,7 @@ package org.usfirst.frc.team649.robot.commandgroups;
 
 import org.usfirst.frc.team649.robot.commands.containergrabbercommands.ClampContainerGrabber;
 import org.usfirst.frc.team649.robot.commands.intakecommands.SetIntakeArmPosition;
-import org.usfirst.frc.team649.robot.subsystems.IntakeLeftSubsystem.PIDConstants;
+import org.usfirst.frc.team649.robot.subsystems.IntakePortSubsystem.PIDConstants;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 

@@ -26,7 +26,7 @@ public class WinchTotesIn extends Command {
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return FishyRobot2015.autoWinchSubsystem.isWinchComplete();
+        return FishyRobot2015.autoWinchSubsystem.isWinchComplete() || FishyRobot2015.oi.driver.isManualOverride();
     }
 
     // Called once after isFinished returns true

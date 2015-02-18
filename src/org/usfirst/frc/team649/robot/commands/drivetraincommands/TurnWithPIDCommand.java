@@ -41,8 +41,7 @@ public class TurnWithPIDCommand extends Command {
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-    	//TODO check if this works lol
-        return pid.onTarget();
+        return pid.onTarget() || FishyRobot2015.oi.driver.isManualOverride();
     }
 
     // Called once after isFinished returns true

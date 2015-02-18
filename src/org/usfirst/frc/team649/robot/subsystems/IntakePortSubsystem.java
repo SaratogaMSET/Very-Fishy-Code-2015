@@ -11,7 +11,7 @@ import edu.wpi.first.wpilibj.Victor;
 import edu.wpi.first.wpilibj.command.PIDSubsystem;
 import edu.wpi.first.wpilibj.interfaces.Potentiometer;
 
-public class IntakeLeftSubsystem extends PIDSubsystem {
+public class IntakePortSubsystem extends PIDSubsystem {
 
 	public Victor roller, arm;
 	public AnalogInput pot;
@@ -26,13 +26,13 @@ public class IntakeLeftSubsystem extends PIDSubsystem {
 
 	public static final class PIDConstants{
 
-		public static final double P_CLOSE = 0.1;
-		public static final double I_CLOSE = 0.0;
-		public static final double D_CLOSE = 0.0;
+		public static final double P_REGULAR = 0.18;
+		public static final double I_REGULAR = 0.01;
+		public static final double D_REGULAR = 0.01;
 		
-		public static final double P_OPEN = 0.1;
-		public static final double I_OPEN = 0.0;
-		public static final double D_OPEN = 0.0;
+		public static final double P_GRABBER_TO_RELEASE = 2;
+		public static final double I_GRABBER_TO_RELEASE = 0.01;
+		public static final double D_GRABBER_TO_RELEASE = 0.15;
 		
 		public static final double ABS_TOLERANCE = .01;
 		
@@ -42,15 +42,19 @@ public class IntakeLeftSubsystem extends PIDSubsystem {
 		//for pulling in totes
 		public static final double ARM_POS_GRABBING = 1.0; //225 * CONVERSION_DEGREES_TO_POT;
 		//for both arms completely back
-		public static final double ARM_POS_STORING = 4.2; // * CONVERSION_DEGREES_TO_POT; //228
+		public static final double ARM_POS_STORING = 3.2; // * CONVERSION_DEGREES_TO_POT; //228
 		
 		public static final int GRABBING_STATE = 0;
 		public static final int RELEASING_STATE = 1;
 		public static final int STORE_STATE = 2;
+		public static final int CURRENT_STATE = 3;
+		
+		public static final double MAX_REASONABLE_VOLTAGE = 4.5;
+		public static final double MIN_REASONABLE_VOLTAGE = .9;
 	}
 	
-	public IntakeLeftSubsystem(){
-		super("Grabber Left Subsystem", PIDConstants.P_CLOSE, PIDConstants.I_CLOSE, PIDConstants.D_CLOSE);
+	public IntakePortSubsystem(){
+		super("Grabber Left Subsystem", PIDConstants.P_REGULAR, PIDConstants.I_REGULAR, PIDConstants.D_REGULAR);
     	
     	pid =  this.getPIDController();
     	pid.setAbsoluteTolerance(PIDConstants.ABS_TOLERANCE);
@@ -94,6 +98,10 @@ public class IntakeLeftSubsystem extends PIDSubsystem {
 		else{
 			arm.set(output);
 		}
+	}
+	
+	public boolean withinBounds(){
+		return getPot() < PIDConstants.MAX_REASONABLE_VOLTAGE && getPot() > PIDConstants.MIN_REASONABLE_VOLTAGE;
 	}
 
 	@Override
