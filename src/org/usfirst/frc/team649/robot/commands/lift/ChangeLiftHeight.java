@@ -37,6 +37,7 @@ public class ChangeLiftHeight extends Command {
     // Called once after isFinished returns true
     protected void end() {
     	liftPID.disable();
+    	FishyRobot2015.chainLiftSubsystem.isAtBase = false;
     }
 
     // Called when another command which requires one or more of the same

@@ -1,10 +1,8 @@
 package org.usfirst.frc.team649.robot;
 
-import org.usfirst.frc.team649.robot.commandgroups.AutoContainerAndTotePickUp;
-import org.usfirst.frc.team649.robot.commandgroups.AutoContainerOnly;
+import org.usfirst.frc.team649.robot.commandgroups.AutoPickUpThreeTotes;
 import org.usfirst.frc.team649.robot.commandgroups.AutoWinchAndDrive;
 import org.usfirst.frc.team649.robot.commandgroups.Debug;
-import org.usfirst.frc.team649.robot.commandgroups.FullContainerAndFirstToteSequence;
 import org.usfirst.frc.team649.robot.commandgroups.PickUpToteSequence;
 import org.usfirst.frc.team649.robot.commandgroups.ScoreAllAndResetFromTop;
 import org.usfirst.frc.team649.robot.commandgroups.ScoreTotesOnPlatform;
@@ -12,14 +10,14 @@ import org.usfirst.frc.team649.robot.commands.drivetraincommands.DriveForwardRot
 import org.usfirst.frc.team649.robot.commands.intakecommands.IntakeTote;
 import org.usfirst.frc.team649.robot.commands.intakecommands.RunRollers;
 import org.usfirst.frc.team649.robot.commands.intakecommands.SetIntakeArmPosition;
+import org.usfirst.frc.team649.robot.commands.lift.PickUpContainer;
 import org.usfirst.frc.team649.robot.commands.lift.RaiseTote;
-import org.usfirst.frc.team649.robot.commands.lift.RunLift;
+import org.usfirst.frc.team649.robot.commands.lift.RunLift; //my name is suneel
 import org.usfirst.frc.team649.robot.commands.lift.RunTilResetLimit;
 import org.usfirst.frc.team649.robot.subsystems.AutoWinchSubsystem;
 import org.usfirst.frc.team649.robot.subsystems.CameraSubsystem;
 import org.usfirst.frc.team649.robot.subsystems.ChainLiftSubsystem;
 import org.usfirst.frc.team649.robot.subsystems.ChainLiftSubsystem.PIDConstants;
-import org.usfirst.frc.team649.robot.subsystems.ContainerGrabberSubsystem;
 import org.usfirst.frc.team649.robot.subsystems.DrivetrainSubsystem;
 import org.usfirst.frc.team649.robot.subsystems.IntakePortSubsystem;
 import org.usfirst.frc.team649.robot.subsystems.IntakeStarboardSubsystem;
@@ -44,25 +42,25 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class FishyRobot2015 extends IterativeRobot {
 
 	public static OI oi;
-	public static DrivetrainSubsystem drivetrainSubsystem;
+	public static DrivetrainSubsystem drivetrainSubsystem; //yolo
 	public static ChainLiftSubsystem chainLiftSubsystem;
 	public static IntakePortSubsystem intakeLeftSubsystem;
 	public static IntakeStarboardSubsystem intakeRightSubsystem;
 	public static AutoWinchSubsystem autoWinchSubsystem;
-	public static ContainerGrabberSubsystem containerGrabberSubsystem;
 	public static CameraSubsystem cameraSubsystem;
 	public static PowerDistributionPanel pdp;
 
 	// previous states for button press v hold
-	public boolean prevState5, prevState6;
+	public boolean prevStateRaiseTote, prevStateLowerTote;
+	public boolean prevStateScore;
+	public boolean prevStateRaiseContainer, prevStateLowerContainer;
 
 	public Command joyChainLift;
 
 	public SendableChooser autoChooser;
 	public Command autoCommand;
 	public String autoMode;
-	public boolean driveLeftEncoderState, driveRightEncoderState,
-			chainEncoderState;
+	public boolean driveLeftEncoderState, driveRightEncoderState, chainEncoderState;
 
 	/**
 	 * This function is run when the robot is first started up and should be
@@ -75,7 +73,6 @@ public class FishyRobot2015 extends IterativeRobot {
 		intakeRightSubsystem = new IntakeStarboardSubsystem();
 		pdp = new PowerDistributionPanel();
 		// autoWinchSubsystem = new AutoWinchSubsystem();
-		containerGrabberSubsystem = new ContainerGrabberSubsystem();
 		// cameraSubsystem = new CameraSubsystem();
 		oi = new OI();
 
@@ -83,11 +80,7 @@ public class FishyRobot2015 extends IterativeRobot {
 
 		autoChooser.addObject("Debugger Mode", "debugger mode");
 		autoChooser.addObject("Winch Autonomous", "winch in totes");
-		autoChooser.addObject("Get Container and Tote", "container and tote");
-		autoChooser.addObject("Get Just Tote", "just tote");
-		// with container grabber open go right up to container, run intake,
-		// clamp on container, run chain up, get a tote, take it into autozone,
-		// just drop tote off, turn right
+		autoChooser.addObject("Get Three Totes", "three totes");
 		autoChooser.addObject("Do Nothing Autonomous", "none");
 
 		SmartDashboard.putData("Autonomous Mode", autoChooser);
@@ -99,9 +92,12 @@ public class FishyRobot2015 extends IterativeRobot {
 		// SmartDashboard.putData("Cam", (Sendable)
 		// commandBase.cameraSubsystem.cam);
 		// cam must be configured from smartdashboard
-
-		prevState5 = false;
-		prevState6 = false;
+		
+		prevStateRaiseTote = false;
+		prevStateLowerTote = false;
+		prevStateRaiseContainer = false;
+		prevStateLowerContainer = false;
+		prevStateScore = false;
 	}
 
 	public void disabledPeriodic() {
@@ -123,11 +119,8 @@ public class FishyRobot2015 extends IterativeRobot {
 		case "winch in totes":
 			autoCommand = new AutoWinchAndDrive();
 			break;
-		case "container and totes":
-			autoCommand = new AutoContainerAndTotePickUp();
-			break;
-		case "just tote":
-			autoCommand = new AutoContainerOnly();
+		case "three totes":
+			autoCommand = new AutoPickUpThreeTotes();
 			break;
 		case "none":
 			autoCommand = null;
@@ -159,8 +152,7 @@ public class FishyRobot2015 extends IterativeRobot {
 		}
 
 		SmartDashboard.putBoolean("Left Drive Encoder", driveLeftEncoderState);
-		SmartDashboard
-				.putBoolean("Right Drive Encoder", driveRightEncoderState);
+		SmartDashboard.putBoolean("Right Drive Encoder", driveRightEncoderState);
 		SmartDashboard.putBoolean("Chain Encoder", chainEncoderState);
 	}
 
@@ -224,29 +216,43 @@ public class FishyRobot2015 extends IterativeRobot {
 			new RunRollers(0).start();
 		}
 
-		if (oi.operator.raiseToteButton.get() && !prevState5) {
+//TODO CHECK whenPressed and whenReleased functions
+		if (oi.operator.raiseToteButton.get() && !prevStateRaiseTote) {
 			new RaiseTote(true).start();
 		}
+		else if (oi.operator.raiseContainerButton.get() && !prevStateRaiseContainer){
+			//new PickUpContainer(true).start(); //TODO uncomment this
+		}
 
-		if (oi.operator.lowerToteButton.get() && !prevState6) {
+		if (oi.operator.lowerToteButton.get() && !prevStateLowerTote) {
 			new RaiseTote(false).start();
+		}
+		else if (oi.operator.lowerContainerButton.get() && !prevStateLowerContainer){
+			//new PickUpContainer(false).start(); //TODO uncomment this
+		}
+		
+		//actually must be double pressed if you want a full score, e.g. no container
+		if (oi.operator.scoreAllButton.get() && !prevStateScore) {
+			// new ScoreAllAndResetFromTop().start();
+			//only if it is in the first stage will the button trigger a new command
+			if (chainLiftSubsystem.firstStageOfScore){
+				new ScoreAllAndResetFromTop().start();
+				chainLiftSubsystem.firstStageOfScore = false;
+			}
 		}
 
 		// set the previous states
-		prevState5 = oi.operator.raiseToteButton.get();
-		prevState6 = oi.operator.lowerToteButton.get();
+		prevStateRaiseTote = oi.operator.raiseToteButton.get();
+		prevStateLowerTote = oi.operator.lowerToteButton.get();
+		prevStateRaiseContainer = oi.operator.raiseContainerButton.get();
+		prevStateLowerContainer = oi.operator.lowerContainerButton.get();
+		prevStateScore = oi.operator.scoreAllButton.get();
 
-		if (oi.operator.scoreAllButton.get()) {
-			// new ScoreAllAndResetFromTop().start();
-			new ScoreAllAndResetFromTop().start();
-		}
-
-		if (oi.operatorJoystick.getRawButton(12)){
-		//	new SetIntakeArmPosition(3).start();
-		}
+		
+		
 		// if (oi.operator.intakeButton.get()){
 		// new PickUpToteSequence().start();
-		// }
+		// } //LOLOLOL
 
 		// if(oi.operator.containerButton.get()) {
 		// new FullContainerAndFirstToteSequence(true).start();
@@ -278,7 +284,7 @@ public class FishyRobot2015 extends IterativeRobot {
 		if (oi.driver.isManualOverride()) {
 
 			chainLiftSubsystem.setPower(oi.manual.getLiftPower());
-
+//LOLOL suneel was here
 			if (oi.manual.leftHardStopIn.get()) {
 				intakeLeftSubsystem.arm.set(0.4);
 			} else {
@@ -338,7 +344,7 @@ public class FishyRobot2015 extends IterativeRobot {
 		SmartDashboard.putNumber("Left Arm Current", pdp.getCurrent(10));
 		SmartDashboard.putNumber("Right Arm Current", pdp.getCurrent(8));
 		SmartDashboard.putNumber("Roller Right Current", pdp.getCurrent(4));
-		SmartDashboard.putNumber("Roller Left Current", pdp.getCurrent(9));
+		SmartDashboard.putNumber("Roller Left Current", pdp.getCurrent(9)); //hi im suneel
 		SmartDashboard.putNumber("Joy y", oi.operatorJoystick.getY());
 	}
 

@@ -34,6 +34,7 @@ public class ChainLiftSubsystem extends PIDSubsystem{
 	public boolean isAtBase;
 	public boolean isPastTop;
 	public boolean isPastBottom;
+	public boolean firstStageOfScore;
 
 	
 	public static class PIDConstants {
@@ -49,10 +50,15 @@ public class ChainLiftSubsystem extends PIDSubsystem{
 		//MUST be 16 (hook separation)
 		public static final double TOTE_PICK_UP_HEIGHT = 16;
 		
+		//pick up from base
+		public static final double CONTAINER_PICK_UP_HEIGHT = 18;
+		public static final double CONTAINER_RELEASE_HEIGHT = -5;
 		
-		//MUST add up to intermediate height difference
-		public static final double CONTAINER_PICK_UP_RAISE_HEIGHT = 18;
-		public static final double CONTAINER_REGRIP_LOWER_HEIGHT = -6;
+		//under this height, the hal effect compensation is put in place when we reset
+		//so that we dont go up first if we score from about this height
+		public static final double MIN_HAL_EFFECT_COMPENSATION_HEIGHT = 3;
+		
+//		public static final double CONTAINER_REGRIP_LOWER_HEIGHT = -6;
 		
 		//TIMEOUTS
 		public static final double HAL_COMPENSATION_TIME_OUT = 0.1; //in seconds
@@ -92,6 +98,7 @@ public class ChainLiftSubsystem extends PIDSubsystem{
         isAtBase = false; //TODO we hopefully call reset at the beginning of the program
         isPastTop = false;
         isPastBottom = false;
+        firstStageOfScore = true;
         
 		pid = this.getPIDController();
     	pid.setAbsoluteTolerance(PIDConstants.ABS_TOLERANCE);
@@ -130,6 +137,7 @@ public class ChainLiftSubsystem extends PIDSubsystem{
         setpointHeight = 0;
         isPastTop = false;
         isPastBottom = true;
+        firstStageOfScore = true;
     }
     
     

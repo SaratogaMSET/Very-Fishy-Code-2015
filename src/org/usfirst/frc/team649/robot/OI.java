@@ -39,11 +39,14 @@ public class OI {
 		public Button intakeButton = new JoystickButton(operatorJoystick, 3); 
 		
 		public Button raiseToteButton = new JoystickButton(operatorJoystick, 6); 
-		public Button lowerToteButton = new JoystickButton(operatorJoystick, 4); 
+		public Button lowerToteButton = new JoystickButton(operatorJoystick, 4);
+		public Button raiseContainerButton = new JoystickButton(operatorJoystick, 9);
+		public Button lowerContainerButton = new JoystickButton(operatorJoystick, 10); 
 		
 		public Button scoreAllButton = new JoystickButton(operatorJoystick, 1);
 
 		public Button throttleOverrideButton = new JoystickButton(operatorJoystick, 11);
+		
 		
 		public boolean isGrabArmState() {
 	        return (operatorJoystick.getThrottle() > 0.8);

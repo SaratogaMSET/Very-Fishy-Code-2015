@@ -26,7 +26,7 @@ public class IntakeStarboardSubsystem extends PIDSubsystem {
 	public PIDController pid;
 	public DigitalInput toteLimit;
 	public DigitalInput armLimit;
-	public static final double INTAKE_ROLLER_SPEED = 0.4;
+	public static final double INTAKE_ROLLER_SPEED = 0.4; //converted to negative
 	public static final double INTAKE_ROLLER_OFF_SPEED = 0;
 	public static final double PURGE_ROLLER_SPEED = -0.4;
 

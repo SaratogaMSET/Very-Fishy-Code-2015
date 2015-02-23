@@ -35,11 +35,16 @@ public class DrivetrainSubsystem extends PIDSubsystem implements PIDSource, PIDO
         public static final double AUTO_WINCH_DRIVE_DISTANCE = -14 * 12;
     	public static final double UNHOOK_BACKWARDS_DISTANCE = -100;
     	
-    	//container pickup
-    	public static final double AUTO_START_TO_CONTAINER = 100;
-        public static final double AUTO_CONTAINER_TO_AUTO_ZONE = 222;
-        public static final double AUTO_CONTAINER_TO_TOTE = 649;
+//    	//container pickup
+//    	public static final double AUTO_START_TO_CONTAINER = 100;
+//        public static final double AUTO_CONTAINER_TO_AUTO_ZONE = 222;
+//        public static final double AUTO_CONTAINER_TO_TOTE = 649;
         
+    	//pick up
+    	public static final double AUTO_START_TO_TOTE = 18;
+    	public static final double AUTO_BETWEEN_TOTES = 18;
+    	public static final double AUTO_TOTE_TO_AUTO_ZONE = 18;
+    	
         //others
     	public static final double AUTO_P = 0.4;
     	public static final double AUTO_I = 0.0;
