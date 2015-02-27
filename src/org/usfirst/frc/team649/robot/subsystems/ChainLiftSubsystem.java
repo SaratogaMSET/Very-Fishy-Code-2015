@@ -35,7 +35,6 @@ public class ChainLiftSubsystem extends PIDSubsystem{
 	public boolean isPastTop;
 	public boolean isPastBottom;
 	public boolean firstStageOfScore;
-
 	
 	public static class PIDConstants {
 		//PID
@@ -53,6 +52,7 @@ public class ChainLiftSubsystem extends PIDSubsystem{
 		//pick up from base
 		public static final double CONTAINER_PICK_UP_HEIGHT = 18;
 		public static final double CONTAINER_RELEASE_HEIGHT = -5;
+		public static final double VARIABLE_TOTE_SPACE_INCREMENT = -3;
 		
 		//under this height, the hal effect compensation is put in place when we reset
 		//so that we dont go up first if we score from about this height
@@ -71,6 +71,7 @@ public class ChainLiftSubsystem extends PIDSubsystem{
 	    public static final double CURRENT_CAP = 10;
 	    public static final double MAX_ENCODER_HEIGHT = 65;
 	    public static final double MAX_LIFT_ENCODER_SPEED = 3;
+	    public static final double CONTAINER_RESET_OFFSET = -2; //past the limit switch
 	    
 	    public static final double ENCODER_RESET_OFFSET = 3.0;
 
@@ -138,6 +139,30 @@ public class ChainLiftSubsystem extends PIDSubsystem{
         isPastTop = false;
         isPastBottom = true;
         firstStageOfScore = true;
+    }
+    
+    //again based on height
+    public int getNumTotes(){        //NEW
+    	int baseCheck = 7;
+    	//int contOffset = FishyRobot2015.containerState ? 1 : 0;
+    	if (setpointHeight < baseCheck){
+    		return 0; //TODO CHECK THAT A NEGATIVE DOESNT SCREW UP EVERYTHING
+    	}
+    	else if (setpointHeight < baseCheck + 16){
+    		return 1; //- contOffset;
+    	}
+    	else if (setpointHeight < baseCheck + 32){
+    		return 2;//- contOffset;
+    	}
+    	else if (setpointHeight < baseCheck + 48){
+    		return 3;//- contOffset;
+    	}
+    	else if (setpointHeight < baseCheck + 64){
+    		return 4;//- contOffset;
+    	}
+    	else{
+    		return 5;//- contOffset;
+    	}
     }
     
     

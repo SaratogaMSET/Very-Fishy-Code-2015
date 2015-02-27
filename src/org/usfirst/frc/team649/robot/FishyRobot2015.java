@@ -61,6 +61,9 @@ public class FishyRobot2015 extends IterativeRobot {
 	public Command autoCommand;
 	public String autoMode;
 	public boolean driveLeftEncoderState, driveRightEncoderState, chainEncoderState;
+	
+	public SendableChooser containerChooser;
+	public static boolean containerState;
 
 	/**
 	 * This function is run when the robot is first started up and should be
@@ -92,6 +95,11 @@ public class FishyRobot2015 extends IterativeRobot {
 		// SmartDashboard.putData("Cam", (Sendable)
 		// commandBase.cameraSubsystem.cam);
 		// cam must be configured from smartdashboard
+		containerChooser = new SendableChooser();
+		containerChooser.addDefault("Tote State", false);
+		containerChooser.addDefault("Container State", true);
+		
+		SmartDashboard.putData("Container Mode", containerChooser);
 		
 		prevStateRaiseTote = false;
 		prevStateLowerTote = false;
@@ -105,6 +113,8 @@ public class FishyRobot2015 extends IterativeRobot {
 	}
 
 	public void autonomousInit() {
+		containerState = (boolean) containerChooser.getSelected();
+		
 		// // schedule the autonomous command (example)
 		autoMode = (String) autoChooser.getSelected();
 		driveLeftEncoderState = false;
@@ -138,6 +148,8 @@ public class FishyRobot2015 extends IterativeRobot {
 	 */
 	public void autonomousPeriodic() {
 		Scheduler.getInstance().run();
+		
+		containerState = (boolean) containerChooser.getSelected();
 
 		if (autoMode.equals("debugger mode") && !autoCommand.isRunning()) {
 			if (drivetrainSubsystem.encoders[0].get() != 0) {
@@ -167,6 +179,8 @@ public class FishyRobot2015 extends IterativeRobot {
 		//
 
 		// SmartDashboard.n
+		
+		containerState = (boolean) containerChooser.getSelected();
 
 		new RunLift(0).start();
 		new DriveForwardRotate(0, 0).start();
@@ -189,6 +203,8 @@ public class FishyRobot2015 extends IterativeRobot {
 	 */
 	public void teleopPeriodic() {
 		Scheduler.getInstance().run();
+		
+		containerState = (boolean) containerChooser.getSelected();
 
 		//if (oi.operator.intakeButton.get()) {
 			//new RunLift(oi.operatorJoystick.getY()).start();
@@ -319,7 +335,8 @@ public class FishyRobot2015 extends IterativeRobot {
 
 			}
 		}
-
+		SmartDashboard.putData("Container Mode", containerChooser);
+		SmartDashboard.putBoolean("Container State", containerState);
 		SmartDashboard.putData("Chain Encoder 1", chainLiftSubsystem.encoders[0]);
 		SmartDashboard.putData("Chain Encoder 2", chainLiftSubsystem.encoders[1]);
 		SmartDashboard.putData("Drive Encoder Left", drivetrainSubsystem.encoders[0]);

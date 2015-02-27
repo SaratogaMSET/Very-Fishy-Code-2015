@@ -29,7 +29,7 @@ public class PickUpContainer extends Command {
 		heightChangeReference = PIDConstants.CONTAINER_PICK_UP_HEIGHT;
 		
 		//if not at bottom, past top, or past bottom, or manual override pressed, dont move it
-		if (!FishyRobot2015.chainLiftSubsystem.isAtBase || FishyRobot2015.chainLiftSubsystem.isPastTop && upOrDown || FishyRobot2015.chainLiftSubsystem.isPastBottom && !upOrDown){
+		if (!FishyRobot2015.containerState || !FishyRobot2015.chainLiftSubsystem.isAtBase || FishyRobot2015.chainLiftSubsystem.isPastTop && upOrDown || FishyRobot2015.chainLiftSubsystem.isPastBottom && !upOrDown){
 			heightChangeReference = 0;
 		}
 		liftPID =  FishyRobot2015.chainLiftSubsystem.getPIDController();
