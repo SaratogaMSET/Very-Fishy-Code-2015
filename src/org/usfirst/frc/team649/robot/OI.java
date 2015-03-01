@@ -66,6 +66,14 @@ public class OI {
 			}
 			return 0.0;
 		}
+		
+		public boolean twistRight() {
+			return operatorJoystick.getRawAxis(2) >= 0.5;
+		}
+		
+		public boolean twistLeft() {
+			return operatorJoystick.getRawAxis(2) <= -0.5;
+		}
 	}
 
 	public class Driver {

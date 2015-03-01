@@ -47,7 +47,7 @@ public class ChainLiftSubsystem extends PIDSubsystem{
 		public static final double STORE_TO_STEP_LEVEL_DIFFERENCE = 5.0;
 		
 		//MUST be 16 (hook separation)
-		public static final double TOTE_PICK_UP_HEIGHT = 16;
+		public static final double TOTE_PICK_UP_HEIGHT = 15.88; //was 16
 		
 		//pick up from base
 		public static final double CONTAINER_PICK_UP_HEIGHT = 18;
@@ -88,7 +88,9 @@ public class ChainLiftSubsystem extends PIDSubsystem{
     	encoders =  new Encoder[2];
     	encoders[0] = new Encoder(RobotMap.CHAIN_LIFT.ENCODERS[0], RobotMap.CHAIN_LIFT.ENCODERS[1], true, EncodingType.k2X);
     	encoders[0].setDistancePerPulse(PIDConstants.ENCODER_DISTANCE_PER_PULSE);
+    	encoders[0].setDistancePerPulse(PIDConstants.ENCODER_DISTANCE_PER_PULSE);
     	encoders[1] = new Encoder(RobotMap.CHAIN_LIFT.ENCODERS[2], RobotMap.CHAIN_LIFT.ENCODERS[3], false, EncodingType.k2X);
+    	encoders[1].setDistancePerPulse(PIDConstants.ENCODER_DISTANCE_PER_PULSE);
     	encoders[1].setDistancePerPulse(PIDConstants.ENCODER_DISTANCE_PER_PULSE);
         
         limitMaxLeft = new DigitalInput(RobotMap.CHAIN_LIFT.MAX_LIM_SWITCH_LEFT);
@@ -116,12 +118,12 @@ public class ChainLiftSubsystem extends PIDSubsystem{
     }
     
     public boolean isResetLimitPressed() {
-    	return limitResetRight.get() || limitResetLeft.get();
+    	return limitResetRight.get() && limitResetLeft.get();
     }
     
     public double getHeight() {
     	//returns the highest encoder value
-    	double encDist1 = encoders[0].getDistance(), encDist2 = encoders[1].getDistance();//* PIDConstants.ENCODER_DISTANCE_PER_PULSE;
+    	double encDist1 = encoders[0].getDistance(), encDist2 = encoders[1].getDistance(); // * PIDConstants.ENCODER_DISTANCE_PER_PULSE;
     	return Math.abs(encDist1)>Math.abs(encDist2) ? encDist1: encDist2;
     }
     

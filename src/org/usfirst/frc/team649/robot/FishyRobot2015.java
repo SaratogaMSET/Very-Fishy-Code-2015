@@ -206,12 +206,12 @@ public class FishyRobot2015 extends IterativeRobot {
 		
 		containerState = (boolean) containerChooser.getSelected();
 
+		
 		//if (oi.operator.intakeButton.get()) {
 			//new RunLift(oi.operatorJoystick.getY()).start();
-		//	FishyRobot2015.intakeRightSubsystem.arm.set(oi.operatorJoystick.getY()/2.0);
-			
-		//	FishyRobot2015.intakeLeftSubsystem.arm.set(-oi.operatorJoystick.getY()/ 2.0);
-		//}
+		//	FishyRobot2015.intakeRightSubsystem.arm.set(oi.operatorJoystick.getY() / 3.0);
+		//	FishyRobot2015.intakeLeftSubsystem.arm.set(-oi.operatorJoystick.getY()/ 3.0);
+	//	}
 		// new RunRollers(oi.operatorJoystick.getY()).start();
 
 		//oi.operator.intakeButton.whenReleased(new RunLift(0));
@@ -224,17 +224,29 @@ public class FishyRobot2015 extends IterativeRobot {
 		//
 		// //new RunRollers(IntakeLeftSubsystem.INTAKE_ROLLER_SPEED).start();;
 		// }
+		
 		if (oi.operator.intakeButton.get()) {
-			new RunRollers(1).start();
+			if(oi.operator.twistRight()) {
+				intakeLeftSubsystem.roller.set(0.15);
+				intakeRightSubsystem.roller.set(0.15);
+			} else if(oi.operator.twistLeft()) {
+				intakeLeftSubsystem.roller.set(-0.15);
+				intakeRightSubsystem.roller.set(-0.15);
+			} else {
+				intakeLeftSubsystem.roller.set(0.5);
+				intakeRightSubsystem.roller.set(-0.5);
+			}
 		} else if (oi.operator.purgeButton.get()) {
-			new RunRollers(-1).start();
+			intakeLeftSubsystem.roller.set(-0.5);
+			intakeRightSubsystem.roller.set(0.5);
 		} else {
-			new RunRollers(0).start();
+			intakeLeftSubsystem.roller.set(0);
+			intakeRightSubsystem.roller.set(0);
 		}
 
 //TODO CHECK whenPressed and whenReleased functions
 		if (oi.operator.raiseToteButton.get() && !prevStateRaiseTote) {
-			new RaiseTote(true).start();
+			new RaiseTote(true).start();	
 		}
 		else if (oi.operator.raiseContainerButton.get() && !prevStateRaiseContainer){
 			//new PickUpContainer(true).start(); //TODO uncomment this
@@ -285,17 +297,22 @@ public class FishyRobot2015 extends IterativeRobot {
 		/**************** MANUAL **********************/
 
 		// throttle
-//		if (oi.operator.throttleOverrideButton.get()) {
-//			if (oi.operator.isGrabArmState()) {
-//				new SetIntakeArmPosition(IntakeStarboardSubsystem.PIDConstants.GRABBING_STATE).start();
-//			}
-//			if (oi.operator.isReleaseArmState()) {
-//				new SetIntakeArmPosition(IntakeStarboardSubsystem.PIDConstants.RELEASING_STATE).start();
-//			}
-//			if (oi.operator.isStoreArmState()) {
-//				new SetIntakeArmPosition(IntakeStarboardSubsystem.PIDConstants.STORE_STATE).start();
-//			}
-//		}
+		if (oi.operator.throttleOverrideButton.get()) {
+			if (oi.operator.isGrabArmState()) {
+			//	new SetIntakeArmPosition(IntakeStarboardSubsystem.PIDConstants.GRABBING_STATE).start();
+				SmartDashboard.putString("button 11", "is pressed");
+
+			}
+			if (oi.operator.isReleaseArmState()) {
+				SmartDashboard.putString("button 11", "is pressed");
+				new SetIntakeArmPosition(IntakeStarboardSubsystem.PIDConstants.RELEASING_STATE).start();
+			}
+			if (oi.operator.isStoreArmState()) {
+				new SetIntakeArmPosition(IntakeStarboardSubsystem.PIDConstants.STORE_STATE).start();
+				SmartDashboard.putString("button 11", "is pressed");
+
+			}
+		}
 
 		if (oi.driver.isManualOverride()) {
 
@@ -353,6 +370,7 @@ public class FishyRobot2015 extends IterativeRobot {
 
 		SmartDashboard.putNumber("Chain Height", chainLiftSubsystem.getHeight());
 		SmartDashboard.putNumber("GOAL HEIGHT", chainLiftSubsystem.offsetHeight + chainLiftSubsystem.setpointHeight);
+		SmartDashboard.putNumber("number of totes", FishyRobot2015.chainLiftSubsystem.getNumTotes());
 
 		SmartDashboard.putNumber("Intake Right Pot",intakeRightSubsystem.getPot()); /// IntakeRightSubsystem.PIDConstants.CONVERSION_DEGREES_TO_POT);
 		SmartDashboard.putNumber("Intake Left Pot", intakeLeftSubsystem.getPot()); // / IntakeLeftSubsystem.PIDConstants.CONVERSION_DEGREES_TO_POT);
@@ -361,7 +379,7 @@ public class FishyRobot2015 extends IterativeRobot {
 		SmartDashboard.putNumber("Left Arm Current", pdp.getCurrent(10));
 		SmartDashboard.putNumber("Right Arm Current", pdp.getCurrent(8));
 		SmartDashboard.putNumber("Roller Right Current", pdp.getCurrent(4));
-		SmartDashboard.putNumber("Roller Left Current", pdp.getCurrent(9)); //hi im suneel
+		SmartDashboard.putNumber("Roller Left Current", pdp.getCurrent(9)); //no.
 		SmartDashboard.putNumber("Joy y", oi.operatorJoystick.getY());
 	}
 

@@ -51,6 +51,8 @@ public class IntakePortSubsystem extends PIDSubsystem {
 		
 		public static final double MAX_REASONABLE_VOLTAGE = 4.5;
 		public static final double MIN_REASONABLE_VOLTAGE = .9;
+		
+		public static final int POT_SAMPLES_TO_AVERAGE = 3;
 	}
 	
 	public IntakePortSubsystem(){
@@ -61,6 +63,7 @@ public class IntakePortSubsystem extends PIDSubsystem {
     	
     	//potentiometer
     	pot = new AnalogInput(RobotMap.LEFT_GRABBER.POT);
+    	pot.setAverageBits(PIDConstants.POT_SAMPLES_TO_AVERAGE);
     	
     	//motors
     	roller = new Victor(RobotMap.LEFT_GRABBER.ROLLER_MOTOR);
@@ -92,12 +95,12 @@ public class IntakePortSubsystem extends PIDSubsystem {
 	@Override
 	protected void usePIDOutput(double output) {
 		// TODO Auto-generated method stub
-		if (isArmLimitPressed()){
-			arm.set(0);
-		}
-		else{
+//		if (isArmLimitPressed()){
+//			arm.set(0);
+//		}
+//		else{
 			arm.set(output);
-		}
+	//	}
 	}
 	
 	public boolean withinBounds(){

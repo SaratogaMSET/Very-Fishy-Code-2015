@@ -36,10 +36,10 @@ public class SetIntakeArmPosition extends Command {
 			 relevantSetpointRight = IntakeStarboardSubsystem.PIDConstants.ARM_POS_STORING;
 			 relevantSetpointLeft = IntakePortSubsystem.PIDConstants.ARM_POS_STORING;
 		 }
-//		 else { 
-//			 relevantSetpointRight = FishyRobot2015.intakeRightSubsystem.getPot();
-//			 relevantSetpointLeft = FishyRobot2015.intakeLeftSubsystem.getPot();
-//		 }
+		 else { 
+			 relevantSetpointRight = FishyRobot2015.intakeRightSubsystem.getPot();
+			 relevantSetpointLeft = FishyRobot2015.intakeLeftSubsystem.getPot();
+		 }
 	}
 
 	@Override
