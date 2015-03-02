@@ -7,6 +7,8 @@ import org.usfirst.frc.team649.robot.commandgroups.PickUpToteSequence;
 import org.usfirst.frc.team649.robot.commandgroups.ScoreAllAndResetFromTop;
 import org.usfirst.frc.team649.robot.commandgroups.ScoreTotesOnPlatform;
 import org.usfirst.frc.team649.robot.commands.drivetraincommands.DriveForwardRotate;
+import org.usfirst.frc.team649.robot.commands.drivetraincommands.DriveSetDistanceWithPID;
+import org.usfirst.frc.team649.robot.commands.drivetraincommands.DriveSetTimeCommand;
 import org.usfirst.frc.team649.robot.commands.intakecommands.IntakeTote;
 import org.usfirst.frc.team649.robot.commands.intakecommands.RunRollers;
 import org.usfirst.frc.team649.robot.commands.intakecommands.SetIntakeArmPosition;
@@ -84,7 +86,8 @@ public class FishyRobot2015 extends IterativeRobot {
 		autoChooser.addObject("Debugger Mode", "debugger mode");
 		autoChooser.addObject("Winch Autonomous", "winch in totes");
 		autoChooser.addObject("Get Three Totes", "three totes");
-		autoChooser.addObject("Do Nothing Autonomous", "none");
+		autoChooser.addDefault("Do Nothing Autonomous", "none");
+		autoChooser.addObject("Drive Forward", "drive forward");
 
 		SmartDashboard.putData("Autonomous Mode", autoChooser);
 		// instantiate the command used for the autonomous period
@@ -120,27 +123,29 @@ public class FishyRobot2015 extends IterativeRobot {
 		driveLeftEncoderState = false;
 		driveRightEncoderState = false;
 		chainEncoderState = false;
-
-		// obviously names will be changed
-		switch (autoMode) {
-		case "debugger mode":
-			autoCommand = new Debug();
-			break;
-		case "winch in totes":
-			autoCommand = new AutoWinchAndDrive();
-			break;
-		case "three totes":
-			autoCommand = new AutoPickUpThreeTotes();
-			break;
-		case "none":
-			autoCommand = null;
-			break;
-		}
-		// //
-		//
-		if (autoCommand != null) { // for the case of none
-			autoCommand.start();
-		}
+//
+//		// obviously names will be changed
+//		switch (autoMode) {
+//		case "debugger mode":
+//			autoCommand = new Debug();
+//			break;
+//		case "winch in totes":
+//			autoCommand = new AutoWinchAndDrive();
+//			break;
+//		case "three totes":
+//			autoCommand = new AutoPickUpThreeTotes();
+//			break;
+//		case "none":
+//			autoCommand = null;
+//			break;
+//		}
+//		// //
+//		//
+//		if (autoCommand != null) { // for the case of none
+//			autoCommand.start();
+//		}
+		
+		new DriveSetTimeCommand(3.0).start();
 	}
 
 	/**
@@ -185,7 +190,7 @@ public class FishyRobot2015 extends IterativeRobot {
 		new RunLift(0).start();
 		new DriveForwardRotate(0, 0).start();
 		new SetIntakeArmPosition(IntakePortSubsystem.PIDConstants.CURRENT_STATE).start();
-		new RunRollers(0).start();
+		new RunRollers(0,0).start();
 	}
 
 	/**
@@ -195,7 +200,7 @@ public class FishyRobot2015 extends IterativeRobot {
 	public void disabledInit() {
 		new RunLift(0).start();
 		new DriveForwardRotate(0, 0).start();
-		new RunRollers(0).start();
+		new RunRollers(0,0).start();
 	}
 
 	/**
@@ -207,11 +212,11 @@ public class FishyRobot2015 extends IterativeRobot {
 		containerState = (boolean) containerChooser.getSelected();
 
 		
-		//if (oi.operator.intakeButton.get()) {
-			//new RunLift(oi.operatorJoystick.getY()).start();
+		if (oi.operatorJoystick.getRawButton(9)) {
+			new RunLift(oi.operatorJoystick.getY()).start();
 		//	FishyRobot2015.intakeRightSubsystem.arm.set(oi.operatorJoystick.getY() / 3.0);
-		//	FishyRobot2015.intakeLeftSubsystem.arm.set(-oi.operatorJoystick.getY()/ 3.0);
-	//	}
+			//FishyRobot2015.intakeLeftSubsystem.arm.set(-oi.operatorJoystick.getY()/ 3.0);
+		}
 		// new RunRollers(oi.operatorJoystick.getY()).start();
 
 		//oi.operator.intakeButton.whenReleased(new RunLift(0));
@@ -225,24 +230,39 @@ public class FishyRobot2015 extends IterativeRobot {
 		// //new RunRollers(IntakeLeftSubsystem.INTAKE_ROLLER_SPEED).start();;
 		// }
 		
-		if (oi.operator.intakeButton.get()) {
+		if(oi.operator.intakeButton.get()) {
 			if(oi.operator.twistRight()) {
-				intakeLeftSubsystem.roller.set(0.15);
-				intakeRightSubsystem.roller.set(0.15);
+				new RunRollers(0.15, -0.15).start();
 			} else if(oi.operator.twistLeft()) {
-				intakeLeftSubsystem.roller.set(-0.15);
-				intakeRightSubsystem.roller.set(-0.15);
+				new RunRollers(-0.15, 0.15).start();
 			} else {
-				intakeLeftSubsystem.roller.set(0.5);
-				intakeRightSubsystem.roller.set(-0.5);
+				new RunRollers(0.5, 0.5).start();
 			}
-		} else if (oi.operator.purgeButton.get()) {
-			intakeLeftSubsystem.roller.set(-0.5);
-			intakeRightSubsystem.roller.set(0.5);
+		} else if(oi.operator.purgeButton.get()) {
+			new RunRollers(-0.5, -0.5).start();
 		} else {
-			intakeLeftSubsystem.roller.set(0);
-			intakeRightSubsystem.roller.set(0);
+			new RunRollers(0.0, 0.0).start();
 		}
+		
+//		
+//		if (oi.operator.intakeButton.get()) {
+//			if(oi.operator.twistRight()) {
+//				intakeLeftSubsystem.roller.set(0.15);
+//				intakeRightSubsystem.roller.set(0.15);
+//			} else if(oi.operator.twistLeft()) {
+//				intakeLeftSubsystem.roller.set(-0.15);
+//				intakeRightSubsystem.roller.set(-0.15);
+//			} else {
+//				intakeLeftSubsystem.roller.set(0.5);
+//				intakeRightSubsystem.roller.set(-0.5);
+//			}
+//		} else if (oi.operator.purgeButton.get()) {
+//			intakeLeftSubsystem.roller.set(-0.5);
+//			intakeRightSubsystem.roller.set(0.5);
+//		} else {
+//			intakeLeftSubsystem.roller.set(0);
+//			intakeRightSubsystem.roller.set(0);
+//		}
 
 //TODO CHECK whenPressed and whenReleased functions
 		if (oi.operator.raiseToteButton.get() && !prevStateRaiseTote) {

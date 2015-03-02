@@ -38,9 +38,10 @@ public class ChainLiftSubsystem extends PIDSubsystem{
 	
 	public static class PIDConstants {
 		//PID
-		public static final double P_VALUE = 0.3;
-		public static final double I_VALUE = 0.00;
-		public static final double D_VALUE = 0.000;
+		//OLD VALUES P = 0.3, I=0.0 D=0.0
+		public static final double P_VALUE = 0.0200;
+		public static final double I_VALUE = 0.01;
+		public static final double D_VALUE = 0.01;
 		public static final double ENCODER_DISTANCE_PER_PULSE = (((22.0*(3.0/8.0)) * (12.0 / 60.0) * (18.0 / 42.0) * (18 / 42.0)) / 48.0);
 		public static final double ABS_TOLERANCE = 1;
 		//In inches
@@ -184,11 +185,17 @@ public class ChainLiftSubsystem extends PIDSubsystem{
 		// TODO Auto-generated method stub
 		//if(FishyRobot2015.pdp.getCurrent(channel))
 		double avgCurrent = ((FishyRobot2015.pdp.getCurrent(13) + FishyRobot2015.pdp.getCurrent(12)) / 2); 
-    	//if(avgCurrent > PIDConstants.CURRENT_CAP && Math.abs(this.getVelocity()) < 0.2 ) {
-    	//	this.setPower(0);
-    	//} else{
-    		this.setPower(output);
-    	//}
+    	if(avgCurrent > PIDConstants.CURRENT_CAP && Math.abs(this.getVelocity()) < 0.2 ) {
+    		this.setPower(0);
+    	} else{
+		if(output >= 0.01) {
+    		this.setPower(0.6);
+		} else if(output <= -0.01) {
+			this.setPower(-0.6);
+		} else {
+			this.setPower(0.0);
+		}
+    	}
 	}
 }
 

@@ -20,9 +20,9 @@ public class PickUpToteSequence extends CommandGroup {
 		addSequential(new SetIntakeArmPosition(IntakePortSubsystem.PIDConstants.GRABBING_STATE));
 		addSequential(new IntakeTote());
 		//run for a bit extra
-		addSequential(new RunRollers(IntakePortSubsystem.INTAKE_ROLLER_SPEED));
+		addSequential(new RunRollers(IntakePortSubsystem.INTAKE_ROLLER_SPEED, IntakePortSubsystem.INTAKE_ROLLER_SPEED));
 		addSequential(new WaitCommand(.3));
-		addSequential(new RunRollers(IntakePortSubsystem.INTAKE_ROLLER_OFF_SPEED));
+		addSequential(new RunRollers(IntakePortSubsystem.INTAKE_ROLLER_OFF_SPEED, IntakePortSubsystem.INTAKE_ROLLER_OFF_SPEED));
 		addSequential(new WaitCommand(.3));
 		addSequential(new RaiseTote(ChainLiftSubsystem.PIDConstants.UP));
     }

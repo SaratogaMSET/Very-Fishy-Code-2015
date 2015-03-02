@@ -25,6 +25,8 @@ public class RobotMap {
 	
 	public static final class DRIVE_TRAIN {
 		public static final int[] MOTORS = new int[] {7,6,5,4}; //changed
+		
+		//TODO: is left 2,3? I think so but...?
         public static final int[] ENCODERS = new int[]{2, 3, 0, 1};
         public static final int GRYO = 0;
 
