@@ -9,13 +9,13 @@ import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-public class SetIntakeArmPosition extends Command {
+public class SetIntakeArmPositionWithPID extends Command {
 	double relevantSetpointRight;
 	double relevantSetpointLeft;
 	PIDController pidLeft, pidRight;
 	boolean changePIDGrabberToRelease;
 	
-	public SetIntakeArmPosition(double st){
+	public SetIntakeArmPositionWithPID(double st){
 		//0 is grabbing, 1 is releasing, 2 is storage
 		changePIDGrabberToRelease = false;
 		SmartDashboard.putBoolean("ClosePID?", true);
@@ -73,8 +73,7 @@ public class SetIntakeArmPosition extends Command {
 		if(pidRight.onTarget()) {
 			pidRight.disable();
 			FishyRobot2015.intakeRightSubsystem.arm.set(0);
-		}
-		
+		}	
 		if(pidLeft.onTarget()) {
 			pidLeft.disable();
 			FishyRobot2015.intakeLeftSubsystem.arm.set(0);
@@ -84,7 +83,7 @@ public class SetIntakeArmPosition extends Command {
 	@Override
 	protected boolean isFinished() {
 		//when both have reached
-		return (pidRight.onTarget() && pidLeft.onTarget()) || FishyRobot2015.intakeLeftSubsystem.isArmLimitPressed() || FishyRobot2015.intakeRightSubsystem.isArmLimitPressed() || FishyRobot2015.oi.driver.isManualOverride() || !FishyRobot2015.intakeLeftSubsystem.withinBounds(); 
+		return (pidRight.onTarget() && pidLeft.onTarget()) || FishyRobot2015.intakeLeftSubsystem.isArmLimitPressed() /*|| FishyRobot2015.intakeRightSubsystem.isArmLimitPressed() */|| FishyRobot2015.oi.driver.isManualOverride() || !FishyRobot2015.intakeLeftSubsystem.withinBounds(); 
 	}
 
 	@Override
@@ -95,7 +94,6 @@ public class SetIntakeArmPosition extends Command {
 		
 		FishyRobot2015.intakeLeftSubsystem.pid.disable();
 		FishyRobot2015.intakeRightSubsystem.pid.disable();
-		
 		
 		FishyRobot2015.intakeLeftSubsystem.arm.set(0);
 		FishyRobot2015.intakeRightSubsystem.arm.set(0);

@@ -31,11 +31,11 @@ public class IntakeStarboardSubsystem extends PIDSubsystem {
 	public static final double PURGE_ROLLER_SPEED = -0.4;
 
 	public static final class PIDConstants{
-		public static final double P_REGULAR = -0.18;
+		public static final double P_REGULAR = -0.10;
 		public static final double I_REGULAR = -0.01;
-		public static final double D_REGULAR = -0.01;
+		public static final double D_REGULAR = -0.1;
 		
-		public static final double P_GRABBER_TO_RELEASE = -2;
+		public static final double P_GRABBER_TO_RELEASE = -2.5;
 		public static final double I_GRABBER_TO_RELEASE = -0.01;
 		public static final double D_GRABBER_TO_RELEASE = -0.19;
 		
@@ -45,7 +45,7 @@ public class IntakeStarboardSubsystem extends PIDSubsystem {
 		public static final double CONVERSION_DEGREES_TO_POT = 1.0/270;
 		
 		public static final double ARM_POS_RELEASE = 1.7; //OLD: 1.50; //89.0 * CONVERSION_DEGREES_TO_POT;
-		public static final double ARM_POS_GRABBING = 1.5; //OLD: 1.3; //* CONVERSION_DEGREES_TO_POT;
+		public static final double ARM_POS_GRABBING = 1.65; //OLD: 1.3; //* CONVERSION_DEGREES_TO_POT;
 		public static final double ARM_POS_STORING = 3.3; //OLD: 3.1; // * CONVERSION_DEGREES_TO_POT; //261
 		
 		public static final int GRABBING_STATE = 0;
@@ -105,12 +105,16 @@ public class IntakeStarboardSubsystem extends PIDSubsystem {
 	@Override
 	protected void usePIDOutput(double output) {
 		// TODO Auto-generated method stub
-		if (isArmLimitPressed()){
-			arm.set(0);
-		}
-		else{
+		//if (isArmLimitPressed()){
+			//arm.set(0);
+		//}
+		//else{
 			arm.set(output);
-		}
+		//}
+	}
+	
+	public void useFeedbackLoop() {
+	//	arm.set(speed);
 	}
 }
 

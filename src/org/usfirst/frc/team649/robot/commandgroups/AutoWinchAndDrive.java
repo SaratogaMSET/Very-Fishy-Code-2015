@@ -2,7 +2,7 @@ package org.usfirst.frc.team649.robot.commandgroups;
 
 import org.usfirst.frc.team649.robot.commands.autowinchcommands.WinchTotesIn;
 import org.usfirst.frc.team649.robot.commands.drivetraincommands.DriveSetDistanceWithPID;
-import org.usfirst.frc.team649.robot.commands.intakecommands.SetIntakeArmPosition;
+import org.usfirst.frc.team649.robot.commands.intakecommands.SetIntakeArmPositionWithPID;
 import org.usfirst.frc.team649.robot.subsystems.IntakePortSubsystem;
 import org.usfirst.frc.team649.robot.subsystems.DrivetrainSubsystem.EncoderBasedDriving;
 
@@ -16,7 +16,7 @@ public class AutoWinchAndDrive extends CommandGroup {
     
     public  AutoWinchAndDrive() {
     	//move arms out (state position), winch in the three containers, drive forward, all sequential
-    	addSequential(new SetIntakeArmPosition(IntakePortSubsystem.PIDConstants.STORE_STATE));
+    	addSequential(new SetIntakeArmPositionWithPID(IntakePortSubsystem.PIDConstants.STORE_STATE));
     	addParallel(new WinchTotesIn());
     	//wait command amount == time between start winching & start driving
     	addSequential(new WaitCommand(1));

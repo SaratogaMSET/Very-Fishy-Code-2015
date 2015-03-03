@@ -11,7 +11,8 @@ import org.usfirst.frc.team649.robot.commands.drivetraincommands.DriveSetDistanc
 import org.usfirst.frc.team649.robot.commands.drivetraincommands.DriveSetTimeCommand;
 import org.usfirst.frc.team649.robot.commands.intakecommands.IntakeTote;
 import org.usfirst.frc.team649.robot.commands.intakecommands.RunRollers;
-import org.usfirst.frc.team649.robot.commands.intakecommands.SetIntakeArmPosition;
+import org.usfirst.frc.team649.robot.commands.intakecommands.SetIntakeArmPositionWithPID;
+import org.usfirst.frc.team649.robot.commands.intakecommands.SetIntakeArmPositionWithoutPID;
 import org.usfirst.frc.team649.robot.commands.lift.PickUpContainer;
 import org.usfirst.frc.team649.robot.commands.lift.RaiseTote;
 import org.usfirst.frc.team649.robot.commands.lift.RunLift; //my name is suneel
@@ -145,7 +146,7 @@ public class FishyRobot2015 extends IterativeRobot {
 //			autoCommand.start();
 //		}
 		
-		new DriveSetTimeCommand(3.0).start();
+		new DriveSetDistanceWithPID(42, 0.1).start();
 	}
 
 	/**
@@ -189,7 +190,7 @@ public class FishyRobot2015 extends IterativeRobot {
 
 		new RunLift(0).start();
 		new DriveForwardRotate(0, 0).start();
-		new SetIntakeArmPosition(IntakePortSubsystem.PIDConstants.CURRENT_STATE).start();
+		new SetIntakeArmPositionWithPID(IntakePortSubsystem.PIDConstants.CURRENT_STATE).start();
 		new RunRollers(0,0).start();
 	}
 
@@ -200,7 +201,9 @@ public class FishyRobot2015 extends IterativeRobot {
 	public void disabledInit() {
 		new RunLift(0).start();
 		new DriveForwardRotate(0, 0).start();
+		new SetIntakeArmPositionWithPID(IntakePortSubsystem.PIDConstants.CURRENT_STATE).start();
 		new RunRollers(0,0).start();
+		
 	}
 
 	/**
@@ -213,13 +216,18 @@ public class FishyRobot2015 extends IterativeRobot {
 
 		
 		if (oi.operatorJoystick.getRawButton(9)) {
-			new RunLift(oi.operatorJoystick.getY()).start();
-		//	FishyRobot2015.intakeRightSubsystem.arm.set(oi.operatorJoystick.getY() / 3.0);
-			//FishyRobot2015.intakeLeftSubsystem.arm.set(-oi.operatorJoystick.getY()/ 3.0);
+		//	new RunLift(oi.operatorJoystick.getY()).start();
+			FishyRobot2015.intakeRightSubsystem.arm.set(oi.operatorJoystick.getY() / 3.0);
+			FishyRobot2015.intakeLeftSubsystem.arm.set(-oi.operatorJoystick.getY()/ 3.0);
+		}if(oi.operatorJoystick.getRawButton(7)) {
+			intakeRightSubsystem.arm.set(oi.operatorJoystick.getY() / 3.0);
+		} if(oi.operatorJoystick.getRawButton(8)) {
+			intakeLeftSubsystem.arm.set(oi.operatorJoystick.getY() / 3.0);
 		}
+		
 		// new RunRollers(oi.operatorJoystick.getY()).start();
 
-		//oi.operator.intakeButton.whenReleased(new RunLift(0));
+		oi.operator.intakeButton.whenReleased(new RunLift(0));
 
 		new DriveForwardRotate(oi.driver.getDriveForward(), oi.driver.getDriveRotation()).start();
 
@@ -244,25 +252,6 @@ public class FishyRobot2015 extends IterativeRobot {
 			new RunRollers(0.0, 0.0).start();
 		}
 		
-//		
-//		if (oi.operator.intakeButton.get()) {
-//			if(oi.operator.twistRight()) {
-//				intakeLeftSubsystem.roller.set(0.15);
-//				intakeRightSubsystem.roller.set(0.15);
-//			} else if(oi.operator.twistLeft()) {
-//				intakeLeftSubsystem.roller.set(-0.15);
-//				intakeRightSubsystem.roller.set(-0.15);
-//			} else {
-//				intakeLeftSubsystem.roller.set(0.5);
-//				intakeRightSubsystem.roller.set(-0.5);
-//			}
-//		} else if (oi.operator.purgeButton.get()) {
-//			intakeLeftSubsystem.roller.set(-0.5);
-//			intakeRightSubsystem.roller.set(0.5);
-//		} else {
-//			intakeLeftSubsystem.roller.set(0);
-//			intakeRightSubsystem.roller.set(0);
-//		}
 
 //TODO CHECK whenPressed and whenReleased functions
 		if (oi.operator.raiseToteButton.get() && !prevStateRaiseTote) {
@@ -319,18 +308,17 @@ public class FishyRobot2015 extends IterativeRobot {
 		// throttle
 		if (oi.operator.throttleOverrideButton.get()) {
 			if (oi.operator.isGrabArmState()) {
-			//	new SetIntakeArmPosition(IntakeStarboardSubsystem.PIDConstants.GRABBING_STATE).start();
+				new SetIntakeArmPositionWithPID(IntakeStarboardSubsystem.PIDConstants.GRABBING_STATE).start();
 				SmartDashboard.putString("button 11", "is pressed");
 
 			}
 			if (oi.operator.isReleaseArmState()) {
 				SmartDashboard.putString("button 11", "is pressed");
-				new SetIntakeArmPosition(IntakeStarboardSubsystem.PIDConstants.RELEASING_STATE).start();
+				new SetIntakeArmPositionWithPID(IntakeStarboardSubsystem.PIDConstants.RELEASING_STATE).start();
 			}
 			if (oi.operator.isStoreArmState()) {
-				new SetIntakeArmPosition(IntakeStarboardSubsystem.PIDConstants.STORE_STATE).start();
+				new SetIntakeArmPositionWithPID(IntakeStarboardSubsystem.PIDConstants.STORE_STATE).start();
 				SmartDashboard.putString("button 11", "is pressed");
-
 			}
 		}
 
@@ -376,8 +364,11 @@ public class FishyRobot2015 extends IterativeRobot {
 		SmartDashboard.putBoolean("Container State", containerState);
 		SmartDashboard.putData("Chain Encoder 1", chainLiftSubsystem.encoders[0]);
 		SmartDashboard.putData("Chain Encoder 2", chainLiftSubsystem.encoders[1]);
+		
 		SmartDashboard.putData("Drive Encoder Left", drivetrainSubsystem.encoders[0]);
 		SmartDashboard.putData("Drive Encoder Right", drivetrainSubsystem.encoders[1]);
+		
+		SmartDashboard.putNumber("Drive Distance", drivetrainSubsystem.getDistance());
 		SmartDashboard.putBoolean("Max Hal", chainLiftSubsystem.isMaxLimitPressed());
 		SmartDashboard.putBoolean("Reset Ryan Lewis", chainLiftSubsystem.isResetLimitPressed());
 		SmartDashboard.putBoolean("Bumper Right", intakeRightSubsystem.isToteLimitPressed());

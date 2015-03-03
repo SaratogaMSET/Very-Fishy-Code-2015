@@ -26,11 +26,11 @@ public class IntakePortSubsystem extends PIDSubsystem {
 
 	public static final class PIDConstants{
 
-		public static final double P_REGULAR = 0.18;
+		public static final double P_REGULAR = 0.10;
 		public static final double I_REGULAR = 0.01;
-		public static final double D_REGULAR = 0.01;
+		public static final double D_REGULAR = 0.02;
 		
-		public static final double P_GRABBER_TO_RELEASE = 2;
+		public static final double P_GRABBER_TO_RELEASE = 2.5;
 		public static final double I_GRABBER_TO_RELEASE = 0.01;
 		public static final double D_GRABBER_TO_RELEASE = 0.15;
 		
@@ -38,11 +38,11 @@ public class IntakePortSubsystem extends PIDSubsystem {
 		
 		public static final double CONVERSION_DEGREES_TO_POT = 1.0/270;
 		
-		public static final double ARM_POS_RELEASE = 1.34; //200 * CONVERSION_DEGREES_TO_POT;
+		public static final double ARM_POS_RELEASE = 1.14; //200 * CONVERSION_DEGREES_TO_POT;
 		//for pulling in totes
-		public static final double ARM_POS_GRABBING = 1.0; //225 * CONVERSION_DEGREES_TO_POT;
+		public static final double ARM_POS_GRABBING = .9; //225 * CONVERSION_DEGREES_TO_POT;
 		//for both arms completely back
-		public static final double ARM_POS_STORING = 3.2; // * CONVERSION_DEGREES_TO_POT; //228
+		public static final double ARM_POS_STORING = 2.8; // * CONVERSION_DEGREES_TO_POT; //228
 		
 		public static final int GRABBING_STATE = 0;
 		public static final int RELEASING_STATE = 1;
@@ -50,7 +50,7 @@ public class IntakePortSubsystem extends PIDSubsystem {
 		public static final int CURRENT_STATE = 3;
 		
 		public static final double MAX_REASONABLE_VOLTAGE = 4.5;
-		public static final double MIN_REASONABLE_VOLTAGE = .9;
+		public static final double MIN_REASONABLE_VOLTAGE = .7;
 		
 		public static final int POT_SAMPLES_TO_AVERAGE = 3;
 	}
