@@ -35,17 +35,19 @@ public class OI {
 	}
 
 	public class Operator {
-		public Button purgeButton = new JoystickButton(operatorJoystick, 5);
-		public Button intakeButton = new JoystickButton(operatorJoystick, 3); 
+		public Button purgeButton = new JoystickButton(operatorJoystick, 8);
+		public Button intakeButton = new JoystickButton(operatorJoystick, 7); 
 		
 		public Button raiseToteButton = new JoystickButton(operatorJoystick, 6); 
 		public Button lowerToteButton = new JoystickButton(operatorJoystick, 4);
 		public Button raiseContainerButton = new JoystickButton(operatorJoystick, 9);
 		public Button lowerContainerButton = new JoystickButton(operatorJoystick, 10); 
 		
+	//	public 
+		
 		public Button scoreAllButton = new JoystickButton(operatorJoystick, 1);
 
-		public Button throttleOverrideButton = new JoystickButton(operatorJoystick, 11);
+		public Button throttleOverrideButton = new JoystickButton(operatorJoystick, 12);
 		
 		
 		public boolean isGrabArmState() {

@@ -3,10 +3,12 @@ package org.usfirst.frc.team649.robot.subsystems;
 import org.usfirst.frc.team649.robot.FishyRobot2015;
 import org.usfirst.frc.team649.robot.RobotMap;
 
+import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.CounterBase.EncodingType;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.PIDController;
+import edu.wpi.first.wpilibj.Ultrasonic;
 import edu.wpi.first.wpilibj.Victor;
 import edu.wpi.first.wpilibj.command.PIDSubsystem;
 
@@ -20,6 +22,7 @@ public class ChainLiftSubsystem extends PIDSubsystem{
 	Victor[] motors;
 	public Encoder[] encoders;
 	public PIDController pid;
+	public Ultrasonic ultra;
 
 	DigitalInput limitMaxLeft;
 	DigitalInput limitMaxRight;
@@ -44,6 +47,10 @@ public class ChainLiftSubsystem extends PIDSubsystem{
 		public static final double D_VALUE = 0.01;
 		public static final double ENCODER_DISTANCE_PER_PULSE = (((22.0*(3.0/8.0)) * (12.0 / 60.0) * (18.0 / 42.0) * (18 / 42.0)) / 48.0);
 		public static final double ABS_TOLERANCE = 1;
+		public static final double CONSTANT_POWER_UP_VALUE = 0.6;
+		public static final double CONSTANT_POWER_DOWN_VALUE = -0.8;
+
+		
 		//In inches
 		public static final double STORE_TO_STEP_LEVEL_DIFFERENCE = 5.0;
 		
@@ -68,7 +75,7 @@ public class ChainLiftSubsystem extends PIDSubsystem{
 		public static final boolean UP = true;
 		public static final boolean DOWN = false;
 		//Other
-		public static final double UNLOAD_TOTES_MOTOR_POWER = -.4;
+		public static final double UNLOAD_TOTES_MOTOR_POWER = -.8;
 	    public static final double CURRENT_CAP = 10;
 	    public static final double MAX_ENCODER_HEIGHT = 65;
 	    public static final double MAX_LIFT_ENCODER_SPEED = 3;
@@ -103,7 +110,7 @@ public class ChainLiftSubsystem extends PIDSubsystem{
         isPastTop = false;
         isPastBottom = false;
         firstStageOfScore = true;
-        
+       // ultra = new Ul
 		pid = this.getPIDController();
     	pid.setAbsoluteTolerance(PIDConstants.ABS_TOLERANCE);
 	}
@@ -113,13 +120,22 @@ public class ChainLiftSubsystem extends PIDSubsystem{
         motors[1].set(-power);
     }
     
+    public void setPowerSafe(double power) {
+    	double avgCurrent = ((FishyRobot2015.pdp.getCurrent(13) + FishyRobot2015.pdp.getCurrent(12)) / 2); 
+    	if(avgCurrent > PIDConstants.CURRENT_CAP && Math.abs(this.getVelocity()) < 0.2 ) {
+    		this.setPower(0);
+    	} else {
+    		this.setPower(power);
+    	}
+    }
+    
     //Ryan Lewis Sensors
     public boolean isMaxLimitPressed() {
-    	return limitMaxLeft.get() || limitMaxRight.get();
+    	return !limitMaxLeft.get() || !limitMaxRight.get();
     }
     
     public boolean isResetLimitPressed() {
-    	return limitResetRight.get() && limitResetLeft.get();
+    	return !limitResetRight.get() || !limitResetLeft.get();
     }
     
     public double getHeight() {
@@ -188,9 +204,9 @@ public class ChainLiftSubsystem extends PIDSubsystem{
     	if(avgCurrent > PIDConstants.CURRENT_CAP && Math.abs(this.getVelocity()) < 0.2 ) {
     		this.setPower(0);
     	} else{
-		if(output >= 0.01) {
+		if(output > 0.0) {
     		this.setPower(0.6);
-		} else if(output <= -0.01) {
+		} else if(output < 0.0) {
 			this.setPower(-0.6);
 		} else {
 			this.setPower(0.0);

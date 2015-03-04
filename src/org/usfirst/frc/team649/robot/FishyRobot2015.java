@@ -3,6 +3,7 @@ package org.usfirst.frc.team649.robot;
 import org.usfirst.frc.team649.robot.commandgroups.AutoPickUpThreeTotes;
 import org.usfirst.frc.team649.robot.commandgroups.AutoWinchAndDrive;
 import org.usfirst.frc.team649.robot.commandgroups.Debug;
+import org.usfirst.frc.team649.robot.commandgroups.OpenArmsAndRaiseTote;
 import org.usfirst.frc.team649.robot.commandgroups.PickUpToteSequence;
 import org.usfirst.frc.team649.robot.commandgroups.ScoreAllAndResetFromTop;
 import org.usfirst.frc.team649.robot.commandgroups.ScoreTotesOnPlatform;
@@ -24,6 +25,8 @@ import org.usfirst.frc.team649.robot.subsystems.ChainLiftSubsystem.PIDConstants;
 import org.usfirst.frc.team649.robot.subsystems.DrivetrainSubsystem;
 import org.usfirst.frc.team649.robot.subsystems.IntakePortSubsystem;
 import org.usfirst.frc.team649.robot.subsystems.IntakeStarboardSubsystem;
+
+import com.ni.vision.NIVision.InterpolatePointsResult;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Joystick;
@@ -192,6 +195,8 @@ public class FishyRobot2015 extends IterativeRobot {
 		new DriveForwardRotate(0, 0).start();
 		new SetIntakeArmPositionWithPID(IntakePortSubsystem.PIDConstants.CURRENT_STATE).start();
 		new RunRollers(0,0).start();
+		new SetIntakeArmPositionWithoutPID(IntakePortSubsystem.PIDConstants.CURRENT_STATE).start();
+
 	}
 
 	/**
@@ -203,7 +208,7 @@ public class FishyRobot2015 extends IterativeRobot {
 		new DriveForwardRotate(0, 0).start();
 		new SetIntakeArmPositionWithPID(IntakePortSubsystem.PIDConstants.CURRENT_STATE).start();
 		new RunRollers(0,0).start();
-		
+		new SetIntakeArmPositionWithoutPID(IntakePortSubsystem.PIDConstants.CURRENT_STATE).start();
 	}
 
 	/**
@@ -227,7 +232,7 @@ public class FishyRobot2015 extends IterativeRobot {
 		
 		// new RunRollers(oi.operatorJoystick.getY()).start();
 
-		oi.operator.intakeButton.whenReleased(new RunLift(0));
+	//	oi.operator.intakeButton.whenReleased(new RunLift(0));
 
 		new DriveForwardRotate(oi.driver.getDriveForward(), oi.driver.getDriveRotation()).start();
 
@@ -238,16 +243,17 @@ public class FishyRobot2015 extends IterativeRobot {
 		// //new RunRollers(IntakeLeftSubsystem.INTAKE_ROLLER_SPEED).start();;
 		// }
 		
-		if(oi.operator.intakeButton.get()) {
-			if(oi.operator.twistRight()) {
-				new RunRollers(0.15, -0.15).start();
-			} else if(oi.operator.twistLeft()) {
-				new RunRollers(-0.15, 0.15).start();
-			} else {
-				new RunRollers(0.5, 0.5).start();
+		if(oi.operator.intakeButton.get() && oi.operator.twistRight()) {
+				new RunRollers(0.25, -0.25).start();
+			} 
+		else if(oi.operator.intakeButton.get() && oi.operator.twistLeft()) {
+				new RunRollers(-0.25, 0.25).start();
+			} 
+		else if(oi.operator.intakeButton.get()) {
+				new RunRollers(0.7, 0.7).start();
 			}
-		} else if(oi.operator.purgeButton.get()) {
-			new RunRollers(-0.5, -0.5).start();
+	   else if(oi.operator.purgeButton.get()) {
+			new RunRollers(-0.7, -0.7).start();
 		} else {
 			new RunRollers(0.0, 0.0).start();
 		}
@@ -255,14 +261,14 @@ public class FishyRobot2015 extends IterativeRobot {
 
 //TODO CHECK whenPressed and whenReleased functions
 		if (oi.operator.raiseToteButton.get() && !prevStateRaiseTote) {
-			new RaiseTote(true).start();	
+			new OpenArmsAndRaiseTote(true).start();	
 		}
 		else if (oi.operator.raiseContainerButton.get() && !prevStateRaiseContainer){
 			//new PickUpContainer(true).start(); //TODO uncomment this
 		}
 
 		if (oi.operator.lowerToteButton.get() && !prevStateLowerTote) {
-			new RaiseTote(false).start();
+			new OpenArmsAndRaiseTote(false).start();
 		}
 		else if (oi.operator.lowerContainerButton.get() && !prevStateLowerContainer){
 			//new PickUpContainer(false).start(); //TODO uncomment this
@@ -270,12 +276,13 @@ public class FishyRobot2015 extends IterativeRobot {
 		
 		//actually must be double pressed if you want a full score, e.g. no container
 		if (oi.operator.scoreAllButton.get() && !prevStateScore) {
+			new ScoreTotesOnPlatform().start();
 			// new ScoreAllAndResetFromTop().start();
 			//only if it is in the first stage will the button trigger a new command
-			if (chainLiftSubsystem.firstStageOfScore){
-				new ScoreAllAndResetFromTop().start();
-				chainLiftSubsystem.firstStageOfScore = false;
-			}
+//			if (chainLiftSubsystem.firstStageOfScore){
+//				new ScoreAllAndResetFromTop().start();
+//				chainLiftSubsystem.firstStageOfScore = false;
+//			}
 		}
 
 		// set the previous states
@@ -303,29 +310,29 @@ public class FishyRobot2015 extends IterativeRobot {
 		// }
 		// //if(oi.operator.)
 
-		/**************** MANUAL **********************/
+	
 
 		// throttle
 		if (oi.operator.throttleOverrideButton.get()) {
 			if (oi.operator.isGrabArmState()) {
-				new SetIntakeArmPositionWithPID(IntakeStarboardSubsystem.PIDConstants.GRABBING_STATE).start();
+				new SetIntakeArmPositionWithoutPID(IntakeStarboardSubsystem.PIDConstants.GRABBING_STATE).start();
 				SmartDashboard.putString("button 11", "is pressed");
-
 			}
 			if (oi.operator.isReleaseArmState()) {
 				SmartDashboard.putString("button 11", "is pressed");
-				new SetIntakeArmPositionWithPID(IntakeStarboardSubsystem.PIDConstants.RELEASING_STATE).start();
+				new SetIntakeArmPositionWithoutPID(IntakeStarboardSubsystem.PIDConstants.RELEASING_STATE).start();
 			}
 			if (oi.operator.isStoreArmState()) {
-				new SetIntakeArmPositionWithPID(IntakeStarboardSubsystem.PIDConstants.STORE_STATE).start();
+				new SetIntakeArmPositionWithoutPID(IntakeStarboardSubsystem.PIDConstants.STORE_STATE).start();
 				SmartDashboard.putString("button 11", "is pressed");
 			}
 		}
 
+		/**************** MANUAL **********************/
 		if (oi.driver.isManualOverride()) {
 
 			chainLiftSubsystem.setPower(oi.manual.getLiftPower());
-//LOLOL suneel was here
+//no.
 			if (oi.manual.leftHardStopIn.get()) {
 				intakeLeftSubsystem.arm.set(0.4);
 			} else {
@@ -392,6 +399,7 @@ public class FishyRobot2015 extends IterativeRobot {
 		SmartDashboard.putNumber("Roller Right Current", pdp.getCurrent(4));
 		SmartDashboard.putNumber("Roller Left Current", pdp.getCurrent(9)); //no.
 		SmartDashboard.putNumber("Joy y", oi.operatorJoystick.getY());
+		//SmartDashboard.putNumber("Ultra Sonic", chainLiftSubsystem.ultra.);
 	}
 
 	/**

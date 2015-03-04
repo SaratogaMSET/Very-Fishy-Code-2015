@@ -29,7 +29,6 @@ public class RobotMap {
 		//TODO: is left 2,3? I think so but...?
         public static final int[] ENCODERS = new int[]{2, 3, 0, 1};
         public static final int GRYO = 0;
-
 	}
 	
 	public static final class CHAIN_LIFT {
@@ -39,6 +38,7 @@ public class RobotMap {
 		public static final int RESET_LIM_SWITCH_RIGHT = 15;
 		public static final int MAX_LIM_SWITCH_LEFT = 12;
 		public static final int MAX_LIMIT_SWITCH_RIGHT = 13;
+		public static final int ULTRASONIC = 3;
 	}
 	
 	public static final class LEFT_GRABBER {

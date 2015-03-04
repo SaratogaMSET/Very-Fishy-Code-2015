@@ -5,6 +5,7 @@ import org.usfirst.frc.team649.robot.commands.intakecommands.IntakeTote;
 import org.usfirst.frc.team649.robot.commands.intakecommands.RunRollers;
 import org.usfirst.frc.team649.robot.commands.intakecommands.SetIntakeArmPositionWithPID;
 import org.usfirst.frc.team649.robot.commands.lift.RaiseTote;
+import org.usfirst.frc.team649.robot.commands.lift.RaiseToteWithoutPID;
 import org.usfirst.frc.team649.robot.subsystems.ChainLiftSubsystem;
 import org.usfirst.frc.team649.robot.subsystems.IntakePortSubsystem;
 
@@ -24,6 +25,6 @@ public class PickUpToteSequence extends CommandGroup {
 		addSequential(new WaitCommand(.3));
 		addSequential(new RunRollers(IntakePortSubsystem.INTAKE_ROLLER_OFF_SPEED, IntakePortSubsystem.INTAKE_ROLLER_OFF_SPEED));
 		addSequential(new WaitCommand(.3));
-		addSequential(new RaiseTote(ChainLiftSubsystem.PIDConstants.UP));
+		addSequential(new RaiseToteWithoutPID(ChainLiftSubsystem.PIDConstants.UP));
     }
 }
