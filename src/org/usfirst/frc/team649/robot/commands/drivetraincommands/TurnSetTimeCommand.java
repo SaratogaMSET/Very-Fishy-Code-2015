@@ -8,11 +8,11 @@ import edu.wpi.first.wpilibj.command.Command;
 /**
  *
  */
-public class DriveSetTimeCommand extends Command {
+public class TurnSetTimeCommand extends Command {
 
 	double timeToDrive;
 	Timer timer;
-    public DriveSetTimeCommand(double time) {
+    public TurnSetTimeCommand(double time) {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
     	timeToDrive = time;
@@ -21,7 +21,7 @@ public class DriveSetTimeCommand extends Command {
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	new DriveForwardRotate(0.4, 0).start();
+    	new DriveForwardRotate(0.0, 1).start();
     	timer.start();
     }
     

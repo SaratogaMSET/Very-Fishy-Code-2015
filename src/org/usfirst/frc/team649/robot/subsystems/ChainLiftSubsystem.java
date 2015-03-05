@@ -22,7 +22,6 @@ public class ChainLiftSubsystem extends PIDSubsystem{
 	Victor[] motors;
 	public Encoder[] encoders;
 	public PIDController pid;
-	public Ultrasonic ultra;
 
 	DigitalInput limitMaxLeft;
 	DigitalInput limitMaxRight;
@@ -38,6 +37,8 @@ public class ChainLiftSubsystem extends PIDSubsystem{
 	public boolean isPastTop;
 	public boolean isPastBottom;
 	public boolean firstStageOfScore;
+	
+	public DigitalInput toteLimit;
 	
 	public static class PIDConstants {
 		//PID
@@ -80,6 +81,7 @@ public class ChainLiftSubsystem extends PIDSubsystem{
 	    public static final double MAX_ENCODER_HEIGHT = 65;
 	    public static final double MAX_LIFT_ENCODER_SPEED = 3;
 	    public static final double CONTAINER_RESET_OFFSET = -2; //past the limit switch
+	    
 	    
 	    public static final double ENCODER_RESET_OFFSET = 3.0;
 

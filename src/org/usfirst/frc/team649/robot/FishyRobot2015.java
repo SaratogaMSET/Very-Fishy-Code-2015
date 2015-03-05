@@ -1,7 +1,9 @@
 package org.usfirst.frc.team649.robot;
 
 import org.usfirst.frc.team649.robot.commandgroups.AutoPickUpThreeTotes;
-import org.usfirst.frc.team649.robot.commandgroups.AutoWinchAndDrive;
+import org.usfirst.frc.team649.robot.commandgroups.ContanoirAndToteAuto;
+import org.usfirst.frc.team649.robot.commandgroups.ThreeToteAutoFull;
+import org.usfirst.frc.team649.robot.commandgroups.ThreeToteAutoPart1;
 import org.usfirst.frc.team649.robot.commandgroups.Debug;
 import org.usfirst.frc.team649.robot.commandgroups.OpenArmsAndRaiseTote;
 import org.usfirst.frc.team649.robot.commandgroups.PickUpToteSequence;
@@ -9,7 +11,7 @@ import org.usfirst.frc.team649.robot.commandgroups.ScoreAllAndResetFromTop;
 import org.usfirst.frc.team649.robot.commandgroups.ScoreTotesOnPlatform;
 import org.usfirst.frc.team649.robot.commands.drivetraincommands.DriveForwardRotate;
 import org.usfirst.frc.team649.robot.commands.drivetraincommands.DriveSetDistanceWithPID;
-import org.usfirst.frc.team649.robot.commands.drivetraincommands.DriveSetTimeCommand;
+import org.usfirst.frc.team649.robot.commands.drivetraincommands.TurnSetTimeCommand;
 import org.usfirst.frc.team649.robot.commands.intakecommands.IntakeTote;
 import org.usfirst.frc.team649.robot.commands.intakecommands.RunRollers;
 import org.usfirst.frc.team649.robot.commands.intakecommands.SetIntakeArmPositionWithPID;
@@ -149,7 +151,10 @@ public class FishyRobot2015 extends IterativeRobot {
 //			autoCommand.start();
 //		}
 		
-		new DriveSetDistanceWithPID(42, 0.1).start();
+		//new PickUpToteSequence().start();
+		//new DriveSetDistanceWithPID(18).start();
+		new ContanoirAndToteAuto().start();
+		//new TurnSetTimeCommand(1).start();
 	}
 
 	/**
@@ -383,6 +388,8 @@ public class FishyRobot2015 extends IterativeRobot {
 		SmartDashboard.putBoolean("Arm Left Limit", intakeLeftSubsystem.isArmLimitPressed());
 		SmartDashboard.putBoolean("Arm Right Limit", intakeRightSubsystem.isArmLimitPressed());
 		
+		SmartDashboard.putBoolean("READY TO PICK UP (BUMPER)", intakeLeftSubsystem.isToteLimitPressed());
+		
 		SmartDashboard.putBoolean("IS PAST TOP", chainLiftSubsystem.isPastTop);
 		SmartDashboard.putBoolean("IS PAST BOTTOM", chainLiftSubsystem.isPastBottom);
 
@@ -400,6 +407,7 @@ public class FishyRobot2015 extends IterativeRobot {
 		SmartDashboard.putNumber("Roller Left Current", pdp.getCurrent(9)); //no.
 		SmartDashboard.putNumber("Joy y", oi.operatorJoystick.getY());
 		//SmartDashboard.putNumber("Ultra Sonic", chainLiftSubsystem.ultra.);
+		SmartDashboard.putNumber("gryo", drivetrainSubsystem.gyro.getAngle());
 	}
 
 	/**

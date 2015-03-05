@@ -41,8 +41,8 @@ public class DrivetrainSubsystem extends PIDSubsystem implements PIDSource, PIDO
 //        public static final double AUTO_CONTAINER_TO_TOTE = 649;
         
     	//pick up
-    	public static final double AUTO_START_TO_TOTE = 18;
-    	public static final double AUTO_BETWEEN_TOTES = 18;
+    	public static final double AUTO_START_TO_TOTE = 0;
+    	public static final double AUTO_BETWEEN_TOTES = 84;
     	public static final double AUTO_TOTE_TO_AUTO_ZONE = 18;
     	
         //others
@@ -55,7 +55,7 @@ public class DrivetrainSubsystem extends PIDSubsystem implements PIDSource, PIDO
     
     public static class GyroBasedDriving {
     	public static final double AUTO_GRYO_TURN_ANGLE = 90;
-        public static final double AUTO_P = 0.001;
+        public static final double AUTO_P = 0.01;
     	public static final double AUTO_I = 0.0;
     	public static final double AUTO_D = 0.0001;
     	public static final double ABS_TOLERANCE = 12000.0;
@@ -165,7 +165,13 @@ public class DrivetrainSubsystem extends PIDSubsystem implements PIDSource, PIDO
 	@Override
 	public void pidWrite(double output) {
 		// TODO Auto-generated method stub
-		driveFwdRot(0, output);
+		if(output > 0) {
+		driveFwdRot(0, 0.5);
+		} else if (output < 0){
+			driveFwdRot(0, -0.50);
+		} else {
+			driveFwdRot(0, 0);
+		}
 	}
 	@Override
 	public double pidGet() {

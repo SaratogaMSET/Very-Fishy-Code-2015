@@ -31,12 +31,12 @@ public class TurnWithPIDCommand extends Command {
 				DrivetrainSubsystem.GyroBasedDriving.AUTO_D);
 		pid.setPercentTolerance(10.0);
 		FishyRobot2015.drivetrainSubsystem.resetGyro();
+		pid.setSetpoint(setAngle);
 		pid.enable();
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-		pid.setSetpoint(setAngle);
     }
 
     // Make this return true when this Command no longer needs to run execute()

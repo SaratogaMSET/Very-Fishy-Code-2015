@@ -31,7 +31,7 @@ public class IntakeTote extends Command {
 	@Override
 	protected boolean isFinished() {
 		// TODO Auto-generated method stub
-		return FishyRobot2015.intakeRightSubsystem.isToteLimitPressed() || FishyRobot2015.oi.driver.isManualOverride() || !FishyRobot2015.intakeLeftSubsystem.withinBounds();
+		return FishyRobot2015.intakeLeftSubsystem.isToteLimitPressed() || FishyRobot2015.oi.driver.isManualOverride() || !FishyRobot2015.intakeLeftSubsystem.withinBounds();
 	}
 
 	@Override
