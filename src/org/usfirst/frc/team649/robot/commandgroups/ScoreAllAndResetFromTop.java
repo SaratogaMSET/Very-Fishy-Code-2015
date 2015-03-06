@@ -33,8 +33,8 @@ public class ScoreAllAndResetFromTop extends CommandGroup {
 				addSequential(new ChangeLiftHeight(chainOffset));
 			}
 			
+			addSequential(new WaitTilButtonPressed(FishyRobot2015.oi.operator.scoreAllSafteyButton));
 			addSequential(new WaitTilButtonPressed(FishyRobot2015.oi.operator.scoreAllButton));
-			
 			addSequential(new ChangeLiftHeight(PIDConstants.CONTAINER_RESET_OFFSET));
 		}
 		

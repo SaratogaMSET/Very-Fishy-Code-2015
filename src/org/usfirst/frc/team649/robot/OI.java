@@ -35,8 +35,8 @@ public class OI {
 	}
 
 	public class Operator {
-		public Button purgeButton = new JoystickButton(operatorJoystick, 8);
-		public Button intakeButton = new JoystickButton(operatorJoystick, 7); 
+		public Button purgeButton = new JoystickButton(operatorJoystick, 7);
+		public Button intakeButton = new JoystickButton(operatorJoystick, 8); 
 		
 		public Button raiseToteButton = new JoystickButton(operatorJoystick, 6); 
 		public Button lowerToteButton = new JoystickButton(operatorJoystick, 4);
@@ -46,6 +46,7 @@ public class OI {
 	//	public 
 		
 		public Button scoreAllButton = new JoystickButton(operatorJoystick, 1);
+		public Button scoreAllSafteyButton = new JoystickButton(operatorJoystick, 2);
 
 		public Button throttleOverrideButton = new JoystickButton(operatorJoystick, 12);
 		
@@ -113,13 +114,25 @@ public class OI {
 	public class Manual {
 		public Button rollersIn = new JoystickButton(manualJoystick, 2);
 		public Button rollersOut = new JoystickButton(manualJoystick, 3);
+		
+		public double leftHardStopInPower() {
+			return manualJoystick.getRawAxis(2) / 3.0; 
+		}
+		
+		public double rightHardStopInPower() {
+			return manualJoystick.getRawAxis(3) / 3.0;
+		}
 		public Button leftHardStopIn = new JoystickButton(manualJoystick, 5);
 		public Button leftHardStopOut = new JoystickButton(manualJoystick, 7);
 		public Button rightHardStopIn = new JoystickButton(manualJoystick, 6);
 		public Button rightHardStopOut = new JoystickButton(manualJoystick, 8);
 		
 		public double getLiftPower() {
-			return manualJoystick.getRawAxis(3);
+			return manualJoystick.getRawAxis(5);
+		}
+		
+		public double getRollerPower() {
+			return manualJoystick.getRawAxis(1);
 		}
 		
 	}

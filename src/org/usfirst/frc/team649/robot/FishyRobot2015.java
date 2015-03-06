@@ -280,7 +280,7 @@ public class FishyRobot2015 extends IterativeRobot {
 		}
 		
 		//actually must be double pressed if you want a full score, e.g. no container
-		if (oi.operator.scoreAllButton.get() && !prevStateScore) {
+		if (oi.operator.scoreAllButton.get() && oi.operator.scoreAllSafteyButton.get() && !prevStateScore) {
 			new ScoreTotesOnPlatform().start();
 			// new ScoreAllAndResetFromTop().start();
 			//only if it is in the first stage will the button trigger a new command
@@ -319,58 +319,45 @@ public class FishyRobot2015 extends IterativeRobot {
 
 		// throttle
 		if (oi.operator.throttleOverrideButton.get()) {
-			if (oi.operator.isGrabArmState()) {
-				new SetIntakeArmPositionWithoutPID(IntakeStarboardSubsystem.PIDConstants.GRABBING_STATE).start();
-				SmartDashboard.putString("button 11", "is pressed");
-			}
-			if (oi.operator.isReleaseArmState()) {
-				SmartDashboard.putString("button 11", "is pressed");
-				new SetIntakeArmPositionWithoutPID(IntakeStarboardSubsystem.PIDConstants.RELEASING_STATE).start();
-			}
-			if (oi.operator.isStoreArmState()) {
-				new SetIntakeArmPositionWithoutPID(IntakeStarboardSubsystem.PIDConstants.STORE_STATE).start();
-				SmartDashboard.putString("button 11", "is pressed");
-			}
-		}
+			new SetIntakeArmPositionWithoutPID(IntakePortSubsystem.PIDConstants.RELEASING_STATE);
+		} 
+		oi.operator.throttleOverrideButton.whenReleased(new SetIntakeArmPositionWithoutPID(IntakePortSubsystem.PIDConstants.GRABBING_STATE));
+//		
+//			if (oi.operator.isGrabArmState()) {
+//				new SetIntakeArmPositionWithoutPID(IntakeStarboardSubsystem.PIDConstants.GRABBING_STATE).start();
+//				SmartDashboard.putString("button 11", "is pressed");
+//			}
+//			if (oi.operator.isReleaseArmState()) {
+//				SmartDashboard.putString("button 11", "is pressed");
+//				new SetIntakeArmPositionWithoutPID(IntakeStarboardSubsystem.PIDConstants.RELEASING_STATE).start();
+//			}
+//			if (oi.operator.isStoreArmState()) {
+//				new SetIntakeArmPositionWithoutPID(IntakeStarboardSubsystem.PIDConstants.STORE_STATE).start();
+//				SmartDashboard.putString("button 11", "is pressed");
+//			}
+//		}
 
 		/**************** MANUAL **********************/
 		if (oi.driver.isManualOverride()) {
 
-			chainLiftSubsystem.setPower(oi.manual.getLiftPower());
+			chainLiftSubsystem.setPower(oi.manual.getLiftPower()/2);
 //no.
-			if (oi.manual.leftHardStopIn.get()) {
-				intakeLeftSubsystem.arm.set(0.4);
-			} else {
-				intakeRightSubsystem.arm.set(0.0);
-			}
-
-			if (oi.manual.leftHardStopOut.get()) {
-				intakeLeftSubsystem.arm.set(-0.5);
+			if (Math.abs(oi.manual.leftHardStopInPower()) > 0.05) {
+				intakeLeftSubsystem.arm.set(oi.manual.leftHardStopInPower());
 			} else {
 				intakeLeftSubsystem.arm.set(0.0);
 			}
-			if (oi.manual.rightHardStopIn.get()) {
-				intakeRightSubsystem.arm.set(0.4);
-			} else {
-				intakeRightSubsystem.arm.set(0.0);
-			}
-			if (oi.manual.rightHardStopOut.get()) {
-				intakeRightSubsystem.arm.set(-0.5);
+			
+			if (Math.abs(oi.manual.rightHardStopInPower()) > 0.05) {
+				intakeRightSubsystem.arm.set(oi.manual.rightHardStopInPower());
 			} else {
 				intakeRightSubsystem.arm.set(0.0);
 			}
 
-			if (oi.manual.rollersIn.get()) {
-				intakeLeftSubsystem.roller.set(IntakePortSubsystem.INTAKE_ROLLER_SPEED);
-				intakeRightSubsystem.roller.set(IntakeStarboardSubsystem.INTAKE_ROLLER_SPEED);
-			} else if (oi.manual.rollersOut.get()) {
-				intakeLeftSubsystem.roller.set(IntakePortSubsystem.INTAKE_ROLLER_SPEED);
-				intakeRightSubsystem.roller.set(IntakeStarboardSubsystem.PURGE_ROLLER_SPEED);
-			} else {
-				intakeLeftSubsystem.roller.set(IntakePortSubsystem.INTAKE_ROLLER_OFF_SPEED);
-				intakeRightSubsystem.roller.set(IntakeStarboardSubsystem.INTAKE_ROLLER_OFF_SPEED);
 
-			}
+			intakeLeftSubsystem.roller.set(oi.manual.getRollerPower());
+			intakeRightSubsystem.roller.set(-oi.manual.getRollerPower());
+
 		}
 		SmartDashboard.putData("Container Mode", containerChooser);
 		SmartDashboard.putBoolean("Container State", containerState);

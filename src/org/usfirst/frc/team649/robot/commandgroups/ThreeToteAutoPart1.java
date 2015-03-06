@@ -4,6 +4,7 @@ import org.usfirst.frc.team649.robot.commands.autowinchcommands.WinchTotesIn;
 import org.usfirst.frc.team649.robot.commands.drivetraincommands.DriveSetDistanceWithPID;
 import org.usfirst.frc.team649.robot.commands.intakecommands.RunRollers;
 import org.usfirst.frc.team649.robot.commands.intakecommands.SetIntakeArmPositionWithPID;
+import org.usfirst.frc.team649.robot.commands.intakecommands.SetIntakeArmPositionWithoutPID;
 import org.usfirst.frc.team649.robot.commands.lift.ChangeLiftHeight;
 import org.usfirst.frc.team649.robot.commands.lift.RaiseTote;
 import org.usfirst.frc.team649.robot.subsystems.DrivetrainSubsystem;
@@ -21,7 +22,7 @@ public class ThreeToteAutoPart1 extends CommandGroup {
     public  ThreeToteAutoPart1() {
     	//move arms out (state position), winch in the three containers, drive forward, all sequential
     	//Pick Up first tote
-    	addParallel(new SetIntakeArmPositionWithPID(IntakePortSubsystem.PIDConstants.ARM_POS_GRABBING));
+    	addParallel(new SetIntakeArmPositionWithoutPID(IntakePortSubsystem.PIDConstants.GRABBING_STATE));
     	addParallel(new DriveSetDistanceWithPID(DrivetrainSubsystem.EncoderBasedDriving.AUTO_START_TO_TOTE, 0.1));
     	addSequential(new PickUpToteSequence());
     	
