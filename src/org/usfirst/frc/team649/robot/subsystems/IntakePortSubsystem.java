@@ -38,9 +38,9 @@ public class IntakePortSubsystem extends PIDSubsystem {
 		
 		public static final double CONVERSION_DEGREES_TO_POT = 1.0/270;
 		
-		public static final double ARM_POS_RELEASE = 1.10; //200 * CONVERSION_DEGREES_TO_POT;
+		public static final double ARM_POS_RELEASE = 1.43; //200 * CONVERSION_DEGREES_TO_POT;
 		//for pulling in totes
-		public static final double ARM_POS_GRABBING = 1.0; //225 * CONVERSION_DEGREES_TO_POT;
+		public static final double ARM_POS_GRABBING = 1.24; //225 * CONVERSION_DEGREES_TO_POT;
 		//for both arms completely back
 		public static final double ARM_POS_STORING = 2.8; // * CONVERSION_DEGREES_TO_POT; //228
 		

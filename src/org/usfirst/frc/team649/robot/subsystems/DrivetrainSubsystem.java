@@ -25,7 +25,8 @@ public class DrivetrainSubsystem extends PIDSubsystem implements PIDSource, PIDO
     public Gyro gyro;
     
     public static class EncoderBasedDriving {
-    	private static final double ENCODER_DISTANCE_PER_PULSE = -6 * Math.PI / 128;
+    	private static final double ENCODER_DISTANCE_PER_PULSE = -6.25 * Math.PI / 128;
+    	private static final double COMPENSATED_INCHES_PER_REV = 16.25;
         public static final double MAX_MOTOR_POWER = 0.5;
         public static double MIN_MOTOR_POWER = 0.25;
         
@@ -131,7 +132,7 @@ public class DrivetrainSubsystem extends PIDSubsystem implements PIDSource, PIDO
         for (int i = 0; i < numEncoders; i++) {
             totalVal += encoders[i].getDistance();
         }
-        return totalVal / numEncoders;
+        return totalVal / 1; //numEncoders;
     }
 
     public void resetEncoders() {

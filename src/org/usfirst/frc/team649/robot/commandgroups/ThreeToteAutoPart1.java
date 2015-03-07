@@ -6,7 +6,7 @@ import org.usfirst.frc.team649.robot.commands.intakecommands.RunRollers;
 import org.usfirst.frc.team649.robot.commands.intakecommands.SetIntakeArmPositionWithPID;
 import org.usfirst.frc.team649.robot.commands.intakecommands.SetIntakeArmPositionWithoutPID;
 import org.usfirst.frc.team649.robot.commands.lift.ChangeLiftHeight;
-import org.usfirst.frc.team649.robot.commands.lift.RaiseTote;
+import org.usfirst.frc.team649.robot.commands.lift.RaiseToteWithoutPID;
 import org.usfirst.frc.team649.robot.subsystems.DrivetrainSubsystem;
 import org.usfirst.frc.team649.robot.subsystems.IntakePortSubsystem;
 import org.usfirst.frc.team649.robot.subsystems.DrivetrainSubsystem.EncoderBasedDriving;
@@ -28,7 +28,7 @@ public class ThreeToteAutoPart1 extends CommandGroup {
     	
     	
     	//Get contarior out of the way and move to next tote
-    	addSequential(new RaiseTote(true));
+    	addSequential(new RaiseToteWithoutPID(true));
     	addParallel(new ChangeLiftHeight(3.0));
     	addParallel(new RunRollers(-1.0, -1.0));
     	addParallel(new DriveSetDistanceWithPID(DrivetrainSubsystem.EncoderBasedDriving.AUTO_BETWEEN_TOTES, 0.1));

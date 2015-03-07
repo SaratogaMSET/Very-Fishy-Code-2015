@@ -28,6 +28,9 @@ public class RaiseToteWithoutPID extends Command {
 			done = true;
 		} else{
 			if (upOrDown) {
+				if(FishyRobot2015.chainLiftSubsystem.isAtBase || FishyRobot2015.chainLiftSubsystem.isPastBottom) {
+					heightChangeReference -= 0.75;
+				}
 				 FishyRobot2015.chainLiftSubsystem.setpointHeight += heightChangeReference;
 			} else {
 				 FishyRobot2015.chainLiftSubsystem.setpointHeight -= heightChangeReference;

@@ -19,7 +19,7 @@ public class RunRollers extends Command {
 	}
 	@Override
 	protected void initialize() {
-		FishyRobot2015.intakeLeftSubsystem.roller.set(choosenSpeedLeft);
+		FishyRobot2015.intakeLeftSubsystem.roller.set(-choosenSpeedLeft);
 		FishyRobot2015.intakeRightSubsystem.roller.set(-choosenSpeedRight);
 	}
 

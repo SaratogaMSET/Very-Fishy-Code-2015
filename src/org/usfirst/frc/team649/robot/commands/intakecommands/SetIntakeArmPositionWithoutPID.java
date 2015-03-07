@@ -47,9 +47,9 @@ public class SetIntakeArmPositionWithoutPID extends Command {
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
     	if(state == IntakePortSubsystem.PIDConstants.GRABBING_STATE && FishyRobot2015.intakeLeftSubsystem.getPot() >= IntakePortSubsystem.PIDConstants.ARM_POS_GRABBING) {
-    		FishyRobot2015.intakeLeftSubsystem.arm.set(-0.15);
+    		FishyRobot2015.intakeLeftSubsystem.arm.set(-0.2);
     	} else if(state == IntakePortSubsystem.PIDConstants.RELEASING_STATE && FishyRobot2015.intakeLeftSubsystem.getPot() <= IntakePortSubsystem.PIDConstants.ARM_POS_RELEASE) {
-    		FishyRobot2015.intakeLeftSubsystem.arm.set(0.25);
+    		FishyRobot2015.intakeLeftSubsystem.arm.set(0.3);
     	} else {
     		leftDone = true;
     		FishyRobot2015.intakeLeftSubsystem.arm.set(0.0);

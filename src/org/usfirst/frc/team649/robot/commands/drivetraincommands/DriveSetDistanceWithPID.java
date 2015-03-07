@@ -84,6 +84,7 @@ public class DriveSetDistanceWithPID extends Command {
 		//
 		// return false;
 		return (Math.abs(FishyRobot2015.drivetrainSubsystem.getDistance()) >= Math.abs(distance)) || FishyRobot2015.oi.driver.isManualOverride();
+	//	return pid.onTarget() || FishyRobot2015.oi.driver.isManualOverride();
 	}
 
 	// Called once after isFinished returns true
