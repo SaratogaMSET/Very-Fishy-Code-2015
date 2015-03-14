@@ -18,8 +18,8 @@ public class RobotMap {
 	
 	public static final class JOYSTICKS{
 		public static int JOYSTICK_OPERATOR = 2;
-		public static int JOYSTICK_DRIVER_LEFT = 0;
-		public static int JOYSTICK_DRIVER_RIGHT = 1;
+		public static int JOYSTICK_DRIVER_RIGHT = 0;
+		public static int JOYSTICK_DRIVER_LEFT = 1;
 		public static int JOYSTICK_MANUAL = 3;
 	}
 	

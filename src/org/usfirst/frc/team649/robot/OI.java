@@ -25,8 +25,8 @@ public class OI {
 	public OI() {
 		operatorJoystick = new Joystick(RobotMap.JOYSTICKS.JOYSTICK_OPERATOR);
 		// i think...i cant remember actually
-		driveJoystickVertical = new Joystick(RobotMap.JOYSTICKS.JOYSTICK_DRIVER_RIGHT);
-		driveJoystickHorizontal = new Joystick(RobotMap.JOYSTICKS.JOYSTICK_DRIVER_LEFT);
+		driveJoystickVertical = new Joystick(RobotMap.JOYSTICKS.JOYSTICK_DRIVER_LEFT);
+		driveJoystickHorizontal = new Joystick(RobotMap.JOYSTICKS.JOYSTICK_DRIVER_RIGHT);
 		manualJoystick = new Joystick(RobotMap.JOYSTICKS.JOYSTICK_MANUAL);
 		driver = new Driver();
 		operator = new Operator();
@@ -122,10 +122,10 @@ public class OI {
 		public double rightHardStopInPower() {
 			return manualJoystick.getRawAxis(3) / 3.0;
 		}
-		public Button leftHardStopIn = new JoystickButton(manualJoystick, 5);
-		public Button leftHardStopOut = new JoystickButton(manualJoystick, 7);
-		public Button rightHardStopIn = new JoystickButton(manualJoystick, 6);
-		public Button rightHardStopOut = new JoystickButton(manualJoystick, 8);
+		//public Button leftHardStopIn = new JoystickButton(manualJoystick, 5);
+		public Button leftHardStopOut = new JoystickButton(manualJoystick, 5);
+		//public Button rightHardStopIn = new JoystickButton(manualJoystick, 6);
+		public Button rightHardStopOut = new JoystickButton(manualJoystick, 6);
 		
 		public double getLiftPower() {
 			return manualJoystick.getRawAxis(5);

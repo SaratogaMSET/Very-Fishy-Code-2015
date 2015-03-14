@@ -20,13 +20,12 @@ public class DrivetrainSubsystem extends PIDSubsystem implements PIDSource, PIDO
     
     public Talon [] motors;
     public Encoder[] encoders;
-    public PIDController encoderPID;
-    public PIDController gyroPID;
+    public PIDController encoderDrivePID;
+    public PIDController encoderTurnPID;
     public Gyro gyro;
     
     public static class EncoderBasedDriving {
-    	private static final double ENCODER_DISTANCE_PER_PULSE = -6.25 * Math.PI / 128;
-    	private static final double COMPENSATED_INCHES_PER_REV = 16.25;
+    	private static final double ENCODER_DISTANCE_PER_PULSE = 16.25 / 128; //-6.25 * Math.PI / 128;
         public static final double MAX_MOTOR_POWER = 0.5;
         public static double MIN_MOTOR_POWER = 0.25;
         
@@ -54,14 +53,15 @@ public class DrivetrainSubsystem extends PIDSubsystem implements PIDSource, PIDO
     	public static final double OUTPUT_RANGE = 0.0;
     }
     
-    public static class GyroBasedDriving {
-    	public static final double AUTO_GRYO_TURN_ANGLE = 90;
-        public static final double AUTO_P = 0.01;
+    public static class EncoderBasedTurning {
+    	//public static final double AUTO_GRYO_TURN_ANGLE = 90;
+        public static final double AUTO_P = 0.025;
     	public static final double AUTO_I = 0.0;
     	public static final double AUTO_D = 0.0001;
-    	public static final double ABS_TOLERANCE = 12000.0;
+    	public static final double ABS_TOLERANCE = 1;
+    	public static final double COMPENSATED_INCHES_PER_REV = 16.25;
     	
-    	public static final double GYRO_TOLERANCE = 2;
+    	//public static final double GYRO_TOLERANCE = 2;
 
     }
     public static class RampingConstants {
@@ -78,9 +78,9 @@ public class DrivetrainSubsystem extends PIDSubsystem implements PIDSource, PIDO
     	for (int i = 0; i < RobotMap.DRIVE_TRAIN.MOTORS.length; i++) {
             motors[i] = new Talon(RobotMap.DRIVE_TRAIN.MOTORS[i]);
         }
-    	encoderPID = this.getPIDController();
-    	encoderPID.setAbsoluteTolerance(EncoderBasedDriving.ABS_TOLERANCE);
-    	encoderPID.setOutputRange(EncoderBasedDriving.MIN_MOTOR_POWER, EncoderBasedDriving.MAX_MOTOR_POWER);
+    	encoderDrivePID = this.getPIDController();
+    	encoderDrivePID.setAbsoluteTolerance(EncoderBasedDriving.ABS_TOLERANCE);
+    	encoderDrivePID.setOutputRange(EncoderBasedDriving.MIN_MOTOR_POWER, EncoderBasedDriving.MAX_MOTOR_POWER);
     	encoders = new Encoder[RobotMap.DRIVE_TRAIN.ENCODERS.length / 2];
         encoders[0] = new Encoder(RobotMap.DRIVE_TRAIN.ENCODERS[0], RobotMap.DRIVE_TRAIN.ENCODERS[1], true);
         encoders[1] = new Encoder(RobotMap.DRIVE_TRAIN.ENCODERS[2], RobotMap.DRIVE_TRAIN.ENCODERS[3]);
@@ -88,8 +88,8 @@ public class DrivetrainSubsystem extends PIDSubsystem implements PIDSource, PIDO
         encoders[1].setDistancePerPulse(EncoderBasedDriving.ENCODER_DISTANCE_PER_PULSE);
         
         gyro = new Gyro(RobotMap.DRIVE_TRAIN.GRYO);
-        gyroPID = new PIDController(GyroBasedDriving.AUTO_P, GyroBasedDriving.AUTO_I, GyroBasedDriving.AUTO_D, this, this);
-        gyroPID.setAbsoluteTolerance(GyroBasedDriving.ABS_TOLERANCE);
+        encoderTurnPID = new PIDController(EncoderBasedTurning.AUTO_P, EncoderBasedTurning.AUTO_I, EncoderBasedTurning.AUTO_D, this, this);
+        encoderTurnPID.setAbsoluteTolerance(EncoderBasedTurning.ABS_TOLERANCE);
     }
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
@@ -132,9 +132,11 @@ public class DrivetrainSubsystem extends PIDSubsystem implements PIDSource, PIDO
         for (int i = 0; i < numEncoders; i++) {
             totalVal += encoders[i].getDistance();
         }
-        return totalVal / 1; //numEncoders;
+        return totalVal / numEncoders;
     }
 
+    
+    
     public void resetEncoders() {
         for (int x = 0; x < encoders.length; x++) {
             encoders[x].reset();
@@ -142,11 +144,14 @@ public class DrivetrainSubsystem extends PIDSubsystem implements PIDSource, PIDO
     }
     
 	protected double returnPIDInput() {
-		return this.getDistance();
+		return -this.getDistance();
 	}
 
 	protected void usePIDOutput(double output) {
-        output = (output < 0 ? -1 : 1) * Math.max(Math.abs(output), EncoderBasedDriving.MIN_MOTOR_POWER);
+//		if(output < 0) {
+//			output = -1.0 * Math.min(output, EncoderBasedDriving.MIN_MOTOR_POWER)
+//		}
+//        output = (output < 0 ? -1 : 1) * Math.max(Math.abs(output), EncoderBasedDriving.MIN_MOTOR_POWER);
         driveFwdRot(output, 0);
 	}
 
@@ -161,23 +166,16 @@ public class DrivetrainSubsystem extends PIDSubsystem implements PIDSource, PIDO
     }
     
     public PIDController getGyroPIDControler() {
-    	return gyroPID;
+    	return encoderTurnPID;
     }
 	@Override
 	public void pidWrite(double output) {
-		// TODO Auto-generated method stub
-		if(output > 0) {
-		driveFwdRot(0, 0.5);
-		} else if (output < 0){
-			driveFwdRot(0, -0.50);
-		} else {
-			driveFwdRot(0, 0);
-		}
+        output = (output < 0 ? -1 : 1) * Math.max(Math.abs(output), EncoderBasedDriving.MIN_MOTOR_POWER);
+        driveFwdRot(0, output);
 	}
 	@Override
 	public double pidGet() {
-		// TODO Auto-generated method stub
-		return 360-gyro.getAngle();
+		return this.encoders[0].getDistance();
 	}
 }
 

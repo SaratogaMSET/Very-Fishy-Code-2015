@@ -5,6 +5,7 @@ import org.usfirst.frc.team649.robot.subsystems.DrivetrainSubsystem;
 
 import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  *
@@ -49,10 +50,11 @@ public class DriveSetDistanceWithPID extends Command {
 		// Display.printToOutputStream("starting drive PID: " +
 		// DriverStation.getInstance().getMatchTime() + ", dist: " + distance);
 		DrivetrainSubsystem.EncoderBasedDriving.MIN_MOTOR_POWER = minDriveSpeed;
-		this.pid = FishyRobot2015.drivetrainSubsystem.getPIDController();
+		this.pid = FishyRobot2015.drivetrainSubsystem.encoderDrivePID;
 		pid.setPID(DrivetrainSubsystem.EncoderBasedDriving.AUTO_P,
 				DrivetrainSubsystem.EncoderBasedDriving.AUTO_I,
 				DrivetrainSubsystem.EncoderBasedDriving.AUTO_D);
+		SmartDashboard.putNumber("Setpoint Drivetrain", distance);
 		pid.setSetpoint(distance);
 		FishyRobot2015.drivetrainSubsystem.resetEncoders();
 		// drivetrainSubsystem.startEncoders();

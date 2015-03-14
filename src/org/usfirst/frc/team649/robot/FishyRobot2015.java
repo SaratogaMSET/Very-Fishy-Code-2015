@@ -2,6 +2,7 @@ package org.usfirst.frc.team649.robot;
 
 import org.usfirst.frc.team649.robot.commandgroups.AutoPickUpThreeTotes;
 import org.usfirst.frc.team649.robot.commandgroups.ContanoirAndToteAuto;
+import org.usfirst.frc.team649.robot.commandgroups.DriveBackAndTurnAuto;
 import org.usfirst.frc.team649.robot.commandgroups.ThreeToteAutoFull;
 import org.usfirst.frc.team649.robot.commandgroups.ThreeToteAutoPart1;
 import org.usfirst.frc.team649.robot.commandgroups.Debug;
@@ -9,13 +10,16 @@ import org.usfirst.frc.team649.robot.commandgroups.OpenArmsAndRaiseTote;
 import org.usfirst.frc.team649.robot.commandgroups.PickUpToteSequence;
 import org.usfirst.frc.team649.robot.commandgroups.ScoreAllAndResetFromTop;
 import org.usfirst.frc.team649.robot.commandgroups.ScoreTotesOnPlatform;
+import org.usfirst.frc.team649.robot.commandgroups.TurnAndPickUpToteAuto;
 import org.usfirst.frc.team649.robot.commands.drivetraincommands.DriveForwardRotate;
 import org.usfirst.frc.team649.robot.commands.drivetraincommands.DriveSetDistanceWithPID;
 import org.usfirst.frc.team649.robot.commands.drivetraincommands.TurnSetTimeCommand;
+import org.usfirst.frc.team649.robot.commands.drivetraincommands.TurnWithPIDCommand;
 import org.usfirst.frc.team649.robot.commands.intakecommands.IntakeTote;
 import org.usfirst.frc.team649.robot.commands.intakecommands.RunRollers;
 import org.usfirst.frc.team649.robot.commands.intakecommands.SetIntakeArmPositionWithPID;
 import org.usfirst.frc.team649.robot.commands.intakecommands.SetIntakeArmPositionWithoutPID;
+import org.usfirst.frc.team649.robot.commands.intakecommands.SetIntakeArmPositionWithoutPIDThreeState;
 import org.usfirst.frc.team649.robot.commands.lift.PickUpContainer;
 //import org.usfirst.frc.team649.robot.commands.lift.RaiseTote;
 import org.usfirst.frc.team649.robot.commands.lift.RunLift; //my name is suneel
@@ -152,7 +156,10 @@ public class FishyRobot2015 extends IterativeRobot {
 //		}
 		
 	//	new PickUpToteSequence().start();
-		new DriveSetDistanceWithPID(16.25, 0.1).start();
+	//	new DriveSetDistanceWithPID(63, 0.1).start();
+		new DriveBackAndTurnAuto().start();
+	//	new TurnWithPIDCommand(90, 0.1).start();
+	//	new TurnAndPickUpToteAuto().start();
 //	new ContanoirAndToteAuto().start();
 		//new TurnSetTimeCommand(1).start();
 	}
@@ -322,7 +329,10 @@ public class FishyRobot2015 extends IterativeRobot {
 			new SetIntakeArmPositionWithoutPID(IntakePortSubsystem.PIDConstants.RELEASING_STATE).start();
 		} else if (oi.operator.throttleOverrideButton.get()) {
 			new SetIntakeArmPositionWithoutPID(IntakePortSubsystem.PIDConstants.GRABBING_STATE).start();
-		}
+		} 
+//		else if(oi.operatorJoystick.getRawButton(10)) {
+//			new SetIntakeArmPositionWithoutPIDThreeState(IntakePortSubsystem.PIDConstants.STORE_STATE).start();
+//		}
 //			if (oi.operator.isGrabArmState()) {
 //				new SetIntakeArmPositionWithoutPID(IntakeStarboardSubsystem.PIDConstants.GRABBING_STATE).start();
 //				SmartDashboard.putString("button 11", "is pressed");
@@ -343,18 +353,22 @@ public class FishyRobot2015 extends IterativeRobot {
 			chainLiftSubsystem.setPower(oi.manual.getLiftPower()/2);
 //no.
 			if (Math.abs(oi.manual.leftHardStopInPower()) > 0.05) {
-				intakeLeftSubsystem.arm.set(oi.manual.leftHardStopInPower());
+				intakeLeftSubsystem.arm.set(-oi.manual.leftHardStopInPower());
+			} else if(oi.manual.leftHardStopOut.get()) {
+				intakeLeftSubsystem.arm.set(0.2);
 			} else {
 				intakeLeftSubsystem.arm.set(0.0);
 			}
 			
 			if (Math.abs(oi.manual.rightHardStopInPower()) > 0.05) {
 				intakeRightSubsystem.arm.set(oi.manual.rightHardStopInPower());
+			} else if(oi.manual.rightHardStopOut.get()) {
+				intakeRightSubsystem.arm.set(-0.3);
 			} else {
 				intakeRightSubsystem.arm.set(0.0);
 			}
-
-
+			
+		
 			intakeLeftSubsystem.roller.set(oi.manual.getRollerPower());
 			intakeRightSubsystem.roller.set(oi.manual.getRollerPower());
 
@@ -396,6 +410,10 @@ public class FishyRobot2015 extends IterativeRobot {
 		SmartDashboard.putNumber("Joy y", oi.operatorJoystick.getY());
 		//SmartDashboard.putNumber("Ultra Sonic", chainLiftSubsystem.ultra.);
 		SmartDashboard.putNumber("gryo", drivetrainSubsystem.gyro.getAngle());
+		
+		SmartDashboard.putBoolean("WITHIN BOUNDS LEFT", intakeLeftSubsystem.withinBounds());
+		SmartDashboard.putBoolean("WITHIN BOUNDS RIGHT", intakeRightSubsystem.withinBounds());
+		SmartDashboard.putBoolean("SCORE ALL BUTTON", oi.operatorJoystick.getRawButton(1));
 	}
 
 	/**

@@ -67,7 +67,7 @@ public class SetIntakeArmPositionWithoutPID extends Command {
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return (leftDone && rightDone || FishyRobot2015.oi.driver.isManualOverride());
+        return (leftDone && rightDone) || FishyRobot2015.oi.driver.isManualOverride() || !FishyRobot2015.intakeLeftSubsystem.withinBounds() || !FishyRobot2015.intakeRightSubsystem.withinBounds();
     }
 
     // Called once after isFinished returns true
