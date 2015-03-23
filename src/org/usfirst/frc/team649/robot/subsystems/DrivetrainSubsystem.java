@@ -49,7 +49,7 @@ public class DrivetrainSubsystem extends PIDSubsystem implements PIDSource, PIDO
     	public static final double AUTO_P = 0.4;
     	public static final double AUTO_I = 0.0;
     	public static final double AUTO_D = 0.0;
-    	public static final double ABS_TOLERANCE = 0.0;
+    	public static final double ABS_TOLERANCE = 0.3;
     	public static final double OUTPUT_RANGE = 0.0;
     }
     
@@ -80,7 +80,7 @@ public class DrivetrainSubsystem extends PIDSubsystem implements PIDSource, PIDO
         }
     	encoderDrivePID = this.getPIDController();
     	encoderDrivePID.setAbsoluteTolerance(EncoderBasedDriving.ABS_TOLERANCE);
-    	encoderDrivePID.setOutputRange(EncoderBasedDriving.MIN_MOTOR_POWER, EncoderBasedDriving.MAX_MOTOR_POWER);
+    	encoderDrivePID.setOutputRange(-EncoderBasedDriving.MAX_MOTOR_POWER, EncoderBasedDriving.MAX_MOTOR_POWER);
     	encoders = new Encoder[RobotMap.DRIVE_TRAIN.ENCODERS.length / 2];
         encoders[0] = new Encoder(RobotMap.DRIVE_TRAIN.ENCODERS[0], RobotMap.DRIVE_TRAIN.ENCODERS[1], true);
         encoders[1] = new Encoder(RobotMap.DRIVE_TRAIN.ENCODERS[2], RobotMap.DRIVE_TRAIN.ENCODERS[3]);
@@ -127,12 +127,15 @@ public class DrivetrainSubsystem extends PIDSubsystem implements PIDSource, PIDO
     }
     
     public double getDistance() {
-        int numEncoders = encoders.length;
-        double totalVal = 0;
-        for (int i = 0; i < numEncoders; i++) {
-            totalVal += encoders[i].getDistance();
-        }
-        return totalVal / numEncoders;
+//        int numEncoders = encoders.length;
+//        double totalVal = 0;
+//        for (int i = 0; i < numEncoders; i++) {
+//            totalVal += encoders[i].getDistance();
+//        }
+//        return totalVal / numEncoders;
+        
+        double encDist1 = encoders[0].getDistance(), encDist2 = encoders[1].getDistance(); // * PIDConstants.ENCODER_DISTANCE_PER_PULSE;
+    	return Math.abs(encDist1)>Math.abs(encDist2) ? encDist1: encDist2;
     }
 
     
@@ -144,7 +147,7 @@ public class DrivetrainSubsystem extends PIDSubsystem implements PIDSource, PIDO
     }
     
 	protected double returnPIDInput() {
-		return -this.getDistance();
+		return this.getDistance();
 	}
 
 	protected void usePIDOutput(double output) {

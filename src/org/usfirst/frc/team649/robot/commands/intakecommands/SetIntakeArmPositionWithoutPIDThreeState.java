@@ -65,7 +65,7 @@ public class SetIntakeArmPositionWithoutPIDThreeState extends Command {
 
 	@Override
 	protected void execute() {
-		if (Math.abs(FishyRobot2015.intakeLeftSubsystem.getPot() - relevantSetpointLeft) < 0.03){
+		if (leftDone || Math.abs(FishyRobot2015.intakeLeftSubsystem.getPot() - relevantSetpointLeft) < 0.03){
 			leftDone = true;
 			FishyRobot2015.intakeLeftSubsystem.arm.set(0);
 		} 
@@ -77,7 +77,7 @@ public class SetIntakeArmPositionWithoutPIDThreeState extends Command {
 			FishyRobot2015.intakeLeftSubsystem.arm.set(armPower);
 		}
 		
-		if (Math.abs(FishyRobot2015.intakeRightSubsystem.getPot() - relevantSetpointRight) < 0.03){
+		if (rightDone || Math.abs(FishyRobot2015.intakeRightSubsystem.getPot() - relevantSetpointRight) < 0.03){
 			rightDone = true;
 			FishyRobot2015.intakeRightSubsystem.arm.set(0);
 		}

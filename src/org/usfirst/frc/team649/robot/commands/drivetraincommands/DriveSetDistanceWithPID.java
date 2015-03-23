@@ -56,6 +56,7 @@ public class DriveSetDistanceWithPID extends Command {
 				DrivetrainSubsystem.EncoderBasedDriving.AUTO_D);
 		SmartDashboard.putNumber("Setpoint Drivetrain", distance);
 		pid.setSetpoint(distance);
+		
 		FishyRobot2015.drivetrainSubsystem.resetEncoders();
 		// drivetrainSubsystem.startEncoders();
 		pid.enable();

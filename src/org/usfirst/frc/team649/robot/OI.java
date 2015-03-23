@@ -48,7 +48,9 @@ public class OI {
 		public Button scoreAllButton = new JoystickButton(operatorJoystick, 1);
 		public Button scoreAllSafteyButton = new JoystickButton(operatorJoystick, 2);
 
-		public Button throttleOverrideButton = new JoystickButton(operatorJoystick, 12);
+		public Button grabButton = new JoystickButton(operatorJoystick, 12);
+		public Button storeButton = new JoystickButton(operatorJoystick, 10);
+		public Button releaseButton = new JoystickButton(operatorJoystick, 11);
 		
 		
 		public boolean isGrabArmState() {
@@ -85,6 +87,7 @@ public class OI {
 		public static final double ROTATION_POWER = 1.5;
 		public Button manualOverrideButton1 = new JoystickButton(driveJoystickHorizontal, 2);
 		public Button manualOverrideButton2 = new JoystickButton(driveJoystickVertical, 2);
+		
 		public double getDriveRotation() {
 			final double turnVal = joystickDeadzone(driveJoystickHorizontal.getX(),
 					MIN_DRIVE_POWER);

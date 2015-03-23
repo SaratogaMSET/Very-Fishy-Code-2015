@@ -66,12 +66,13 @@ public class FishyRobot2015 extends IterativeRobot {
 	public boolean prevStateRaiseTote, prevStateLowerTote;
 	public boolean prevStateScore;
 	public boolean prevStateRaiseContainer, prevStateLowerContainer;
+	public boolean prevStateGrab, prevStateRelease, prevStateStore;
 
 	public Command joyChainLift;
 
-//	public SendableChooser autoChooser;
-//	public Command autoCommand;
-	//public String autoMode;
+	public SendableChooser autoChooser;
+	public Command autoCommand;
+	public String autoMode;
 	public boolean driveLeftEncoderState, driveRightEncoderState, chainEncoderState;
 	
 	//public SendableChooser containerChooser;
@@ -91,15 +92,15 @@ public class FishyRobot2015 extends IterativeRobot {
 		// cameraSubsystem = new CameraSubsystem();
 		oi = new OI();
 
-//		autoChooser = new SendableChooser();
-//
-//		autoChooser.addObject("Debugger Mode", "debugger mode");
-//		autoChooser.addObject("Winch Autonomous", "winch in totes");
-//		autoChooser.addObject("Get Three Totes", "three totes");
-//		autoChooser.addDefault("Do Nothing Autonomous", "none");
-//		autoChooser.addObject("Drive Forward", "drive forward");
+		autoChooser = new SendableChooser();
 
-		//SmartDashboard.putData("Autonomous Mode", autoChooser);
+		autoChooser.addObject("Debugger Mode", "debugger mode");
+		autoChooser.addObject("Practice Pick Up Tote", "one tote");
+		autoChooser.addObject("Get Three Totes", "three totes");
+		autoChooser.addObject("Drive Forward Into Autozone", "drive forward");
+		autoChooser.addDefault("Do Nothing Autonomous", "none");
+
+		SmartDashboard.putData("Autonomous Mode", autoChooser);
 		// instantiate the command used for the autonomous period
 		// autonomousCommand = new ExampleCommand();
 		//SmartDashboard.putData(Scheduler.getInstance());
@@ -119,6 +120,10 @@ public class FishyRobot2015 extends IterativeRobot {
 		prevStateRaiseContainer = false;
 		prevStateLowerContainer = false;
 		prevStateScore = false;
+		
+		prevStateRelease = false;
+		prevStateGrab = false;
+		prevStateStore = false;
 	}
 
 	public void disabledPeriodic() {
@@ -129,39 +134,42 @@ public class FishyRobot2015 extends IterativeRobot {
 	//	containerState = false; //(boolean) containerChooser.getSelected();
 		
 		// // schedule the autonomous command (example)
-	//	autoMode = (String) autoChooser.getSelected();
+		autoMode = (String) autoChooser.getSelected();
 		driveLeftEncoderState = false;
 		driveRightEncoderState = false;
 		chainEncoderState = false;
 //
 //		// obviously names will be changed
-//		switch (autoMode) {
-//		case "debugger mode":
-//			autoCommand = new Debug();
-//			break;
-//		case "winch in totes":
-//			autoCommand = new AutoWinchAndDrive();
-//			break;
-//		case "three totes":
-//			autoCommand = new AutoPickUpThreeTotes();
-//			break;
-//		case "none":
-//			autoCommand = null;
-//			break;
-//		}
+		switch (autoMode) {
+		case "debugger mode":
+			autoCommand = new Debug();
+			break;
+		case "one tote":
+			autoCommand = new PickUpToteSequence();
+			break;
+		case "three totes":
+			autoCommand = new AutoPickUpThreeTotes();
+			break;
+		case "drive forward":
+			autoCommand = new DriveSetDistanceWithPID(63);
+		case "none":
+			autoCommand = null;
+			break;
+		}
 //		// //
 //		//
-//		if (autoCommand != null) { // for the case of none
-//			autoCommand.start();
-//		}
+		if (autoCommand != null) { // for the case of none
+			autoCommand.start();
+		}
 		
 	//	new PickUpToteSequence().start();
-	//	new DriveSetDistanceWithPID(63, 0.1).start();
-		new DriveBackAndTurnAuto().start();
+		//new DriveSetDistanceWithPID(-63).start();
+	//	new DriveBackAndTurnAuto().start();
 	//	new TurnWithPIDCommand(90, 0.1).start();
 	//	new TurnAndPickUpToteAuto().start();
-//	new ContanoirAndToteAuto().start();
+//	new ContainerAndToteAuto().start();
 		//new TurnSetTimeCommand(1).start();
+	
 	}
 
 	/**
@@ -172,17 +180,17 @@ public class FishyRobot2015 extends IterativeRobot {
 		
 	//	containerState = false; //(boolean) containerChooser.getSelected();
 
-//		if (autoMode.equals("debugger mode") && !autoCommand.isRunning()) {
-//			if (drivetrainSubsystem.encoders[0].get() != 0) {
-//				driveLeftEncoderState = true;
-//			}
-//			if (drivetrainSubsystem.encoders[1].get() != 0) {
-//				driveRightEncoderState = true;
-//			}
-//			if (chainLiftSubsystem.getHeight() != 0) {
-//				chainEncoderState = true;
-//			}
-//		}
+		if (autoMode.equals("debugger mode") && !autoCommand.isRunning()) {
+			if (drivetrainSubsystem.encoders[0].get() != 0) {
+				driveLeftEncoderState = true;
+			}
+			if (drivetrainSubsystem.encoders[1].get() != 0) {
+				driveRightEncoderState = true;
+			}
+			if (chainLiftSubsystem.getHeight() != 0) {
+				chainEncoderState = true;
+			}
+		}
 
 		SmartDashboard.putBoolean("Left Drive Encoder", driveLeftEncoderState);
 		SmartDashboard.putBoolean("Right Drive Encoder", driveRightEncoderState);
@@ -297,13 +305,6 @@ public class FishyRobot2015 extends IterativeRobot {
 //			}
 		}
 
-		// set the previous states
-		prevStateRaiseTote = oi.operator.raiseToteButton.get();
-		prevStateLowerTote = oi.operator.lowerToteButton.get();
-		prevStateRaiseContainer = oi.operator.raiseContainerButton.get();
-		prevStateLowerContainer = oi.operator.lowerContainerButton.get();
-		prevStateScore = oi.operator.scoreAllButton.get();
-
 		
 		
 		// if (oi.operator.intakeButton.get()){
@@ -325,14 +326,14 @@ public class FishyRobot2015 extends IterativeRobot {
 	
 
 		// throttle
-		if (oi.operatorJoystick.getRawButton(11)) {
-			new SetIntakeArmPositionWithoutPID(IntakePortSubsystem.PIDConstants.RELEASING_STATE).start();
-		} else if (oi.operator.throttleOverrideButton.get()) {
-			new SetIntakeArmPositionWithoutPID(IntakePortSubsystem.PIDConstants.GRABBING_STATE).start();
+		if (oi.operator.releaseButton.get() && !prevStateRelease) {
+			new SetIntakeArmPositionWithoutPIDThreeState(IntakePortSubsystem.PIDConstants.RELEASING_STATE).start();
+		} else if (oi.operator.grabButton.get() && !prevStateGrab) {
+			new SetIntakeArmPositionWithoutPIDThreeState(IntakePortSubsystem.PIDConstants.GRABBING_STATE).start();
 		} 
-//		else if(oi.operatorJoystick.getRawButton(10)) {
-//			new SetIntakeArmPositionWithoutPIDThreeState(IntakePortSubsystem.PIDConstants.STORE_STATE).start();
-//		}
+		else if(oi.operator.storeButton.get() && !prevStateStore) {
+			new SetIntakeArmPositionWithoutPIDThreeState(IntakePortSubsystem.PIDConstants.STORE_STATE).start();
+		}
 //			if (oi.operator.isGrabArmState()) {
 //				new SetIntakeArmPositionWithoutPID(IntakeStarboardSubsystem.PIDConstants.GRABBING_STATE).start();
 //				SmartDashboard.putString("button 11", "is pressed");
@@ -347,6 +348,17 @@ public class FishyRobot2015 extends IterativeRobot {
 //			}
 //		}
 
+
+		// set the previous states
+		prevStateRaiseTote = oi.operator.raiseToteButton.get();
+		prevStateLowerTote = oi.operator.lowerToteButton.get();
+		prevStateRaiseContainer = oi.operator.raiseContainerButton.get();
+		prevStateLowerContainer = oi.operator.lowerContainerButton.get();
+		prevStateScore = oi.operator.scoreAllButton.get();
+		prevStateGrab = oi.operator.grabButton.get();
+		prevStateRelease = oi.operator.releaseButton.get();
+		prevStateStore = oi.operator.storeButton.get();
+		
 		/**************** MANUAL **********************/
 		if (oi.driver.isManualOverride()) {
 

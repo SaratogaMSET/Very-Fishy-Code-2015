@@ -44,7 +44,7 @@ public class RobotMap {
 	public static final class LEFT_GRABBER {
 		public static final int ROLLER_MOTOR = 1;
 		public static final int ARM_MOTOR = 0;
-		public static final int POT = 1;
+		public static final int POT = 1; //1
 		//public static final int LIMIT_SWITCH = 11;
 		public static final int TOTE_LIMIT_SWITCH = 16;
 		public static final int ARM_LIMIT_SWITCH = 18;
