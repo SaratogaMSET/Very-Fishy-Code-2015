@@ -29,7 +29,7 @@ public class ScoreAllAndResetFromTop extends CommandGroup {
 			
 			//2 inches for clearance
 			if (FishyRobot2015.chainLiftSubsystem.setpointHeight >= 2 + Math.abs(PIDConstants.CONTAINER_RELEASE_HEIGHT)){
-				double chainOffset = FishyRobot2015.chainLiftSubsystem.getNumTotes() * PIDConstants.VARIABLE_TOTE_SPACE_INCREMENT + PIDConstants.CONTAINER_RELEASE_HEIGHT;
+				double chainOffset = (FishyRobot2015.chainLiftSubsystem.getNumTotes()) * PIDConstants.VARIABLE_TOTE_SPACE_INCREMENT + PIDConstants.CONTAINER_RELEASE_HEIGHT;
 				addSequential(new ChangeLiftHeight(chainOffset));
 			}
 			

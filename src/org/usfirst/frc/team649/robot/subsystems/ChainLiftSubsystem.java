@@ -166,7 +166,7 @@ public class ChainLiftSubsystem extends PIDSubsystem{
     	int baseCheck = 7;
     	//int contOffset = FishyRobot2015.containerState ? 1 : 0;
     	if (setpointHeight < baseCheck){
-    		return 0; //TODO CHECK THAT A NEGATIVE DOESNT SCREW UP EVERYTHING
+    		return 0;// +  contOffset; //TODO CHECK THAT A NEGATIVE DOESNT SCREW UP EVERYTHING
     	}
     	else if (setpointHeight < baseCheck + 16){
     		return 1; //- contOffset;

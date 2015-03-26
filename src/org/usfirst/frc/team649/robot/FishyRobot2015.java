@@ -75,8 +75,8 @@ public class FishyRobot2015 extends IterativeRobot {
 	public String autoMode;
 	public boolean driveLeftEncoderState, driveRightEncoderState, chainEncoderState;
 	
-	//public SendableChooser containerChooser;
-	public final static boolean containerState = false;
+	public SendableChooser containerChooser;
+	public static boolean containerState = false;
 
 	/**
 	 * This function is run when the robot is first started up and should be
@@ -109,11 +109,11 @@ public class FishyRobot2015 extends IterativeRobot {
 		// SmartDashboard.putData("Cam", (Sendable)
 		// commandBase.cameraSubsystem.cam);
 		// cam must be configured from smartdashboard
-	//	containerChooser = new SendableChooser();
-		//containerChooser.addDefault("Tote State", false);
-		//containerChooser.addObject("Container State", true);
+		containerChooser = new SendableChooser();
+		containerChooser.addDefault("Tote State", false);
+		containerChooser.addObject("Container State", true);
 		
-//	SmartDashboard.putData("Container Mode", containerChooser);
+	SmartDashboard.putData("Container Mode", containerChooser);
 		
 		prevStateRaiseTote = false;
 		prevStateLowerTote = false;
@@ -131,7 +131,7 @@ public class FishyRobot2015 extends IterativeRobot {
 	}
 
 	public void autonomousInit() {
-	//	containerState = false; //(boolean) containerChooser.getSelected();
+		containerState = (boolean) containerChooser.getSelected();
 		
 		// // schedule the autonomous command (example)
 		autoMode = (String) autoChooser.getSelected();
@@ -178,7 +178,7 @@ public class FishyRobot2015 extends IterativeRobot {
 	public void autonomousPeriodic() {
 		Scheduler.getInstance().run();
 		
-	//	containerState = false; //(boolean) containerChooser.getSelected();
+		containerState = (boolean) containerChooser.getSelected();
 
 		if (autoMode.equals("debugger mode") && !autoCommand.isRunning()) {
 			if (drivetrainSubsystem.encoders[0].get() != 0) {
@@ -209,7 +209,7 @@ public class FishyRobot2015 extends IterativeRobot {
 
 		// SmartDashboard.n
 		
-	//	containerState = false;// (boolean) containerChooser.getSelected();
+		containerState = (boolean) containerChooser.getSelected();
 
 		new RunLift(0).start();
 		new DriveForwardRotate(0, 0).start();
@@ -237,7 +237,7 @@ public class FishyRobot2015 extends IterativeRobot {
 	public void teleopPeriodic() {
 		Scheduler.getInstance().run();
 		
-	//	containerState = false; //(boolean) containerChooser.getSelected();
+		containerState = (boolean) containerChooser.getSelected();
 
 		
 		if (oi.operatorJoystick.getRawButton(9)) {
