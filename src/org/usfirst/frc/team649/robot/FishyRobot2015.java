@@ -1,7 +1,7 @@
 package org.usfirst.frc.team649.robot;
 
 import org.usfirst.frc.team649.robot.commandgroups.AutoPickUpThreeTotes;
-import org.usfirst.frc.team649.robot.commandgroups.ContanoirAndToteAuto;
+import org.usfirst.frc.team649.robot.commandgroups.ContainerAndToteAuto;
 import org.usfirst.frc.team649.robot.commandgroups.DriveBackAndTurnAuto;
 import org.usfirst.frc.team649.robot.commandgroups.ThreeToteAutoFull;
 import org.usfirst.frc.team649.robot.commandgroups.ThreeToteAutoPart1;
@@ -20,6 +20,7 @@ import org.usfirst.frc.team649.robot.commands.intakecommands.RunRollers;
 import org.usfirst.frc.team649.robot.commands.intakecommands.SetIntakeArmPositionWithPID;
 import org.usfirst.frc.team649.robot.commands.intakecommands.SetIntakeArmPositionWithoutPID;
 import org.usfirst.frc.team649.robot.commands.intakecommands.SetIntakeArmPositionWithoutPIDThreeState;
+import org.usfirst.frc.team649.robot.commands.lift.ChangeLiftHeight;
 import org.usfirst.frc.team649.robot.commands.lift.PickUpContainer;
 //import org.usfirst.frc.team649.robot.commands.lift.RaiseTote;
 import org.usfirst.frc.team649.robot.commands.lift.RunLift; //my name is suneel
@@ -281,7 +282,17 @@ public class FishyRobot2015 extends IterativeRobot {
 
 //TODO CHECK whenPressed and whenReleased functions
 		if (oi.operator.raiseToteButton.get() && !prevStateRaiseTote) {
-			new OpenArmsAndRaiseTote(true).start();	
+			if (containerState){
+				if (chainLiftSubsystem.isAtBase){
+					new ChangeLiftHeight(PIDConstants.CONTAINER_OFFSET).start();
+					chainLiftSubsystem.isAtBase = false;
+					SmartDashboard.putString("FIRST CONTAINER OFFSET", "yes");
+				}
+			}
+			else{
+				SmartDashboard.putString("FIRST CONTAINER OFFSET", "no");
+				new OpenArmsAndRaiseTote(true).start();	
+			}
 		}
 		else if (oi.operator.raiseContainerButton.get() && !prevStateRaiseContainer){
 			//new PickUpContainer(true).start(); //TODO uncomment this

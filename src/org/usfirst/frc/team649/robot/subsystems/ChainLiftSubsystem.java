@@ -57,9 +57,13 @@ public class ChainLiftSubsystem extends PIDSubsystem{
 		
 		//MUST be 16 (hook separation)
 		public static final double TOTE_PICK_UP_HEIGHT = 15.5;
-		
+		public static final double RAW_TOTE_HEIGHT = 12;
 		//pick up from base
-		public static final double CONTAINER_PICK_UP_HEIGHT = 18;
+		
+		//
+		public static final double CONTAINER_PICK_UP_HEIGHT = 15 + RAW_TOTE_HEIGHT;
+		public static final double DOWN_TO_LIP_HEIGHT = -22;
+		public static final double CONTAINER_OFFSET = 3;
 		public static final double CONTAINER_RELEASE_HEIGHT = -5;
 		public static final double VARIABLE_TOTE_SPACE_INCREMENT = -3;
 		
@@ -103,7 +107,7 @@ public class ChainLiftSubsystem extends PIDSubsystem{
     	encoders[1].setDistancePerPulse(PIDConstants.ENCODER_DISTANCE_PER_PULSE);
         
         limitMaxLeft = new DigitalInput(RobotMap.CHAIN_LIFT.MAX_LIM_SWITCH_LEFT);
-        limitMaxRight = new DigitalInput(RobotMap.CHAIN_LIFT.MAX_LIMIT_SWITCH_RIGHT);
+        limitMaxRight = new DigitalInput(RobotMap.CHAIN_LIFT.MAX_LIM_SWITCH_RIGHT);
         limitResetRight = new DigitalInput(RobotMap.CHAIN_LIFT.RESET_LIM_SWITCH_RIGHT);
         limitResetLeft = new DigitalInput(RobotMap.CHAIN_LIFT.RESET_LIM_SWITCH_LEFT);
         

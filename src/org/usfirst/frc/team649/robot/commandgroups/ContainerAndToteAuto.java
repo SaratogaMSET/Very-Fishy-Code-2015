@@ -17,9 +17,9 @@ import edu.wpi.first.wpilibj.command.WaitCommand;
 /**
  *
  */
-public class ContanoirAndToteAuto extends CommandGroup {
+public class ContainerAndToteAuto extends CommandGroup {
     
-    public  ContanoirAndToteAuto() {
+    public  ContainerAndToteAuto() {
        	//Pick Up first tote
     	System.out.println("");
     	addSequential(new SetIntakeArmPositionWithoutPID(IntakePortSubsystem.PIDConstants.GRABBING_STATE));    	//addParallel(new DriveSetDistanceWithPID(DrivetrainSubsystem.EncoderBasedDriving.AUTO_START_TO_TOTE, 0.1));

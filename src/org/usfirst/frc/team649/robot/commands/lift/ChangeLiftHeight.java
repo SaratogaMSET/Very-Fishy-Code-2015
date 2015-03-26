@@ -31,13 +31,15 @@ public class ChangeLiftHeight extends Command {
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-		return liftPID.onTarget() ||  FishyRobot2015.chainLiftSubsystem.isMaxLimitPressed() || FishyRobot2015.oi.driver.isManualOverride() ||  FishyRobot2015.chainLiftSubsystem.isResetLimitPressed();
+    	boolean up = deltaHeight > 0 ? true:false;
+		return liftPID.onTarget() ||  (!up && (FishyRobot2015.chainLiftSubsystem.isMaxLimitPressed() ||  FishyRobot2015.chainLiftSubsystem.isPastTop)) || FishyRobot2015.oi.driver.isManualOverride() || (up && (FishyRobot2015.chainLiftSubsystem.isResetLimitPressed() ||  FishyRobot2015.chainLiftSubsystem.isPastBottom));
     }
 
     // Called once after isFinished returns true
     protected void end() {
     	liftPID.disable();
     	FishyRobot2015.chainLiftSubsystem.isAtBase = false;
+    	
     }
 
     // Called when another command which requires one or more of the same

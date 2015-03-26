@@ -36,12 +36,16 @@ public class ScoreAllAndResetFromTop extends CommandGroup {
 			addSequential(new WaitTilButtonPressed(FishyRobot2015.oi.operator.scoreAllSafteyButton));
 			addSequential(new WaitTilButtonPressed(FishyRobot2015.oi.operator.scoreAllButton));
 			addSequential(new ChangeLiftHeight(PIDConstants.CONTAINER_RESET_OFFSET));
+			
+			addSequential(new RunTilResetLimit());
+			//addSequential(new ChangeLiftHeight(ChainLiftSubsystem.PIDConstants.ENCODER_RESET_OFFSET));
+			addSequential(new ResetEncoders());
+			//^^automatically makes the firstStageOfScore variable true again
 		}
-		
-		//COMMONALITIES
 		addSequential(new RunTilResetLimit());
 		//addSequential(new ChangeLiftHeight(ChainLiftSubsystem.PIDConstants.ENCODER_RESET_OFFSET));
 		addSequential(new ResetEncoders());
 		//^^automatically makes the firstStageOfScore variable true again
+		
 	}
 }
