@@ -31,7 +31,6 @@ public class OI {
 		driver = new Driver();
 		operator = new Operator();
 		manual = new Manual();
-		
 	}
 
 	public class Operator {
@@ -40,8 +39,7 @@ public class OI {
 		
 		public Button raiseToteButton = new JoystickButton(operatorJoystick, 6); 
 		public Button lowerToteButton = new JoystickButton(operatorJoystick, 4);
-		public Button raiseContainerButton = new JoystickButton(operatorJoystick, 9);
-		public Button lowerContainerButton = new JoystickButton(operatorJoystick, 10); 
+		public Button containerSequenceButton = new JoystickButton(operatorJoystick, 9);
 		
 	//	public 
 		
@@ -131,7 +129,7 @@ public class OI {
 		public Button rightHardStopOut = new JoystickButton(manualJoystick, 6);
 		
 		public double getLiftPower() {
-			return manualJoystick.getRawAxis(5);
+			return -manualJoystick.getRawAxis(5);
 		}
 		
 		public double getRollerPower() {

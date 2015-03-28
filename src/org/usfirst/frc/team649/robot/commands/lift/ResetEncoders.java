@@ -16,7 +16,7 @@ public class ResetEncoders extends Command {
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	FishyRobot2015.chainLiftSubsystem.resetEncoders();
+    	FishyRobot2015.chainLiftSubsystem.resetEncodersAndVariables();
     }
 
     // Called repeatedly when this Command is scheduled to run

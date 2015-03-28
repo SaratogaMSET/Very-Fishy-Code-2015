@@ -2,6 +2,7 @@ package org.usfirst.frc.team649.robot;
 
 import org.usfirst.frc.team649.robot.commandgroups.AutoPickUpThreeTotes;
 import org.usfirst.frc.team649.robot.commandgroups.ContainerAndToteAuto;
+import org.usfirst.frc.team649.robot.commandgroups.ContainerFirstToteSemiAuto;
 import org.usfirst.frc.team649.robot.commandgroups.DriveBackAndTurnAuto;
 import org.usfirst.frc.team649.robot.commandgroups.ThreeToteAutoFull;
 import org.usfirst.frc.team649.robot.commandgroups.ThreeToteAutoPart1;
@@ -48,7 +49,15 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 /**
  * The VM is configured to automatically run this class, and to call the
  * functions corresponding to each mode, as described in the IterativeRobot
- * documentation. If you change the name of this class or the package after
+ * documentation. If you change th
+ * 
+ * ``
+ * `
+ * `
+ * `
+ * `
+ * `
+ * ``````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````e name of this class or the package after
  * creating this project, you must also update the manifest file in the resource
  * directory.
  */
@@ -66,8 +75,9 @@ public class FishyRobot2015 extends IterativeRobot {
 	// previous states for button press v hold
 	public boolean prevStateRaiseTote, prevStateLowerTote;
 	public boolean prevStateScore;
-	public boolean prevStateRaiseContainer, prevStateLowerContainer;
+	public boolean prevStateContainerSequence, prevStateLowerContainer;
 	public boolean prevStateGrab, prevStateRelease, prevStateStore;
+	public boolean prevStateManualOverride1, prevStateManualOverride2;
 
 	public Command joyChainLift;
 
@@ -118,13 +128,16 @@ public class FishyRobot2015 extends IterativeRobot {
 		
 		prevStateRaiseTote = false;
 		prevStateLowerTote = false;
-		prevStateRaiseContainer = false;
+		prevStateContainerSequence = false;
 		prevStateLowerContainer = false;
 		prevStateScore = false;
 		
 		prevStateRelease = false;
 		prevStateGrab = false;
 		prevStateStore = false;
+		
+		prevStateManualOverride1 = false;
+		prevStateManualOverride2 = false;
 	}
 
 	public void disabledPeriodic() {
@@ -294,15 +307,16 @@ public class FishyRobot2015 extends IterativeRobot {
 				new OpenArmsAndRaiseTote(true).start();	
 			}
 		}
-		else if (oi.operator.raiseContainerButton.get() && !prevStateRaiseContainer){
-			//new PickUpContainer(true).start(); //TODO uncomment this
+		else if (oi.operator.containerSequenceButton.get() && !prevStateContainerSequence){
+			//conditions for starting containerSequence
+			if (!chainLiftSubsystem.readyToPickContainer && chainLiftSubsystem.getNumTotes() >= 2 && (intakeLeftSubsystem.isToteLimitPressed() || intakeRightSubsystem.isToteLimitPressed())){ //TODO change bool logic
+				new ContainerFirstToteSemiAuto(chainLiftSubsystem.getNumTotes()).start();
+				chainLiftSubsystem.readyToPickContainer = true;
+			}
 		}
 
 		if (oi.operator.lowerToteButton.get() && !prevStateLowerTote) {
 			new OpenArmsAndRaiseTote(false).start();
-		}
-		else if (oi.operator.lowerContainerButton.get() && !prevStateLowerContainer){
-			//new PickUpContainer(false).start(); //TODO uncomment this
 		}
 		
 		//actually must be double pressed if you want a full score, e.g. no container
@@ -316,6 +330,8 @@ public class FishyRobot2015 extends IterativeRobot {
 //			}
 		}
 
+		
+		//safety in case operator picks up container manually? TODO
 		
 		
 		// if (oi.operator.intakeButton.get()){
@@ -363,12 +379,13 @@ public class FishyRobot2015 extends IterativeRobot {
 		// set the previous states
 		prevStateRaiseTote = oi.operator.raiseToteButton.get();
 		prevStateLowerTote = oi.operator.lowerToteButton.get();
-		prevStateRaiseContainer = oi.operator.raiseContainerButton.get();
-		prevStateLowerContainer = oi.operator.lowerContainerButton.get();
+		prevStateContainerSequence = oi.operator.containerSequenceButton.get();
 		prevStateScore = oi.operator.scoreAllButton.get();
 		prevStateGrab = oi.operator.grabButton.get();
 		prevStateRelease = oi.operator.releaseButton.get();
 		prevStateStore = oi.operator.storeButton.get();
+		prevStateManualOverride1 = oi.driver.manualOverrideButton1.get();
+		prevStateManualOverride2 = oi.driver.manualOverrideButton2.get();
 		
 		/**************** MANUAL **********************/
 		if (oi.driver.isManualOverride()) {
@@ -393,7 +410,7 @@ public class FishyRobot2015 extends IterativeRobot {
 			
 		
 			intakeLeftSubsystem.roller.set(oi.manual.getRollerPower());
-			intakeRightSubsystem.roller.set(oi.manual.getRollerPower());
+			intakeRightSubsystem.roller.set(-oi.manual.getRollerPower());
 
 		}
 	//	SmartDashboard.putData("Container [. 8Mode", containerChooser);
@@ -404,7 +421,7 @@ public class FishyRobot2015 extends IterativeRobot {
 		SmartDashboard.putData("Drive Encoder Right", drivetrainSubsystem.encoders[0]);
 		SmartDashboard.putData("Drive Encoder Left", drivetrainSubsystem.encoders[1]);
 		
-		SmartDashboard.putNumber("Drive Distance", drivetrainSubsystem.getDistance());
+		//SmartDashboard.putNumber("Drive Distance", drivetrainSubsystem.getDistance());
 		SmartDashboard.putBoolean("Max Hal", chainLiftSubsystem.isMaxLimitPressed());
 		SmartDashboard.putBoolean("Reset Ryan Lewis", chainLiftSubsystem.isResetLimitPressed());
 		SmartDashboard.putBoolean("Bumper Right", intakeRightSubsystem.isToteLimitPressed());
@@ -417,10 +434,13 @@ public class FishyRobot2015 extends IterativeRobot {
 		
 		SmartDashboard.putBoolean("IS PAST TOP", chainLiftSubsystem.isPastTop);
 		SmartDashboard.putBoolean("IS PAST BOTTOM", chainLiftSubsystem.isPastBottom);
+		
+		SmartDashboard.putBoolean("IS AT BASE VARIABLE", chainLiftSubsystem.isAtBase);
 
 		SmartDashboard.putNumber("Chain Height", chainLiftSubsystem.getHeight());
 		SmartDashboard.putNumber("GOAL HEIGHT", chainLiftSubsystem.offsetHeight + chainLiftSubsystem.setpointHeight);
-		SmartDashboard.putNumber("number of totes", FishyRobot2015.chainLiftSubsystem.getNumTotes());
+		SmartDashboard.putNumber("number of totes", chainLiftSubsystem.getNumTotes());
+		SmartDashboard.putBoolean("Ready for Container", chainLiftSubsystem.readyToPickContainer);
 
 		SmartDashboard.putNumber("Intake Right Pot",intakeRightSubsystem.getPot()); /// IntakeRightSubsystem.PIDConstants.CONVERSION_DEGREES_TO_POT);
 		SmartDashboard.putNumber("Intake Left Pot", intakeLeftSubsystem.getPot()); // / IntakeLeftSubsystem.PIDConstants.CONVERSION_DEGREES_TO_POT);
@@ -430,13 +450,11 @@ public class FishyRobot2015 extends IterativeRobot {
 		SmartDashboard.putNumber("Right Arm Current", pdp.getCurrent(8));
 		SmartDashboard.putNumber("Roller Right Current", pdp.getCurrent(4));
 		SmartDashboard.putNumber("Roller Left Current", pdp.getCurrent(9)); //no.
-		SmartDashboard.putNumber("Joy y", oi.operatorJoystick.getY());
 		//SmartDashboard.putNumber("Ultra Sonic", chainLiftSubsystem.ultra.);
 		SmartDashboard.putNumber("gryo", drivetrainSubsystem.gyro.getAngle());
 		
 		SmartDashboard.putBoolean("WITHIN BOUNDS LEFT", intakeLeftSubsystem.withinBounds());
 		SmartDashboard.putBoolean("WITHIN BOUNDS RIGHT", intakeRightSubsystem.withinBounds());
-		SmartDashboard.putBoolean("SCORE ALL BUTTON", oi.operatorJoystick.getRawButton(1));
 	}
 
 	/**

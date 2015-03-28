@@ -37,6 +37,7 @@ public class ChainLiftSubsystem extends PIDSubsystem{
 	public boolean isPastTop;
 	public boolean isPastBottom;
 	public boolean firstStageOfScore;
+	public boolean readyToPickContainer;
 	
 	public DigitalInput toteLimit;
 	
@@ -64,8 +65,8 @@ public class ChainLiftSubsystem extends PIDSubsystem{
 		public static final double CONTAINER_PICK_UP_HEIGHT = 15 + RAW_TOTE_HEIGHT;
 		public static final double DOWN_TO_LIP_HEIGHT = -22;
 		public static final double CONTAINER_OFFSET = 3;
-		public static final double CONTAINER_RELEASE_HEIGHT = -5;
-		public static final double VARIABLE_TOTE_SPACE_INCREMENT = -3;
+		//public static final double CONTAINER_RELEASE_HEIGHT = -4;
+		public static final double VARIABLE_TOTE_SPACE_INCREMENT = -4;
 		
 		//under this height, the hal effect compensation is put in place when we reset
 		//so that we dont go up first if we score from about this height
@@ -115,6 +116,7 @@ public class ChainLiftSubsystem extends PIDSubsystem{
         isPastTop = false;
         isPastBottom = false;
         firstStageOfScore = true;
+        readyToPickContainer = false;
        // ultra = new Ul
 		pid = this.getPIDController();
     	pid.setAbsoluteTolerance(PIDConstants.ABS_TOLERANCE);
@@ -154,15 +156,29 @@ public class ChainLiftSubsystem extends PIDSubsystem{
     	double enc2Speed = encoders[1].getRate();
     	return Math.abs(enc1Speed) > Math.abs(enc2Speed) ? enc1Speed : enc2Speed;
     }
-
-    public void resetEncoders() {
-        for (int x = 0; x < encoders.length; x++) {
+    
+    public void resetEncoders(){
+    	for (int x = 0; x < encoders.length; x++) {
             encoders[x].reset();
         }
+    }
+
+    public void resetEncodersAndVariables() {
+        resetEncoders();
+        
         setpointHeight = 0;
         isPastTop = false;
         isPastBottom = true;
         firstStageOfScore = true;
+        readyToPickContainer = true;
+    }
+    
+    public void resetVariables() {
+        setpointHeight = 0;
+        isPastTop = false;
+        isPastBottom = true;
+        firstStageOfScore = true;
+        readyToPickContainer = true;
     }
     
     //again based on height

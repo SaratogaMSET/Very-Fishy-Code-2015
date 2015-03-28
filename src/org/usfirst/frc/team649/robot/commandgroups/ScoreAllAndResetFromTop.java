@@ -21,31 +21,23 @@ public class ScoreAllAndResetFromTop extends CommandGroup {
 		if (FishyRobot2015.chainLiftSubsystem.setpointHeight <= PIDConstants.MIN_HAL_EFFECT_COMPENSATION_HEIGHT){
 			addSequential(new HalEffectCompensationOffset(true));
 		}
+		//down a bit, then wait for driver to back out and press trigger again
 		
-		
-		//IF CONTAINER MODE
-		if (FishyRobot2015.containerState){
-			//down a bit, then wait for driver to back out and press trigger again
-			
-			//2 inches for clearance
-			if (FishyRobot2015.chainLiftSubsystem.setpointHeight >= 2 + Math.abs(PIDConstants.CONTAINER_RELEASE_HEIGHT)){
-				double chainOffset = (FishyRobot2015.chainLiftSubsystem.getNumTotes()) * PIDConstants.VARIABLE_TOTE_SPACE_INCREMENT + PIDConstants.CONTAINER_RELEASE_HEIGHT;
-				addSequential(new ChangeLiftHeight(chainOffset));
-			}
-			
-			addSequential(new WaitTilButtonPressed(FishyRobot2015.oi.operator.scoreAllSafteyButton));
-			addSequential(new WaitTilButtonPressed(FishyRobot2015.oi.operator.scoreAllButton));
-			addSequential(new ChangeLiftHeight(PIDConstants.CONTAINER_RESET_OFFSET));
-			
-			addSequential(new RunTilResetLimit());
-			//addSequential(new ChangeLiftHeight(ChainLiftSubsystem.PIDConstants.ENCODER_RESET_OFFSET));
-			addSequential(new ResetEncoders());
-			//^^automatically makes the firstStageOfScore variable true again
+		//2 inches for clearance
+		if (FishyRobot2015.chainLiftSubsystem.setpointHeight >= 2 + Math.abs(PIDConstants.VARIABLE_TOTE_SPACE_INCREMENT)){
+			//double chainOffset = ;//(FishyRobot2015.chainLiftSubsystem.getNumTotes()) * PIDConstants.VARIABLE_TOTE_SPACE_INCREMENT + PIDConstants.CONTAINER_RELEASE_HEIGHT;
+			addSequential(new ChangeLiftHeight(FishyRobot2015.chainLiftSubsystem.getNumTotes() * PIDConstants.VARIABLE_TOTE_SPACE_INCREMENT));
 		}
+		
+		//DRIVER BACKS OUT, MANUAL OVERRIDE IF NOT GOOD
+		addSequential(new WaitTilButtonPressed(FishyRobot2015.oi.operator.scoreAllButton));
+		
 		addSequential(new RunTilResetLimit());
 		//addSequential(new ChangeLiftHeight(ChainLiftSubsystem.PIDConstants.ENCODER_RESET_OFFSET));
 		addSequential(new ResetEncoders());
 		//^^automatically makes the firstStageOfScore variable true again
+		
+		addSequential(new ChangeLiftHeight(PIDConstants.CONTAINER_RESET_OFFSET));
 		
 	}
 }

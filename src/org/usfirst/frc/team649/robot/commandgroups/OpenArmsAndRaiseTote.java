@@ -2,6 +2,7 @@ package org.usfirst.frc.team649.robot.commandgroups;
 
 import org.usfirst.frc.team649.robot.FishyRobot2015;
 import org.usfirst.frc.team649.robot.commands.intakecommands.SetIntakeArmPositionWithoutPID;
+import org.usfirst.frc.team649.robot.commands.intakecommands.SetIntakeArmPositionWithoutPIDThreeState;
 import org.usfirst.frc.team649.robot.commands.lift.RaiseToteWithoutPID;
 import org.usfirst.frc.team649.robot.subsystems.IntakePortSubsystem;
 
@@ -17,10 +18,12 @@ public class OpenArmsAndRaiseTote extends CommandGroup {
     public  OpenArmsAndRaiseTote(boolean up) {
     	SmartDashboard.putString("Now setting arms", "to release");
     	if(!FishyRobot2015.chainLiftSubsystem.isPastTop) {
-    	addParallel(new SetIntakeArmPositionWithoutPID(IntakePortSubsystem.PIDConstants.RELEASING_STATE));
+	    	addParallel(new SetIntakeArmPositionWithoutPIDThreeState(IntakePortSubsystem.PIDConstants.RELEASING_STATE));
+	    	//addParallel(new SetIntakeArmPositionWithoutPID(IntakePortSubsystem.PIDConstants.RELEASING_STATE));
     	}
     	addSequential(new RaiseToteWithoutPID(up));
-        addSequential(new SetIntakeArmPositionWithoutPID(IntakePortSubsystem.PIDConstants.GRABBING_STATE));
+        addSequential(new SetIntakeArmPositionWithoutPIDThreeState(IntakePortSubsystem.PIDConstants.GRABBING_STATE));
+        //addSequential(new SetIntakeArmPositionWithoutPID(IntakePortSubsystem.PIDConstants.GRABBING_STATE));
         
     }
 }
