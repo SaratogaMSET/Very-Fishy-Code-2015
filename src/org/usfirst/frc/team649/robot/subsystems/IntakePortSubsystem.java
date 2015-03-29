@@ -21,6 +21,7 @@ public class IntakePortSubsystem extends PIDSubsystem {
 	public static final double INTAKE_ROLLER_SPEED = 0.4;
 	public static final double INTAKE_ROLLER_OFF_SPEED = 0;
 	public static final double PURGE_ROLLER_SPEED = -0.4;
+	public int state;
 	
 	//CONSTANTS
 
@@ -44,7 +45,7 @@ public class IntakePortSubsystem extends PIDSubsystem {
 		//for both arms completely back
 		public static final double ARM_POS_STORING = 1.9; // * CONVERSION_DEGREES_TO_POT; //228
 		
-		public static final double PID_TOLERANCE = 0.3;
+		public static final double NO_PID_TOLERANCE = 0.04;
 		
 		public static final int GRABBING_STATE = 0;
 		public static final int RELEASING_STATE = 1;
@@ -55,8 +56,8 @@ public class IntakePortSubsystem extends PIDSubsystem {
 		public static final double MIN_REASONABLE_VOLTAGE = .8;
 		
 		public static final int POT_SAMPLES_TO_AVERAGE = 3;
-		public static final double ARMS_IN_POWER = -0.14;
-		public static final double ARMS_OUT_POWER = 0.3;
+		public static final double ARMS_IN_POWER = -0.17;
+		public static final double ARMS_OUT_POWER = 0.2;
 	}
 	
 	public IntakePortSubsystem(){
@@ -75,6 +76,8 @@ public class IntakePortSubsystem extends PIDSubsystem {
     	
     	totesLimit = new DigitalInput(RobotMap.LEFT_GRABBER.TOTE_LIMIT_SWITCH);
     	armLimit = new DigitalInput(RobotMap.LEFT_GRABBER.ARM_LIMIT_SWITCH);
+    	
+    	setStateBasedOnPID();
     	
     }
 	
@@ -110,6 +113,19 @@ public class IntakePortSubsystem extends PIDSubsystem {
 	public boolean withinBounds(){
 		return getPot() < PIDConstants.MAX_REASONABLE_VOLTAGE && getPot() > PIDConstants.MIN_REASONABLE_VOLTAGE;
 	
+	}
+	
+	public void setStateBasedOnPID(){
+		double tolerance = 0.08;
+		if (getPot() > PIDConstants.ARM_POS_STORING-tolerance){
+			state = PIDConstants.STORE_STATE;
+		}
+		else if (getPot() < PIDConstants.ARM_POS_GRABBING + tolerance){
+			state = PIDConstants.GRABBING_STATE;
+		}
+		else{
+			state = PIDConstants.RELEASING_STATE;
+		}
 	}
 
 	@Override

@@ -14,12 +14,23 @@ public class SetIntakeArmPositionWithoutPIDThreeState extends Command {
 	double relevantSetpointLeft;
 //	boolean changePIDGrabberToRelease;
 	boolean leftDone, rightDone;
+
+	String direction;
 	
-	double armPower;
-	int state;
+	double leftArmPower;
+	double rightArmPower;
+	int localState;
+	public int currentLeftState;
+	public int currentRightState;
 	
 	public SetIntakeArmPositionWithoutPIDThreeState(int st){
-		state = st;
+		leftDone = false;
+		rightDone = false;
+		
+		localState = st;
+		currentLeftState = FishyRobot2015.intakeLeftSubsystem.state;
+		currentRightState = FishyRobot2015.intakeRightSubsystem.state;
+		
 		//0 is grabbing, 1 is releasing, 2 is storage
 		if (st == PIDConstants.GRABBING_STATE){
 			 relevantSetpointRight = IntakeStarboardSubsystem.PIDConstants.ARM_POS_GRABBING;
@@ -40,16 +51,60 @@ public class SetIntakeArmPositionWithoutPIDThreeState extends Command {
 			 relevantSetpointLeft = FishyRobot2015.intakeLeftSubsystem.getPot();
 		 }
 		 
+		SmartDashboard.putString("ACTIVE COMMAND", "setIntakeCalled");
 
-		if (FishyRobot2015.intakeLeftSubsystem.getPot() > relevantSetpointLeft && FishyRobot2015.intakeRightSubsystem.getPot() > relevantSetpointRight){
-			armPower = IntakePortSubsystem.PIDConstants.ARMS_IN_POWER;
+		//LEFT
+		if (localState == currentLeftState){
+			//at where you want to go
+			leftArmPower = 0;
+			leftDone = true;
 		}
-		else if (FishyRobot2015.intakeLeftSubsystem.getPot() < relevantSetpointLeft && FishyRobot2015.intakeRightSubsystem.getPot() < relevantSetpointRight){
-			armPower = IntakePortSubsystem.PIDConstants.ARMS_OUT_POWER;
+		else if (localState < currentLeftState){
+			//move in
+			leftArmPower = IntakePortSubsystem.PIDConstants.ARMS_IN_POWER;
 		}
-		else{
-			armPower = 0;
+		else if (localState > currentLeftState){
+			//move in
+			leftArmPower = IntakePortSubsystem.PIDConstants.ARMS_OUT_POWER;
 		}
+		
+		//RIGHT
+		if (localState == currentRightState){
+			//at where you want to go
+			rightArmPower = 0;
+			rightDone = true;
+		}
+		else if (localState < currentRightState){
+			//move in
+			rightArmPower = IntakeStarboardSubsystem.PIDConstants.ARMS_IN_POWER;
+		}
+		else if (localState > currentRightState){
+			//move in
+			rightArmPower = IntakeStarboardSubsystem.PIDConstants.ARMS_OUT_POWER;
+		}
+		
+		//POWER SKETCHY STUFF
+//		if (FishyRobot2015.intakeLeftSubsystem.getPot() > relevantSetpointLeft){ //> IntakePortSubsystem.PIDConstants.NO_PID_TOLERANCE){
+//			leftArmPower = IntakePortSubsystem.PIDConstants.ARMS_IN_POWER;
+//		}
+//		else if (FishyRobot2015.intakeLeftSubsystem.getPot() < relevantSetpointLeft){ //< -IntakePortSubsystem.PIDConstants.NO_PID_TOLERANCE){
+//			leftArmPower = IntakePortSubsystem.PIDConstants.ARMS_OUT_POWER;
+//		}
+//		else{
+//			leftArmPower = 0;
+//			leftDone = true;
+//		}
+//		
+//		if (FishyRobot2015.intakeRightSubsystem.getPot() > relevantSetpointRight){ //> IntakeStarboardSubsystem.PIDConstants.NO_PID_TOLERANCE){
+//			rightArmPower = IntakeStarboardSubsystem.PIDConstants.ARMS_IN_POWER;
+//		}
+//		else if (FishyRobot2015.intakeRightSubsystem.getPot() < relevantSetpointRight){ //< -IntakeStarboardSubsystem.PIDConstants.NO_PID_TOLERANCE){
+//			rightArmPower = IntakeStarboardSubsystem.PIDConstants.ARMS_OUT_POWER;
+//		}
+//		else{
+//			rightArmPower = 0;
+//			rightDone = true;
+//		}
 	}
 
 	@Override
@@ -58,35 +113,30 @@ public class SetIntakeArmPositionWithoutPIDThreeState extends Command {
 		SmartDashboard.putNumber("Setpoint Left", relevantSetpointLeft);
     	SmartDashboard.putNumber("Setpoint Right", relevantSetpointRight);
     	
-		leftDone = false;
-		rightDone = false;
-    	
+//    	FishyRobot2015.intakeRightSubsystem.state = localState;
+//    	FishyRobot2015.intakeLeftSubsystem.state = localState;
 	}
 
 	@Override
 	protected void execute() {
-		if (leftDone || Math.abs(FishyRobot2015.intakeLeftSubsystem.getPot() - relevantSetpointLeft) < 0.03){
+		SmartDashboard.putString("ACTIVE COMMAND", direction);
+		
+		//LEFT
+		if (leftDone || Math.abs(FishyRobot2015.intakeLeftSubsystem.getPot() - relevantSetpointLeft) < IntakePortSubsystem.PIDConstants.NO_PID_TOLERANCE){
 			leftDone = true;
 			FishyRobot2015.intakeLeftSubsystem.arm.set(0);
 		} 
-//		else if (Math.abs(FishyRobot2015.intakeLeftSubsystem.getPot() - relevantSetpointLeft) < 0.1){
-//			FishyRobot2015.intakeLeftSubsystem.arm.set(armPower/1.5);
-//		}
-		
 		else{
-			FishyRobot2015.intakeLeftSubsystem.arm.set(armPower);
+			FishyRobot2015.intakeLeftSubsystem.arm.set(leftArmPower);
 		}
 		
-		if (rightDone || Math.abs(FishyRobot2015.intakeRightSubsystem.getPot() - relevantSetpointRight) < 0.03){
+		//RIGHT
+		if (rightDone || Math.abs(FishyRobot2015.intakeRightSubsystem.getPot() - relevantSetpointRight) < IntakePortSubsystem.PIDConstants.NO_PID_TOLERANCE){
 			rightDone = true;
 			FishyRobot2015.intakeRightSubsystem.arm.set(0);
 		}
-//		else if (Math.abs(FishyRobot2015.intakeRightSubsystem.getPot() - relevantSetpointRight) < 0.1){
-//			FishyRobot2015.intakeRightSubsystem.arm.set(-armPower/1.5);
-//		}
 		else{
-			SmartDashboard.putNumber("Power For Arms", armPower);
-			FishyRobot2015.intakeRightSubsystem.arm.set(-armPower);
+			FishyRobot2015.intakeRightSubsystem.arm.set(rightArmPower);
 		}
 	}
 

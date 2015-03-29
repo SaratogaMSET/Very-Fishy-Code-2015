@@ -81,7 +81,7 @@ public class ChainLiftSubsystem extends PIDSubsystem{
 		public static final boolean UP = true;
 		public static final boolean DOWN = false;
 		//Other
-		public static final double UNLOAD_TOTES_MOTOR_POWER = -.8;
+		public static final double UNLOAD_TOTES_MOTOR_POWER = -.6;
 	    public static final double CURRENT_CAP = 10;
 	    public static final double MAX_ENCODER_HEIGHT = 65;
 	    public static final double MAX_LIFT_ENCODER_SPEED = 3;

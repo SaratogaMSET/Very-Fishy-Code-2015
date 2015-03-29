@@ -17,10 +17,11 @@ public class ContainerFirstToteSemiAuto extends CommandGroup {
 	//ASSUME IN RIGHT POSITION, CHECKED WITHIN FISHY, after score all
 	public ContainerFirstToteSemiAuto(double numTotes){
 		//down 2 totes
+		System.out.println("Entered Cont Semi Auto");
 		addSequential(new ChangeLiftHeight(-numTotes * PIDConstants.TOTE_PICK_UP_HEIGHT));
 		
 		//second stage, run rollers quickly before pick up
-		addSequential(new IntakeTote()); //add a timeout to this fct...maybe
+		//addSequential(new IntakeTote()); //add a timeout to this fct...maybe  TODO PLS add back with bumpers
 		
 		//just in case
 		addSequential(new RunRollers(IntakePortSubsystem.INTAKE_ROLLER_SPEED, IntakeStarboardSubsystem.INTAKE_ROLLER_SPEED));

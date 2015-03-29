@@ -224,7 +224,7 @@ public class FishyRobot2015 extends IterativeRobot {
 		// SmartDashboard.n
 		
 		containerState = (boolean) containerChooser.getSelected();
-
+		SmartDashboard.putBoolean("ENTERED CONTAINER LOOP", false);
 		new RunLift(0).start();
 		new DriveForwardRotate(0, 0).start();
 	//	new SetIntakeArmPositionWithPID(IntakePortSubsystem.PIDConstants.CURRENT_STATE).start();
@@ -249,6 +249,8 @@ public class FishyRobot2015 extends IterativeRobot {
 	 * This function is called periodically during operator control
 	 */
 	public void teleopPeriodic() {
+		SmartDashboard.putString("ACTIVE COMMAND", "none");
+		
 		Scheduler.getInstance().run();
 		
 		containerState = (boolean) containerChooser.getSelected();
@@ -292,24 +294,17 @@ public class FishyRobot2015 extends IterativeRobot {
 			new RunRollers(0.0, 0.0).start();
 		}
 		
+		
 
 //TODO CHECK whenPressed and whenReleased functions
 		if (oi.operator.raiseToteButton.get() && !prevStateRaiseTote) {
-			if (containerState){
-				if (chainLiftSubsystem.isAtBase){
-					new ChangeLiftHeight(PIDConstants.CONTAINER_OFFSET).start();
-					chainLiftSubsystem.isAtBase = false;
-					SmartDashboard.putString("FIRST CONTAINER OFFSET", "yes");
-				}
-			}
-			else{
-				SmartDashboard.putString("FIRST CONTAINER OFFSET", "no");
-				new OpenArmsAndRaiseTote(true).start();	
-			}
+			SmartDashboard.putString("FIRST CONTAINER OFFSET", "no");
+			new OpenArmsAndRaiseTote(true).start();	
 		}
 		else if (oi.operator.containerSequenceButton.get() && !prevStateContainerSequence){
+			SmartDashboard.putBoolean("ENTERED CONTAINER LOOP", true);
 			//conditions for starting containerSequence
-			if (!chainLiftSubsystem.readyToPickContainer && chainLiftSubsystem.getNumTotes() >= 2 && (intakeLeftSubsystem.isToteLimitPressed() || intakeRightSubsystem.isToteLimitPressed())){ //TODO change bool logic
+			if (!chainLiftSubsystem.readyToPickContainer && chainLiftSubsystem.getNumTotes() >= 2){ //&& (intakeLeftSubsystem.isToteLimitPressed() || intakeRightSubsystem.isToteLimitPressed())){ //TODO change bool logic
 				new ContainerFirstToteSemiAuto(chainLiftSubsystem.getNumTotes()).start();
 				chainLiftSubsystem.readyToPickContainer = true;
 			}
@@ -455,6 +450,12 @@ public class FishyRobot2015 extends IterativeRobot {
 		
 		SmartDashboard.putBoolean("WITHIN BOUNDS LEFT", intakeLeftSubsystem.withinBounds());
 		SmartDashboard.putBoolean("WITHIN BOUNDS RIGHT", intakeRightSubsystem.withinBounds());
+		SmartDashboard.putNumber("LEFT arm STATE", intakeLeftSubsystem.state);
+		SmartDashboard.putNumber("RIGHT arm STATE", intakeRightSubsystem.state);
+		SmartDashboard.putBoolean("Ready to pick up cont", chainLiftSubsystem.readyToPickContainer);
+//		
+		intakeLeftSubsystem.setStateBasedOnPID();
+		intakeRightSubsystem.setStateBasedOnPID();
 	}
 
 	/**

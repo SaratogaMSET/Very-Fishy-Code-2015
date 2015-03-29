@@ -26,7 +26,7 @@ public class RunTilResetLimit extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	 FishyRobot2015.chainLiftSubsystem.setPower(ChainLiftSubsystem.PIDConstants.UNLOAD_TOTES_MOTOR_POWER);
+    	 FishyRobot2015.chainLiftSubsystem.setPowerSafe(ChainLiftSubsystem.PIDConstants.UNLOAD_TOTES_MOTOR_POWER);
     	 
     }
 

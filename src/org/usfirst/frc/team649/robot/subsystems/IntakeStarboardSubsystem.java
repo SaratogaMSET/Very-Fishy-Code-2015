@@ -29,6 +29,8 @@ public class IntakeStarboardSubsystem extends PIDSubsystem {
 	public static final double INTAKE_ROLLER_SPEED = 0.4; //converted to negative
 	public static final double INTAKE_ROLLER_OFF_SPEED = 0;
 	public static final double PURGE_ROLLER_SPEED = -0.4;
+	
+	public int state;
 
 	public static final class PIDConstants{
 		public static final double P_REGULAR = -0.10;
@@ -48,7 +50,7 @@ public class IntakeStarboardSubsystem extends PIDSubsystem {
 		public static final double ARM_POS_GRABBING = 1.20;//NESSY: 0.5; //OLD: 1.3; //* CONVERSION_DEGREES_TO_POT;
 		public static final double ARM_POS_STORING = 1.75;//NESSY: 1.05; //OLD: 3.1; // * CONVERSION_DEGREES_TO_POT; //261
 		
-		public static final double PID_TOLERANCE = 0.3;
+		public static final double NO_PID_TOLERANCE = 0.06;
 		
 		public static final int GRABBING_STATE = 0;
 		public static final int RELEASING_STATE = 1;
@@ -57,6 +59,8 @@ public class IntakeStarboardSubsystem extends PIDSubsystem {
 		
 		public static final double MAX_REASONABLE_VOLTAGE = 2.5;//NESSY: 1.4;
 		public static final double MIN_REASONABLE_VOLTAGE = 0.95;//NESSY: .22; //OLD: 1.2;
+		public static final double ARMS_IN_POWER = 0.17;
+		public static final double ARMS_OUT_POWER = -0.24;
 	}	
 	
     public IntakeStarboardSubsystem(){
@@ -75,6 +79,8 @@ public class IntakeStarboardSubsystem extends PIDSubsystem {
     	
     	toteLimit = new DigitalInput(RobotMap.RIGHT_GRABBER.TOTE_LIMIT_SWITCH);
     	armLimit = new DigitalInput(RobotMap.RIGHT_GRABBER.ARM_LIMIT_SWITCH);
+    	
+    	setStateBasedOnPID();
     }
     
 	public void initDefaultCommand() {
@@ -117,6 +123,19 @@ public class IntakeStarboardSubsystem extends PIDSubsystem {
 	
 	public void useFeedbackLoop() {
 	//	arm.set(speed);
+	}
+	
+	public void setStateBasedOnPID(){
+		double tolerance = 0.08;
+		if (getPot() > PIDConstants.ARM_POS_STORING-tolerance){
+			state = PIDConstants.STORE_STATE;
+		}
+		else if (getPot() < PIDConstants.ARM_POS_GRABBING + tolerance){
+			state = PIDConstants.GRABBING_STATE;
+		}
+		else{
+			state = PIDConstants.RELEASING_STATE;
+		}
 	}
 }
 
