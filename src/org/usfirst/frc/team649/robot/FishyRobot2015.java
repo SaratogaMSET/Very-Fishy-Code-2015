@@ -231,6 +231,7 @@ public class FishyRobot2015 extends IterativeRobot {
 		new RunRollers(0,0).start();
 		new SetIntakeArmPositionWithoutPID(IntakePortSubsystem.PIDConstants.CURRENT_STATE).start();
 
+		SmartDashboard.putBoolean("IS RESET TRIPPED AT ALL", false);
 	}
 
 	/**
@@ -454,6 +455,10 @@ public class FishyRobot2015 extends IterativeRobot {
 		SmartDashboard.putNumber("RIGHT arm STATE", intakeRightSubsystem.state);
 		SmartDashboard.putBoolean("Ready to pick up cont", chainLiftSubsystem.readyToPickContainer);
 //		
+		if (chainLiftSubsystem.isResetLimitPressed()){
+			SmartDashboard.putBoolean("IS RESET TRIPPED AT ALL", true);
+		}
+		
 		intakeLeftSubsystem.setStateBasedOnPID();
 		intakeRightSubsystem.setStateBasedOnPID();
 	}

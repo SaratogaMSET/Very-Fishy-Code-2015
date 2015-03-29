@@ -15,7 +15,7 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 public class ScoreTotesOnPlatform extends CommandGroup {
     
     public  ScoreTotesOnPlatform() {
-    	addParallel(new SetIntakeArmPositionWithoutPIDThreeState(IntakePortSubsystem.PIDConstants.RELEASING_STATE));
+    	addSequential(new SetIntakeArmPositionWithoutPID(IntakePortSubsystem.PIDConstants.RELEASING_STATE));
 //    	addParallel(new SetIntakeArmPositionWithoutPID(IntakePortSubsystem.PIDConstants.RELEASING_STATE));
     	addSequential(new ScoreAllAndResetFromTop());
     }

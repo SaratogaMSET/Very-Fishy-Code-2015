@@ -26,7 +26,7 @@ public class ScoreAllAndResetFromTop extends CommandGroup {
 		//2 inches for clearance
 		if (FishyRobot2015.chainLiftSubsystem.setpointHeight >= 2 + Math.abs(PIDConstants.VARIABLE_TOTE_SPACE_INCREMENT)){
 			//double chainOffset = ;//(FishyRobot2015.chainLiftSubsystem.getNumTotes()) * PIDConstants.VARIABLE_TOTE_SPACE_INCREMENT + PIDConstants.CONTAINER_RELEASE_HEIGHT;
-			addSequential(new ChangeLiftHeight(FishyRobot2015.chainLiftSubsystem.getNumTotes() * PIDConstants.VARIABLE_TOTE_SPACE_INCREMENT));
+			addSequential(new ChangeLiftHeight(FishyRobot2015.chainLiftSubsystem.getNumTotes() * PIDConstants.VARIABLE_TOTE_SPACE_INCREMENT - 5)); //9.5 for right to the top of the 2nd hook tote
 		}
 		
 		//DRIVER BACKS OUT, MANUAL OVERRIDE IF NOT GOOD

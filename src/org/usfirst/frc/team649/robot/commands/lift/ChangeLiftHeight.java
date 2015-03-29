@@ -1,3 +1,4 @@
+
 package org.usfirst.frc.team649.robot.commands.lift;
 
 import org.usfirst.frc.team649.robot.FishyRobot2015;
@@ -22,6 +23,7 @@ public class ChangeLiftHeight extends Command {
     protected void initialize() {
     	liftPID.enable();
     	liftPID.setSetpoint(FishyRobot2015.chainLiftSubsystem.setpointHeight + deltaHeight);
+    	FishyRobot2015.chainLiftSubsystem.setpointHeight += deltaHeight;
 
     }
 
