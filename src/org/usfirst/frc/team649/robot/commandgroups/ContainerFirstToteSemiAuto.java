@@ -24,11 +24,11 @@ public class ContainerFirstToteSemiAuto extends CommandGroup {
 		//addSequential(new IntakeTote()); //add a timeout to this fct...maybe  TODO PLS add back with bumpers
 		
 		//just in case
-		addSequential(new RunRollers(IntakePortSubsystem.INTAKE_ROLLER_SPEED, IntakeStarboardSubsystem.INTAKE_ROLLER_SPEED));
-		addSequential(new WaitCommand(.3));
-		addSequential(new RunRollers(0,0));
+//		addSequential(new RunRollers(IntakePortSubsystem.INTAKE_ROLLER_SPEED, IntakeStarboardSubsystem.INTAKE_ROLLER_SPEED));
+//		addSequential(new WaitCommand(.3));
+//		addSequential(new RunRollers(0,0));
 		
-		addSequential(new RaiseToteWithoutPID(ChainLiftSubsystem.PIDConstants.UP));
+		//addSequential(new RaiseToteWithoutPID(ChainLiftSubsystem.PIDConstants.UP));
 	}
 	
 	

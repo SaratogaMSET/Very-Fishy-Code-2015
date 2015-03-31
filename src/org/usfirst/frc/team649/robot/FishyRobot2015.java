@@ -232,6 +232,8 @@ public class FishyRobot2015 extends IterativeRobot {
 		new SetIntakeArmPositionWithoutPID(IntakePortSubsystem.PIDConstants.CURRENT_STATE).start();
 
 		SmartDashboard.putBoolean("IS RESET TRIPPED AT ALL", false);
+		
+		chainLiftSubsystem.resetEncodersAndVariables();
 	}
 
 	/**
@@ -257,15 +259,15 @@ public class FishyRobot2015 extends IterativeRobot {
 		containerState = (boolean) containerChooser.getSelected();
 
 		
-		if (oi.operatorJoystick.getRawButton(9)) {
-			new RunLift(oi.operatorJoystick.getY()).start();
+//		if (oi.operatorJoystick.getRawButton(9)) {
+//			new RunLift(oi.operatorJoystick.getY()).start();
+////			intakeRightSubsystem.arm.set(oi.operatorJoystick.getY() / 3.0);
+//		//	intakeLeftSubsystem.arm.set(-oi.operatorJoystick.getY()/ 3.0);
+//		}if(oi.operatorJoystick.getRawButton(7)) {
 //			intakeRightSubsystem.arm.set(oi.operatorJoystick.getY() / 3.0);
-		//	intakeLeftSubsystem.arm.set(-oi.operatorJoystick.getY()/ 3.0);
-		}if(oi.operatorJoystick.getRawButton(7)) {
-			intakeRightSubsystem.arm.set(oi.operatorJoystick.getY() / 3.0);
-		} if(oi.operatorJoystick.getRawButton(8)) {
-			intakeLeftSubsystem.arm.set(oi.operatorJoystick.getY() / 3.0);
-		}
+//		} if(oi.operatorJoystick.getRawButton(8)) {
+//			intakeLeftSubsystem.arm.set(oi.operatorJoystick.getY() / 3.0);
+//		}
 		
 		// new RunRollers(oi.operatorJoystick.getY()).start();
 
@@ -305,9 +307,9 @@ public class FishyRobot2015 extends IterativeRobot {
 		else if (oi.operator.containerSequenceButton.get() && !prevStateContainerSequence){
 			SmartDashboard.putBoolean("ENTERED CONTAINER LOOP", true);
 			//conditions for starting containerSequence
-			if (!chainLiftSubsystem.readyToPickContainer && chainLiftSubsystem.getNumTotes() >= 2){ //&& (intakeLeftSubsystem.isToteLimitPressed() || intakeRightSubsystem.isToteLimitPressed())){ //TODO change bool logic
-				new ContainerFirstToteSemiAuto(chainLiftSubsystem.getNumTotes()).start();
-				chainLiftSubsystem.readyToPickContainer = true;
+			if (chainLiftSubsystem.readyToPickContainer && chainLiftSubsystem.getNumTotes() >= 2){ //&& (intakeLeftSubsystem.isToteLimitPressed() || intakeRightSubsystem.isToteLimitPressed())){ //TODO change bool logic
+				new ContainerFirstToteSemiAuto((double)chainLiftSubsystem.getNumTotes()).start();
+				chainLiftSubsystem.readyToPickContainer = false;
 			}
 		}
 
@@ -317,13 +319,11 @@ public class FishyRobot2015 extends IterativeRobot {
 		
 		//actually must be double pressed if you want a full score, e.g. no container
 		if (oi.operator.scoreAllButton.get() && oi.operator.scoreAllSafteyButton.get() && !prevStateScore) {
-			new ScoreTotesOnPlatform().start();
-			// new ScoreAllAndResetFromTop().start();
 			//only if it is in the first stage will the button trigger a new command
-//			if (chainLiftSubsystem.firstStageOfScore){
-//				new ScoreAllAndResetFromTop().start();
-//				chainLiftSubsystem.firstStageOfScore = false;
-//			}
+			if (chainLiftSubsystem.firstStageOfScore){
+				new ScoreTotesOnPlatform().start();
+				chainLiftSubsystem.firstStageOfScore = false;
+			}
 		}
 
 		
@@ -349,14 +349,18 @@ public class FishyRobot2015 extends IterativeRobot {
 	
 
 		// throttle
-		if (oi.operator.releaseButton.get() && !prevStateRelease) {
-			new SetIntakeArmPositionWithoutPIDThreeState(IntakePortSubsystem.PIDConstants.RELEASING_STATE).start();
-		} else if (oi.operator.grabButton.get() && !prevStateGrab) {
-			new SetIntakeArmPositionWithoutPIDThreeState(IntakePortSubsystem.PIDConstants.GRABBING_STATE).start();
-		} 
-		else if(oi.operator.storeButton.get() && !prevStateStore) {
-			new SetIntakeArmPositionWithoutPIDThreeState(IntakePortSubsystem.PIDConstants.STORE_STATE).start();
-		}
+//		if (oi.operator.releaseButton.get() && !prevStateRelease) {
+//			new SetIntakeArmPositionWithoutPIDThreeState(IntakePortSubsystem.PIDConstants.RELEASING_STATE).start();
+//		} else if (oi.operator.grabButton.get() && !prevStateGrab) {
+//			new SetIntakeArmPositionWithoutPIDThreeState(IntakePortSubsystem.PIDConstants.GRABBING_STATE).start();
+//		} 
+//		else if(oi.operator.storeButton.get() && !prevStateStore) {
+//			new SetIntakeArmPositionWithoutPIDThreeState(IntakePortSubsystem.PIDConstants.STORE_STATE).start();
+//		}
+	
+	
+	
+	
 //			if (oi.operator.isGrabArmState()) {
 //				new SetIntakeArmPositionWithoutPID(IntakeStarboardSubsystem.PIDConstants.GRABBING_STATE).start();
 //				SmartDashboard.putString("button 11", "is pressed");

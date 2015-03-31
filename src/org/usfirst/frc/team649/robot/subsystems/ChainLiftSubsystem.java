@@ -50,14 +50,14 @@ public class ChainLiftSubsystem extends PIDSubsystem{
 		public static final double ENCODER_DISTANCE_PER_PULSE = (((22.0*(3.0/8.0)) * (12.0 / 60.0) * (18.0 / 42.0) * (18 / 42.0)) / 48.0);
 		public static final double ABS_TOLERANCE = 1;
 		public static final double CONSTANT_POWER_UP_VALUE = 0.6;
-		public static final double CONSTANT_POWER_DOWN_VALUE = -0.8;
+		public static final double CONSTANT_POWER_DOWN_VALUE = -0.4;
 
 		
 		//In inches
 		public static final double STORE_TO_STEP_LEVEL_DIFFERENCE = 5.0;
 		
 		//MUST be 16 (hook separation)
-		public static final double TOTE_PICK_UP_HEIGHT = 15.5;
+		public static final double TOTE_PICK_UP_HEIGHT = 16; //NESSIE: 15.5
 		public static final double RAW_TOTE_HEIGHT = 12;
 		//pick up from base
 		
@@ -66,7 +66,7 @@ public class ChainLiftSubsystem extends PIDSubsystem{
 		public static final double DOWN_TO_LIP_HEIGHT = -22;
 		public static final double CONTAINER_OFFSET = 3;
 		//public static final double CONTAINER_RELEASE_HEIGHT = -4;
-		public static final double VARIABLE_TOTE_SPACE_INCREMENT = -4;
+		public static final double VARIABLE_TOTE_SPACE_INCREMENT = -3.7;
 		
 		//under this height, the hal effect compensation is put in place when we reset
 		//so that we dont go up first if we score from about this height
@@ -120,6 +120,10 @@ public class ChainLiftSubsystem extends PIDSubsystem{
        // ultra = new Ul
 		pid = this.getPIDController();
     	pid.setAbsoluteTolerance(PIDConstants.ABS_TOLERANCE);
+	}
+	
+	public void setSetPointHeight(double height){
+		setpointHeight = setpointHeight + height;
 	}
 	
     public void setPower(double power) {

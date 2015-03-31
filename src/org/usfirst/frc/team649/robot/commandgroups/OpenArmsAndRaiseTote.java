@@ -19,12 +19,12 @@ public class OpenArmsAndRaiseTote extends CommandGroup {
     	SmartDashboard.putString("Now setting arms", "to release");
     	if(!FishyRobot2015.chainLiftSubsystem.isPastTop) {
 	    	//addSequential(new SetIntakeArmPositionWithoutPIDThreeState(IntakePortSubsystem.PIDConstants.RELEASING_STATE));
-	    	addSequential(new SetIntakeArmPositionWithoutPID(IntakePortSubsystem.PIDConstants.RELEASING_STATE));
+	    	//addSequential(new SetIntakeArmPositionWithoutPID(IntakePortSubsystem.PIDConstants.RELEASING_STATE));
     	}
 	    	//addSequential(new WaitCommand(1));
     	addSequential(new RaiseToteWithoutPID(up));
         //addSequential(new SetIntakeArmPositionWithoutPIDThreeState(IntakePortSubsystem.PIDConstants.GRABBING_STATE));
-        addSequential(new SetIntakeArmPositionWithoutPID(IntakePortSubsystem.PIDConstants.GRABBING_STATE));
+       // addSequential(new SetIntakeArmPositionWithoutPID(IntakePortSubsystem.PIDConstants.GRABBING_STATE));
         
     }
 }

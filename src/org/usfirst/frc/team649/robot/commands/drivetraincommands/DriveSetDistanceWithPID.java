@@ -13,8 +13,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class DriveSetDistanceWithPID extends Command {
 
 	public static final int ON_TARGET_TIME = 250;
-	private final double distance;
-	private PIDController pid;
+	public final double distance;
+	public PIDController pid;
 	private long onTargetStartTime;
 	private boolean finishedChecker;
 	private double minDriveSpeed;

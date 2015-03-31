@@ -6,10 +6,19 @@ import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.command.Command;
 
 public class WaitTilButtonPressed extends Command {
-	public Button button;
+	public Button button1;
+	public Button button2;
+	public boolean twoButtons;
 	
-	public WaitTilButtonPressed(Button b) {
-		button = b;
+	public WaitTilButtonPressed(Button b1) {
+		button1 = b1;
+		twoButtons = false;
+	}
+	
+	public WaitTilButtonPressed(Button b1, Button b2) {
+		button1 = b1;
+		button2 = b2;
+		twoButtons = true;
 	}
 	
 	@Override
@@ -27,7 +36,13 @@ public class WaitTilButtonPressed extends Command {
 	@Override
 	protected boolean isFinished() {
 		// TODO Auto-generated method stub
-		return FishyRobot2015.oi.driver.isManualOverride() || button.get();
+		boolean done = button1.get();
+		
+		if (twoButtons){
+			done = done && button2.get();
+		}
+		
+		return FishyRobot2015.oi.driver.isManualOverride() || done;
 	}
 
 	@Override
