@@ -2,6 +2,7 @@ package org.usfirst.frc.team649.robot.commands.drivetraincommands;
 
 import org.usfirst.frc.team649.robot.FishyRobot2015;
 import org.usfirst.frc.team649.robot.subsystems.DrivetrainSubsystem;
+import org.usfirst.frc.team649.robot.subsystems.DrivetrainSubsystem.EncoderBasedDriving;
 
 import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.command.Command;
@@ -15,9 +16,9 @@ public class DriveSetDistanceWithPID extends Command {
 	public static final int ON_TARGET_TIME = 250;
 	public final double distance;
 	public PIDController pid;
-	private long onTargetStartTime;
-	private boolean finishedChecker;
-	private double minDriveSpeed;
+	//private long onTargetStartTime;
+	public double minDriveSpeed;
+	public double maxDriveSpeed;
 
 	/**
 	 * Construct a DriveSetDistanceCommand. Immutable, but can safely be reused
@@ -30,37 +31,37 @@ public class DriveSetDistanceWithPID extends Command {
 	 */
 	public DriveSetDistanceWithPID(double distance) {
 		this.distance = distance;
-		this.minDriveSpeed = 0.25;
-	}
+		this.minDriveSpeed = 0.15;
+		this.maxDriveSpeed = 0.5;
 
-	public DriveSetDistanceWithPID(double distance, double minDriveSpeed) {
+		this.pid = FishyRobot2015.drivetrainSubsystem.encoderDrivePID;
+	}
+	
+	public DriveSetDistanceWithPID(double distance, double minDriveSpeed, double maxDriveSpeed){
 		this.distance = distance;
 		this.minDriveSpeed = minDriveSpeed;
-	}
-
-	public DriveSetDistanceWithPID(double distance, double minDriveSpeed,
-			boolean finishedChecker) {
-		this.distance = distance;
-		this.finishedChecker = finishedChecker;
-		this.minDriveSpeed = minDriveSpeed;
+		this.maxDriveSpeed = maxDriveSpeed;
+		
+		this.pid = FishyRobot2015.drivetrainSubsystem.encoderDrivePID;
 	}
 
 	// Called just before this Command runs the first time
 	protected void initialize() {
 		// Display.printToOutputStream("starting drive PID: " +
 		// DriverStation.getInstance().getMatchTime() + ", dist: " + distance);
-		DrivetrainSubsystem.EncoderBasedDriving.MIN_MOTOR_POWER = minDriveSpeed;
-		this.pid = FishyRobot2015.drivetrainSubsystem.encoderDrivePID;
+		EncoderBasedDriving.MIN_MOTOR_POWER = minDriveSpeed;
+		EncoderBasedDriving.MAX_MOTOR_POWER = maxDriveSpeed;
 		pid.setPID(DrivetrainSubsystem.EncoderBasedDriving.AUTO_P,
 				DrivetrainSubsystem.EncoderBasedDriving.AUTO_I,
 				DrivetrainSubsystem.EncoderBasedDriving.AUTO_D);
 		SmartDashboard.putNumber("Setpoint Drivetrain", distance);
 		pid.setSetpoint(distance);
+		this.pid = FishyRobot2015.drivetrainSubsystem.encoderDrivePID;
 		
 		FishyRobot2015.drivetrainSubsystem.resetEncoders();
 		// drivetrainSubsystem.startEncoders();
 		pid.enable();
-		onTargetStartTime = -1;
+		//onTargetStartTime = -1;
 	}
 
 	// Called repeatedly when this Command is scheduled to run
@@ -97,7 +98,6 @@ public class DriveSetDistanceWithPID extends Command {
 		// driveTrainSubsystem.getDistance());
 		pid.disable();
 		FishyRobot2015.drivetrainSubsystem.driveFwdRot(0, 0);
-		finishedChecker = true;
 	}
 
 	// Called when another command which requires one or more of the same

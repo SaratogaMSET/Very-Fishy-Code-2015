@@ -170,7 +170,8 @@ public class ChainLiftSubsystem extends PIDSubsystem{
     public void resetEncodersAndVariables() {
         resetEncoders();
         
-        setpointHeight = 0;
+        setpointHeight = 
+        		0;
         isPastTop = false;
         isPastBottom = true;
         firstStageOfScore = true;

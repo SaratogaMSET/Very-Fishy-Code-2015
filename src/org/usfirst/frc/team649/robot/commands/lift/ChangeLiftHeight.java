@@ -23,7 +23,7 @@ public class ChangeLiftHeight extends Command {
 //    	liftPID =  FishyRobot2015.chainLiftSubsystem.getPIDController();
     	deltaHeight = height;
     	up = deltaHeight > 0 ? true : false;
-    	FishyRobot2015.chainLiftSubsystem.setSetPointHeight(deltaHeight);
+    //	FishyRobot2015.chainLiftSubsystem.setSetPointHeight(deltaHeight);
     }
 
     // Called just before this Command runs the first time
@@ -32,7 +32,7 @@ public class ChangeLiftHeight extends Command {
 //    	liftPID.setSetpoint(FishyRobot2015.chainLiftSubsystem.setpointHeight);
     	SmartDashboard.putNumber("CHANGED HEIGHT", FishyRobot2015.chainLiftSubsystem.setpointHeight);
     	SmartDashboard.putNumber("DELTA", deltaHeight);
-    	
+    	FishyRobot2015.chainLiftSubsystem.setpointHeight += deltaHeight;
     	speed = up ? PIDConstants.CONSTANT_POWER_UP_VALUE : PIDConstants.CONSTANT_POWER_DOWN_VALUE;
 
     }

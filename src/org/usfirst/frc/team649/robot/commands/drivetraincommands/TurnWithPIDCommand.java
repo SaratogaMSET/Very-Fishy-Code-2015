@@ -31,7 +31,7 @@ public class TurnWithPIDCommand extends Command {
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	DrivetrainSubsystem.EncoderBasedDriving.MIN_MOTOR_POWER = minimumPower;
+    	//DrivetrainSubsystem.EncoderBasedDriving.MIN_MOTOR_POWER = minimumPower;
     	pid = FishyRobot2015.drivetrainSubsystem.encoderTurnPID;
     	pid.setPID(DrivetrainSubsystem.EncoderBasedTurning.AUTO_P, DrivetrainSubsystem.EncoderBasedTurning.AUTO_I, DrivetrainSubsystem.EncoderBasedTurning.AUTO_D);
 		FishyRobot2015.drivetrainSubsystem.resetEncoders();

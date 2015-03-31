@@ -14,13 +14,13 @@ public class RunRollers extends Command {
 	public double choosenSpeedLeft;
 	//allows for a command to stop
 	public RunRollers(double speedRight, double speedLeft){
-		choosenSpeedRight = speedRight;
+		choosenSpeedRight = -speedRight;
 		choosenSpeedLeft = speedLeft;
 	}
 	@Override
 	protected void initialize() {
 		FishyRobot2015.intakeLeftSubsystem.roller.set(choosenSpeedLeft);
-		FishyRobot2015.intakeRightSubsystem.roller.set(-choosenSpeedRight);
+		FishyRobot2015.intakeRightSubsystem.roller.set(choosenSpeedRight);
 	}
 
 	@Override

@@ -23,7 +23,7 @@ public class ThreeToteAutoPart1 extends CommandGroup {
     	//move arms out (state position), winch in the three containers, drive forward, all sequential
     	//Pick Up first tote
     	addParallel(new SetIntakeArmPositionWithoutPID(IntakePortSubsystem.PIDConstants.GRABBING_STATE));
-    	addParallel(new DriveSetDistanceWithPID(DrivetrainSubsystem.EncoderBasedDriving.AUTO_START_TO_TOTE, 0.1));
+    	addParallel(new DriveSetDistanceWithPID(DrivetrainSubsystem.EncoderBasedDriving.AUTO_START_TO_TOTE, 0.1, 0.5));
     	addSequential(new PickUpToteSequence());
     	
     	
@@ -31,7 +31,7 @@ public class ThreeToteAutoPart1 extends CommandGroup {
     	addSequential(new RaiseToteWithoutPID(true));
     	addParallel(new ChangeLiftHeight(3.0));
     	addParallel(new RunRollers(-1.0, -1.0));
-    	addParallel(new DriveSetDistanceWithPID(DrivetrainSubsystem.EncoderBasedDriving.AUTO_BETWEEN_TOTES, 0.1));
+    	addParallel(new DriveSetDistanceWithPID(DrivetrainSubsystem.EncoderBasedDriving.AUTO_BETWEEN_TOTES, 0.1, 0.5));
     	addSequential(new WaitCommand(2.0));
     
     	addSequential(new RunRollers(0.0, 0.0));

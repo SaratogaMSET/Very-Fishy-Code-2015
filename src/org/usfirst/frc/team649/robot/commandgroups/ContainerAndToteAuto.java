@@ -29,14 +29,14 @@ public class ContainerAndToteAuto extends CommandGroup {
     	//Get contarior out of the way and move 
     	addSequential(new RaiseToteWithoutPID(true));
     	addSequential(new RunRollers(1.0, 1.0));
-    	addSequential(new DriveSetDistanceWithPID(DrivetrainSubsystem.EncoderBasedDriving.AUTO_BETWEEN_TOTES, 0.1));
+    	addSequential(new DriveSetDistanceWithPID(DrivetrainSubsystem.EncoderBasedDriving.AUTO_BETWEEN_TOTES, 0.1, 0.5));
     	addSequential(new WaitCommand(1.8));
     
     	addSequential(new RunRollers(0.0, 0.0));
  
     	//turn
     	addSequential(new TurnSetTimeCommand(1));
-    	addSequential(new DriveSetDistanceWithPID(32, 0.1));
+    	addSequential(new DriveSetDistanceWithPID(32, 0.1, 0.5));
 
     }
 }

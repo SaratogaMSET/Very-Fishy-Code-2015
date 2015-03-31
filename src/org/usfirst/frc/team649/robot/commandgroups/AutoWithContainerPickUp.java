@@ -15,8 +15,11 @@ import org.usfirst.frc.team649.robot.subsystems.IntakePortSubsystem;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.WaitCommand;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class AutoWithContainerPickUp extends CommandGroup {
+	
+	DriveSetDistanceWithPID driveCommand1, driveCommand2;
 	
 	public AutoWithContainerPickUp(){
 		//facing robot
@@ -25,21 +28,20 @@ public class AutoWithContainerPickUp extends CommandGroup {
 		addSequential(new ResetEncoders());
 		
 		//slow forward drive
-		DriveSetDistanceWithPID driveCommand = new DriveSetDistanceWithPID(EncoderBasedDriving.AUTO_START_TO_CONTAINER);
-		driveCommand.pid.setOutputRange(0.05, 0.20); //TODO TUNE SPEED
+		addSequential(new DriveSetDistanceWithPID(EncoderBasedDriving.AUTO_START_TO_CONTAINER, 0.1, 0.32));
 		
-		addSequential(driveCommand);
 		//raise up two
-		addSequential(new ChangeLiftHeight(2 * ChainLiftSubsystem.PIDConstants.TOTE_PICK_UP_HEIGHT));
+		addSequential(new ChangeLiftHeight(2.0 * ChainLiftSubsystem.PIDConstants.TOTE_PICK_UP_HEIGHT));
+
+		//SmartDashboard.p
 		//grab it
 		addParallel(new SetIntakeArmPositionWithoutPID(IntakePortSubsystem.PIDConstants.GRABBING_STATE));
 		addSequential(new RunRollers(IntakePortSubsystem.INTAKE_ROLLER_SPEED, IntakeStarboardSubsystem.INTAKE_ROLLER_SPEED));
-		addSequential(new WaitCommand(0.3));
+		addSequential(new WaitCommand(1));
 		addSequential(new RunRollers(0,0));
 		
-		driveCommand = new DriveSetDistanceWithPID(-EncoderBasedDriving.AUTO_TOTE_TO_AUTO_ZONE); //BACKWARDS
-		driveCommand.pid.setOutputRange(-0.1, -0.4); //TODO TUNE SPEED
-		addSequential(driveCommand);
+		//drive back into autozone
+		addSequential(new DriveSetDistanceWithPID(-EncoderBasedDriving.AUTO_TOTE_TO_AUTO_ZONE, -0.4, -0.1)); //BACKWARDS
 		
 	}
 }

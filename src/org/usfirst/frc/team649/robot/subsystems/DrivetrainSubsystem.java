@@ -26,8 +26,8 @@ public class DrivetrainSubsystem extends PIDSubsystem implements PIDSource, PIDO
     
     public static class EncoderBasedDriving {
     	private static final double ENCODER_DISTANCE_PER_PULSE = 16.25 / 128; //-6.25 * Math.PI / 128;
-        public static final double MAX_MOTOR_POWER = 0.5;
-        public static double MIN_MOTOR_POWER = 0.25;
+        public static double MAX_MOTOR_POWER = 0.5;
+        public static double MIN_MOTOR_POWER = 0.15;
         
         //autonomous drive constants
         
@@ -41,7 +41,7 @@ public class DrivetrainSubsystem extends PIDSubsystem implements PIDSource, PIDO
     	//pick up
     	public static final double AUTO_START_TO_TOTE = 0;
     	public static final double AUTO_BETWEEN_TOTES = 84;
-    	public static final double AUTO_TOTE_TO_AUTO_ZONE = 18;
+    	public static final double AUTO_TOTE_TO_AUTO_ZONE = 63;
     	
     	
         //others
@@ -79,7 +79,7 @@ public class DrivetrainSubsystem extends PIDSubsystem implements PIDSource, PIDO
         }
     	encoderDrivePID = this.getPIDController();
     	encoderDrivePID.setAbsoluteTolerance(EncoderBasedDriving.ABS_TOLERANCE);
-    	encoderDrivePID.setOutputRange(-EncoderBasedDriving.MAX_MOTOR_POWER, EncoderBasedDriving.MAX_MOTOR_POWER);
+    	//encoderDrivePID.setOutputRange(-EncoderBasedDriving.MAX_MOTOR_POWER, EncoderBasedDriving.MAX_MOTOR_POWER);
     	encoders = new Encoder[RobotMap.DRIVE_TRAIN.ENCODERS.length / 2];
         encoders[0] = new Encoder(RobotMap.DRIVE_TRAIN.ENCODERS[0], RobotMap.DRIVE_TRAIN.ENCODERS[1], true);
         encoders[1] = new Encoder(RobotMap.DRIVE_TRAIN.ENCODERS[2], RobotMap.DRIVE_TRAIN.ENCODERS[3]);
@@ -150,10 +150,12 @@ public class DrivetrainSubsystem extends PIDSubsystem implements PIDSource, PIDO
 	}
 
 	protected void usePIDOutput(double output) {
-//		if(output < 0) {
-//			output = -1.0 * Math.min(output, EncoderBasedDriving.MIN_MOTOR_POWER)
-//		}
-//        output = (output < 0 ? -1 : 1) * Math.max(Math.abs(output), EncoderBasedDriving.MIN_MOTOR_POWER);
+		if (output > EncoderBasedDriving.MAX_MOTOR_POWER){
+        	output = EncoderBasedDriving.MAX_MOTOR_POWER;
+        }
+        else if (output < EncoderBasedDriving.MIN_MOTOR_POWER){
+        	output = EncoderBasedDriving.MIN_MOTOR_POWER;
+        }
         driveFwdRot(output, 0);
 	}
 
@@ -172,7 +174,13 @@ public class DrivetrainSubsystem extends PIDSubsystem implements PIDSource, PIDO
     }
 	@Override
 	public void pidWrite(double output) {
-        output = (output < 0 ? -1 : 1) * Math.max(Math.abs(output), EncoderBasedDriving.MIN_MOTOR_POWER);
+        if (output > EncoderBasedDriving.MAX_MOTOR_POWER){
+        	output = EncoderBasedDriving.MAX_MOTOR_POWER;
+        }
+        else if (output < EncoderBasedDriving.MIN_MOTOR_POWER){
+        	output = EncoderBasedDriving.MIN_MOTOR_POWER;
+        }
+        
         driveFwdRot(0, output);
 	}
 	@Override

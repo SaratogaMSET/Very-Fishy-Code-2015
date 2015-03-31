@@ -1,6 +1,7 @@
 package org.usfirst.frc.team649.robot;
 
 import org.usfirst.frc.team649.robot.commandgroups.AutoPickUpThreeTotes;
+import org.usfirst.frc.team649.robot.commandgroups.AutoWithContainerPickUp;
 import org.usfirst.frc.team649.robot.commandgroups.ContainerAndToteAuto;
 import org.usfirst.frc.team649.robot.commandgroups.ContainerFirstToteSemiAuto;
 import org.usfirst.frc.team649.robot.commandgroups.DriveBackAndTurnAuto;
@@ -184,6 +185,8 @@ public class FishyRobot2015 extends IterativeRobot {
 //	new ContainerAndToteAuto().start();
 		//new TurnSetTimeCommand(1).start();
 	
+		//new AutoWithContainerPickUp().start();
+		new AutoPickUpThreeTotes().start();
 	}
 
 	/**
@@ -209,6 +212,8 @@ public class FishyRobot2015 extends IterativeRobot {
 		SmartDashboard.putBoolean("Left Drive Encoder", driveLeftEncoderState);
 		SmartDashboard.putBoolean("Right Drive Encoder", driveRightEncoderState);
 		SmartDashboard.putBoolean("Chain Encoder", chainEncoderState);
+		
+		SmartDashboard.putNumber("Chain Height", chainLiftSubsystem.setpointHeight);
 	}
 
 	public void teleopInit() {
@@ -234,6 +239,8 @@ public class FishyRobot2015 extends IterativeRobot {
 		SmartDashboard.putBoolean("IS RESET TRIPPED AT ALL", false);
 		
 		chainLiftSubsystem.resetEncodersAndVariables();
+		
+	//	new AutoWithContainerPickUp().start();
 	}
 
 	/**
@@ -273,7 +280,7 @@ public class FishyRobot2015 extends IterativeRobot {
 
 	//	oi.operator.intakeButton.whenReleased(new RunLift(0));
 
-		new DriveForwardRotate(oi.driver.getDriveForward(), oi.driver.getDriveRotation()).start();
+		//new DriveForwardRotate(oi.driver.getDriveForward(), oi.driver.getDriveRotation()).start();
 
 		// if(oi.operator.purgeButton.get()) {
 		// //new
@@ -349,14 +356,14 @@ public class FishyRobot2015 extends IterativeRobot {
 	
 
 		// throttle
-//		if (oi.operator.releaseButton.get() && !prevStateRelease) {
-//			new SetIntakeArmPositionWithoutPIDThreeState(IntakePortSubsystem.PIDConstants.RELEASING_STATE).start();
-//		} else if (oi.operator.grabButton.get() && !prevStateGrab) {
-//			new SetIntakeArmPositionWithoutPIDThreeState(IntakePortSubsystem.PIDConstants.GRABBING_STATE).start();
-//		} 
-//		else if(oi.operator.storeButton.get() && !prevStateStore) {
-//			new SetIntakeArmPositionWithoutPIDThreeState(IntakePortSubsystem.PIDConstants.STORE_STATE).start();
-//		}
+		if (oi.operator.releaseButton.get() && !prevStateRelease) {
+			new SetIntakeArmPositionWithoutPIDThreeState(IntakePortSubsystem.PIDConstants.RELEASING_STATE).start();
+		} else if (oi.operator.grabButton.get() && !prevStateGrab) {
+			new SetIntakeArmPositionWithoutPIDThreeState(IntakePortSubsystem.PIDConstants.GRABBING_STATE).start();
+		} 
+		else if(oi.operator.storeButton.get() && !prevStateStore) {
+			new SetIntakeArmPositionWithoutPIDThreeState(IntakePortSubsystem.PIDConstants.STORE_STATE).start();
+		}
 	
 	
 	

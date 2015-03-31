@@ -19,7 +19,7 @@ public class PickUpToteSequence extends CommandGroup {
     
     public  PickUpToteSequence() {
 		addSequential(new SetIntakeArmPositionWithoutPID(IntakePortSubsystem.PIDConstants.GRABBING_STATE));
-		addSequential(new IntakeTote());
+		//addSequential(new IntakeTote()); TODO RE PUT IN WHEN BUMPERS
 		//run for a bit extra
 		addSequential(new RunRollers(IntakePortSubsystem.INTAKE_ROLLER_SPEED, IntakePortSubsystem.INTAKE_ROLLER_SPEED));
 		addSequential(new WaitCommand(.3));
