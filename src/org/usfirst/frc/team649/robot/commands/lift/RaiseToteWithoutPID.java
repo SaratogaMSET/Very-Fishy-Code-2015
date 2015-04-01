@@ -23,7 +23,11 @@ public class RaiseToteWithoutPID extends Command {
 		done = false;
     	requires(FishyRobot2015.chainLiftSubsystem);
 		heightChangeReference = PIDConstants.TOTE_PICK_UP_HEIGHT;
-		if (FishyRobot2015.chainLiftSubsystem.isPastTop && upOrDown || FishyRobot2015.chainLiftSubsystem.isPastBottom && !upOrDown){
+    }
+
+    // Called just before this Command runs the first time
+    protected void initialize() {
+    	if (FishyRobot2015.chainLiftSubsystem.isPastTop && upOrDown || FishyRobot2015.chainLiftSubsystem.isPastBottom && !upOrDown){
 			heightChangeReference = 0;
 			done = true;
 		} else{
@@ -37,11 +41,6 @@ public class RaiseToteWithoutPID extends Command {
 				 FishyRobot2015.chainLiftSubsystem.setpointHeight -= heightChangeReference;
 			}
 		}
-    }
-
-    // Called just before this Command runs the first time
-    protected void initialize() {
-    	
     }
 
     // Called repeatedly when this Command is scheduled to run

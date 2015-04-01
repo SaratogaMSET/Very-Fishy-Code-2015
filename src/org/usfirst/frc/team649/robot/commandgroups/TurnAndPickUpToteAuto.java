@@ -15,7 +15,7 @@ public class TurnAndPickUpToteAuto extends CommandGroup {
     
     public  TurnAndPickUpToteAuto() {
     	addSequential(new DriveSetDistanceWithPID(24, 0.1, 0.5));
-    	addParallel(new TurnWithPIDCommand(45/2.0, 0.1));
+    	addParallel(new TurnWithPIDCommand(45, 0.1, 0.5));
     	addSequential(new RunRollers(-0.7, -0.7));
     	
     	addSequential(new WaitForChildren());
@@ -24,7 +24,7 @@ public class TurnAndPickUpToteAuto extends CommandGroup {
     	addSequential(new PickUpToteSequence());
     	
     	addSequential(new WaitForChildren());
-    	addSequential(new TurnWithPIDCommand(45, 0.1));
+    	addSequential(new TurnWithPIDCommand(90, 0.1, 0.5));
     	addSequential(new DriveSetDistanceWithPID(74, 0.1, 0.5));
     }
 }

@@ -88,6 +88,8 @@ public class FishyRobot2015 extends IterativeRobot {
 	public boolean driveLeftEncoderState, driveRightEncoderState, chainEncoderState;
 	
 	public SendableChooser containerChooser;
+	private boolean prevStateIntake;
+	private boolean prevStatePurge;
 	public static boolean containerState = false;
 
 	/**
@@ -132,6 +134,9 @@ public class FishyRobot2015 extends IterativeRobot {
 		prevStateContainerSequence = false;
 		prevStateLowerContainer = false;
 		prevStateScore = false;
+		
+		prevStateIntake = false;
+		prevStatePurge = false;
 		
 		prevStateRelease = false;
 		prevStateGrab = false;
@@ -179,14 +184,14 @@ public class FishyRobot2015 extends IterativeRobot {
 		
 	//	new PickUpToteSequence().start();
 		//new DriveSetDistanceWithPID(-63).start();
-	//	new DriveBackAndTurnAuto().start();
-	//	new TurnWithPIDCommand(90, 0.1).start();
+		//new DriveBackAndTurnAuto().start();
+		//new TurnWithPIDCommand(90, 0.1, 0.5).start();
 	//	new TurnAndPickUpToteAuto().start();
 //	new ContainerAndToteAuto().start();
 		//new TurnSetTimeCommand(1).start();
 	
 		//new AutoWithContainerPickUp().start();
-		new AutoPickUpThreeTotes().start();
+		//new AutoPickUpThreeTotes().start();
 	}
 
 	/**
@@ -241,6 +246,7 @@ public class FishyRobot2015 extends IterativeRobot {
 		chainLiftSubsystem.resetEncodersAndVariables();
 		
 	//	new AutoWithContainerPickUp().start();
+		//new TurnWithPIDCommand(-90, -0.5, -0.1).start();
 	}
 
 	/**
@@ -289,21 +295,17 @@ public class FishyRobot2015 extends IterativeRobot {
 		// //new RunRollers(IntakeLeftSubsystem.INTAKE_ROLLER_SPEED).start();;
 		// }
 		
-		if(oi.operator.intakeButton.get() && oi.operator.twistRight()) {
-				new RunRollers(0.25, -0.25).start();
-			} 
-		else if(oi.operator.intakeButton.get() && oi.operator.twistLeft()) {
-				new RunRollers(-0.25, 0.25).start();
-			} 
-		else if(oi.operator.intakeButton.get()) {
-				new RunRollers(0.7, 0.7).start();
-			}
-	   else if(oi.operator.purgeButton.get()) {
+		if (oi.operator.intakeButton.get() && oi.operator.twistRight()) {
+			new RunRollers(0.25, -0.25).start();
+		} else if (oi.operator.intakeButton.get() && oi.operator.twistLeft()) {
+			new RunRollers(-0.25, 0.25).start();
+		} else if (oi.operator.intakeButton.get()) {
+			new RunRollers(0.7, 0.7).start();
+		} else if (oi.operator.purgeButton.get()) {
 			new RunRollers(-0.7, -0.7).start();
-		} else {
-			new RunRollers(0.0, 0.0).start();
+		} else if ((!oi.operator.intakeButton.get() && prevStateIntake) || (!oi.operator.purgeButton.get() && prevStatePurge)){
+			new RunRollers(0,0).start();
 		}
-		
 		
 
 //TODO CHECK whenPressed and whenReleased functions
@@ -393,10 +395,13 @@ public class FishyRobot2015 extends IterativeRobot {
 		prevStateStore = oi.operator.storeButton.get();
 		prevStateManualOverride1 = oi.driver.manualOverrideButton1.get();
 		prevStateManualOverride2 = oi.driver.manualOverrideButton2.get();
-		
+		prevStateIntake = oi.operator.intakeButton.get();
+		prevStatePurge = oi.operator.purgeButton.get();
 		/**************** MANUAL **********************/
 		if (oi.driver.isManualOverride()) {
 
+			chainLiftSubsystem.firstStageOfScore = true;
+			
 			chainLiftSubsystem.setPower(oi.manual.getLiftPower()/2);
 //no.
 			if (Math.abs(oi.manual.leftHardStopInPower()) > 0.05) {

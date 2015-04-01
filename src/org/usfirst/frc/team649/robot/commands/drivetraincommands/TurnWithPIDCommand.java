@@ -16,22 +16,26 @@ public class TurnWithPIDCommand extends Command {
 
 	double deltaTranslationalDistance;
 	double minimumPower;
+	double maximumPower;
 	PIDController pid;
 	
     public TurnWithPIDCommand(double angle) {
-    	deltaTranslationalDistance = (angle / 360.0) * (26.0 * Math.PI);
+    	deltaTranslationalDistance = (angle / 360.0) * (13.0 * Math.PI);
     	minimumPower = 0.2;
+    	maximumPower = 0.5;
     }
     
-    public TurnWithPIDCommand(double angle, double minPower) {
-    	deltaTranslationalDistance = (angle / 360.0) * (26.0 * Math.PI);
+    public TurnWithPIDCommand(double angle, double minPower, double maxPower) {
+    	deltaTranslationalDistance = (angle / 360.0) * (13.0 * Math.PI);
     	minimumPower = minPower;
+    	maximumPower = maxPower;
     }
     
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	//DrivetrainSubsystem.EncoderBasedDriving.MIN_MOTOR_POWER = minimumPower;
+    	DrivetrainSubsystem.EncoderBasedDriving.MIN_MOTOR_POWER = minimumPower;
+    	DrivetrainSubsystem.EncoderBasedDriving.MAX_MOTOR_POWER = maximumPower;
     	pid = FishyRobot2015.drivetrainSubsystem.encoderTurnPID;
     	pid.setPID(DrivetrainSubsystem.EncoderBasedTurning.AUTO_P, DrivetrainSubsystem.EncoderBasedTurning.AUTO_I, DrivetrainSubsystem.EncoderBasedTurning.AUTO_D);
 		FishyRobot2015.drivetrainSubsystem.resetEncoders();
@@ -52,7 +56,8 @@ public class TurnWithPIDCommand extends Command {
     // Called once after isFinished returns true
     protected void end() {
     	pid.disable();
-		FishyRobot2015.drivetrainSubsystem.driveFwdRot(0, 0);    }
+		FishyRobot2015.drivetrainSubsystem.driveFwdRot(0, 0);    
+	}
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run

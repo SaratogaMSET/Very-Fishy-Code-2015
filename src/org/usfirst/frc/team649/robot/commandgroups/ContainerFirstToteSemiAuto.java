@@ -18,17 +18,19 @@ public class ContainerFirstToteSemiAuto extends CommandGroup {
 	public ContainerFirstToteSemiAuto(double numTotes){
 		//down 2 totes
 		System.out.println("Entered Cont Semi Auto");
-		addSequential(new ChangeLiftHeight(-numTotes * PIDConstants.TOTE_PICK_UP_HEIGHT));
+		addSequential(new OpenArmsAndRaiseTote(ChainLiftSubsystem.PIDConstants.DOWN));
 		
 		//second stage, run rollers quickly before pick up
 		//addSequential(new IntakeTote()); //add a timeout to this fct...maybe  TODO PLS add back with bumpers
 		
 		//just in case
-//		addSequential(new RunRollers(IntakePortSubsystem.INTAKE_ROLLER_SPEED, IntakeStarboardSubsystem.INTAKE_ROLLER_SPEED));
-//		addSequential(new WaitCommand(.3));
-//		addSequential(new RunRollers(0,0));
+		addSequential(new RunRollers(IntakePortSubsystem.INTAKE_ROLLER_SPEED, IntakeStarboardSubsystem.INTAKE_ROLLER_SPEED));
+		addSequential(new WaitCommand(0.7));
+		addSequential(new RunRollers(0,0));
 		
-		//addSequential(new RaiseToteWithoutPID(ChainLiftSubsystem.PIDConstants.UP));
+		addSequential(new WaitCommand(0.5));
+		
+		addSequential(new OpenArmsAndRaiseTote(ChainLiftSubsystem.PIDConstants.UP));
 	}
 	
 	

@@ -87,6 +87,7 @@ public class DrivetrainSubsystem extends PIDSubsystem implements PIDSource, PIDO
         encoders[1].setDistancePerPulse(EncoderBasedDriving.ENCODER_DISTANCE_PER_PULSE);
         
         gyro = new Gyro(RobotMap.DRIVE_TRAIN.GRYO);
+        resetGyro();
         encoderTurnPID = new PIDController(EncoderBasedTurning.AUTO_P, EncoderBasedTurning.AUTO_I, EncoderBasedTurning.AUTO_D, this, this);
         encoderTurnPID.setAbsoluteTolerance(EncoderBasedTurning.ABS_TOLERANCE);
     }
