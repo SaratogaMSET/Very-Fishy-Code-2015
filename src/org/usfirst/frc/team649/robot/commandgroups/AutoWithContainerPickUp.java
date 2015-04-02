@@ -28,10 +28,10 @@ public class AutoWithContainerPickUp extends CommandGroup {
 		addSequential(new ResetEncoders());
 		
 		//slow forward drive
-		addSequential(new DriveSetDistanceWithPID(EncoderBasedDriving.AUTO_START_TO_CONTAINER, 0.1, 0.32));
+		//addSequential(new DriveSetDistanceWithPID(EncoderBasedDriving.AUTO_START_TO_CONTAINER, 0.1, 0.32));
 		
 		//raise up two
-		addSequential(new ChangeLiftHeight(2.0 * ChainLiftSubsystem.PIDConstants.TOTE_PICK_UP_HEIGHT));
+		addSequential(new ChangeLiftHeight(1.0 * ChainLiftSubsystem.PIDConstants.TOTE_PICK_UP_HEIGHT));
 
 		//SmartDashboard.p
 		//grab it

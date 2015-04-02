@@ -18,9 +18,9 @@ public class IntakePortSubsystem extends PIDSubsystem {
 	public PIDController pid;
 	public DigitalInput totesLimit;
 	public DigitalInput armLimit;
-	public static final double INTAKE_ROLLER_SPEED = 0.3;
+	public static final double INTAKE_ROLLER_SPEED = 0.7;
 	public static final double INTAKE_ROLLER_OFF_SPEED = 0;
-	public static final double PURGE_ROLLER_SPEED = -0.3;
+	public static final double PURGE_ROLLER_SPEED = -0.7;
 	public int state;
 	
 	//CONSTANTS
@@ -39,9 +39,9 @@ public class IntakePortSubsystem extends PIDSubsystem {
 		
 		public static final double CONVERSION_DEGREES_TO_POT = 1.0/270;
 		
-		public static final double ARM_POS_RELEASE = 1.59;//NESSY: 1.43; PBOT:  //200 * CONVERSION_DEGREES_TO_POT;
+		public static final double ARM_POS_RELEASE = 1.62;//NESSY: 1.43; PBOT:  //200 * CONVERSION_DEGREES_TO_POT;
 		//for pulling in totes
-		public static final double ARM_POS_GRABBING = 1.42;//NESSY: 1.2; PBOT: //225 * CONVERSION_DEGREES_TO_POT;
+		public static final double ARM_POS_GRABBING = 1.47;//NESSY: 1.2; PBOT: //225 * CONVERSION_DEGREES_TO_POT;
 		//for both arms completely back
 		public static final double ARM_POS_STORING = 2.0; // * CONVERSION_DEGREES_TO_POT; //228
 		

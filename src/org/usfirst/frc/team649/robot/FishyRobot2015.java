@@ -1,6 +1,6 @@
 package org.usfirst.frc.team649.robot;
 
-import org.usfirst.frc.team649.robot.commandgroups.AutoPickUpThreeTotes;
+import org.usfirst.frc.team649.robot.commandgroups.AutoPickUpOneTote;
 import org.usfirst.frc.team649.robot.commandgroups.AutoWithContainerPickUp;
 import org.usfirst.frc.team649.robot.commandgroups.ContainerAndToteAuto;
 import org.usfirst.frc.team649.robot.commandgroups.ContainerFirstToteSemiAuto;
@@ -128,6 +128,8 @@ public class FishyRobot2015 extends IterativeRobot {
 		containerChooser.addObject("Container State", true);
 		
 	SmartDashboard.putData("Container Mode", containerChooser);
+	
+		chainLiftSubsystem.resetEncodersAndVariables();
 		
 		prevStateRaiseTote = false;
 		prevStateLowerTote = false;
@@ -168,7 +170,7 @@ public class FishyRobot2015 extends IterativeRobot {
 			autoCommand = new PickUpToteSequence();
 			break;
 		case "three totes":
-			autoCommand = new AutoPickUpThreeTotes();
+			autoCommand = new AutoPickUpOneTote();
 			break;
 		case "drive forward":
 			autoCommand = new DriveSetDistanceWithPID(63);
@@ -185,13 +187,14 @@ public class FishyRobot2015 extends IterativeRobot {
 	//	new PickUpToteSequence().start();
 		//new DriveSetDistanceWithPID(-63).start();
 		//new DriveBackAndTurnAuto().start();
-		//new TurnWithPIDCommand(90, 0.1, 0.5).start();
+		//new TurnWithPIDCommand(-45, -0.7, -0.3).start();
 	//	new TurnAndPickUpToteAuto().start();
 //	new ContainerAndToteAuto().start();
 		//new TurnSetTimeCommand(1).start();
 	
+		new RunRollers(0,0).start();
 		//new AutoWithContainerPickUp().start();
-		//new AutoPickUpThreeTotes().start();
+		new AutoPickUpOneTote().start();
 	}
 
 	/**
@@ -243,10 +246,11 @@ public class FishyRobot2015 extends IterativeRobot {
 
 		SmartDashboard.putBoolean("IS RESET TRIPPED AT ALL", false);
 		
-		chainLiftSubsystem.resetEncodersAndVariables();
+		//chainLiftSubsystem.resetEncodersAndVariables();
 		
 	//	new AutoWithContainerPickUp().start();
-		//new TurnWithPIDCommand(-90, -0.5, -0.1).start();
+		//new AutoPickUpThreeTotes().start();
+		//new TurnWithPIDCommand(-45, -0.5, -0.1).start();
 	}
 
 	/**
@@ -286,7 +290,7 @@ public class FishyRobot2015 extends IterativeRobot {
 
 	//	oi.operator.intakeButton.whenReleased(new RunLift(0));
 
-		//new DriveForwardRotate(oi.driver.getDriveForward(), oi.driver.getDriveRotation()).start();
+		new DriveForwardRotate(oi.driver.getDriveForward(), oi.driver.getDriveRotation()).start();
 
 		// if(oi.operator.purgeButton.get()) {
 		// //new

@@ -8,6 +8,7 @@ import org.usfirst.frc.team649.robot.subsystems.DrivetrainSubsystem.EncoderBased
 import edu.wpi.first.wpilibj.Gyro;
 import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  *
@@ -20,13 +21,13 @@ public class TurnWithPIDCommand extends Command {
 	PIDController pid;
 	
     public TurnWithPIDCommand(double angle) {
-    	deltaTranslationalDistance = (angle / 360.0) * (13.0 * Math.PI);
+    	deltaTranslationalDistance = (angle / 360.0) * (36.0 * Math.PI);
     	minimumPower = 0.2;
     	maximumPower = 0.5;
     }
     
     public TurnWithPIDCommand(double angle, double minPower, double maxPower) {
-    	deltaTranslationalDistance = (angle / 360.0) * (13.0 * Math.PI);
+    	deltaTranslationalDistance = (angle / 360.0) * (36.0 * Math.PI);
     	minimumPower = minPower;
     	maximumPower = maxPower;
     }
@@ -46,6 +47,7 @@ public class TurnWithPIDCommand extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
+    	SmartDashboard.putString("ACTIVE COMMAND", "TURNING WITH PID");
     }
 
     // Make this return true when this Command no longer needs to run execute()

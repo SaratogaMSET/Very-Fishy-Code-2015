@@ -89,6 +89,7 @@ public class ChainLiftSubsystem extends PIDSubsystem{
 	    
 	    
 	    public static final double ENCODER_RESET_OFFSET = 3.0;
+		public static final double HEIGHT_OFFSET_FIRST_PICK_UP = -0.4;
 
 	}
 
