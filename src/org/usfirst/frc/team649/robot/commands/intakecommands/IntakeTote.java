@@ -5,6 +5,7 @@ import org.usfirst.frc.team649.robot.subsystems.IntakePortSubsystem;
 import org.usfirst.frc.team649.robot.subsystems.IntakeStarboardSubsystem;
 
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class IntakeTote extends Command {
 
@@ -17,6 +18,8 @@ public class IntakeTote extends Command {
 
 	@Override
 	protected void execute() {
+
+		SmartDashboard.putString("ACTIVE COMMAND", "IntakeTote");
 		// TODO Auto-generated method stub
 		
 		//so the tote will only stop moving when both triggers have been hit

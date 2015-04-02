@@ -7,6 +7,7 @@ import org.usfirst.frc.team649.robot.subsystems.IntakePortSubsystem;
 import org.usfirst.frc.team649.robot.subsystems.IntakeStarboardSubsystem;
 
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class RunRollers extends Command {
 
@@ -25,7 +26,7 @@ public class RunRollers extends Command {
 
 	@Override
 	protected void execute() {
-
+		SmartDashboard.putString("ACTIVE COMMAND", "run rollers");
 	}
 
 	@Override

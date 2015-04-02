@@ -63,6 +63,8 @@ public class SetIntakeArmPositionWithoutPID extends Command {
     		rightDone = true;
     		FishyRobot2015.intakeRightSubsystem.arm.set(0.0);
     	}
+
+		SmartDashboard.putString("ACTIVE COMMAND", "Setting 2-STATE ARM POS: " + state);
     }
 
     // Make this return true when this Command no longer needs to run execute()

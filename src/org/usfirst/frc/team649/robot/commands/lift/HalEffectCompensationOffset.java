@@ -4,6 +4,7 @@ import org.usfirst.frc.team649.robot.FishyRobot2015;
 import org.usfirst.frc.team649.robot.subsystems.ChainLiftSubsystem.PIDConstants;
 
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class HalEffectCompensationOffset extends Command {
 	boolean upOrDown;
@@ -22,6 +23,7 @@ public class HalEffectCompensationOffset extends Command {
 
 	@Override
 	protected void execute() {
+		SmartDashboard.putString("ACTIVE COMMAND", "HalEffectCompensationOffset");
 		// TODO Auto-generated method stub
 		FishyRobot2015.chainLiftSubsystem.setPower(upOrDown ? 0.5 : -0.5);
 	}

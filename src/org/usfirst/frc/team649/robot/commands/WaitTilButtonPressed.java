@@ -4,6 +4,7 @@ import org.usfirst.frc.team649.robot.FishyRobot2015;
 
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class WaitTilButtonPressed extends Command {
 	public Button button1;
@@ -29,8 +30,7 @@ public class WaitTilButtonPressed extends Command {
 
 	@Override
 	protected void execute() {
-		// TODO Auto-generated method stub
-
+		SmartDashboard.putString("ACTIVE COMMAND", "WaitTilButtonPressed");
 	}
 
 	@Override

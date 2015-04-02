@@ -53,6 +53,9 @@ public class RaiseToteWithoutPID extends Command {
     		done = true;
     		FishyRobot2015.chainLiftSubsystem.setPowerSafe(0);
     	}
+    	
+
+		SmartDashboard.putString("ACTIVE COMMAND", "Raising Tote Without PID");
     }
 
     // Make this return true when this Command no longer needs to run execute()

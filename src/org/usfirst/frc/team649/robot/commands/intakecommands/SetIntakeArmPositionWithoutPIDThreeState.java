@@ -50,8 +50,6 @@ public class SetIntakeArmPositionWithoutPIDThreeState extends Command {
 			 relevantSetpointRight = FishyRobot2015.intakeRightSubsystem.getPot();
 			 relevantSetpointLeft = FishyRobot2015.intakeLeftSubsystem.getPot();
 		 }
-		 
-		SmartDashboard.putString("ACTIVE COMMAND", "setIntakeCalled");
 
 		//LEFT
 		if (localState == currentLeftState){
@@ -119,7 +117,7 @@ public class SetIntakeArmPositionWithoutPIDThreeState extends Command {
 
 	@Override
 	protected void execute() {
-		SmartDashboard.putString("ACTIVE COMMAND", direction);
+		SmartDashboard.putString("ACTIVE COMMAND", "Setting 3-STATE Arm Pos: " + localState);
 		
 		//LEFT
 		if (leftDone || Math.abs(FishyRobot2015.intakeLeftSubsystem.getPot() - relevantSetpointLeft) < IntakePortSubsystem.PIDConstants.NO_PID_TOLERANCE){
