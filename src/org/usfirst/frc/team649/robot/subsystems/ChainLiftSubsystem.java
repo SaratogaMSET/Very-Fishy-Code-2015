@@ -141,6 +141,11 @@ public class ChainLiftSubsystem extends PIDSubsystem{
     	}
     }
     
+    public boolean isStalling(){
+    	double avgCurrent = ((FishyRobot2015.pdp.getCurrent(13) + FishyRobot2015.pdp.getCurrent(12)) / 2); 
+    	return avgCurrent > PIDConstants.CURRENT_CAP && Math.abs(this.getVelocity()) < 0.2;
+    }
+    
     //Ryan Lewis Sensors
     public boolean isMaxLimitPressed() {
     	return !limitMaxLeft.get() || !limitMaxRight.get();

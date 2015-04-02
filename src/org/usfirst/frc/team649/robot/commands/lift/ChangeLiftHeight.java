@@ -40,13 +40,13 @@ public class ChangeLiftHeight extends Command {
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
     	SmartDashboard.putString("ACTIVE COMMAND", "changeLiftHeight: " + deltaHeight + ", Setpoint: " + FishyRobot2015.chainLiftSubsystem.setpointHeight);
-    	FishyRobot2015.chainLiftSubsystem.setPowerSafe(speed);
+    	FishyRobot2015.chainLiftSubsystem.setPower(speed);
     }
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
     	boolean done = up ? FishyRobot2015.chainLiftSubsystem.getHeight() >= FishyRobot2015.chainLiftSubsystem.setpointHeight : FishyRobot2015.chainLiftSubsystem.getHeight() <= FishyRobot2015.chainLiftSubsystem.setpointHeight;
-		return done || (up && (FishyRobot2015.chainLiftSubsystem.isMaxLimitPressed() ||  FishyRobot2015.chainLiftSubsystem.isPastTop)) || FishyRobot2015.oi.driver.isManualOverride() || (!up && (FishyRobot2015.chainLiftSubsystem.isResetLimitPressed() ||  FishyRobot2015.chainLiftSubsystem.isPastBottom));
+		return done || (up && (FishyRobot2015.chainLiftSubsystem.isMaxLimitPressed() ||  FishyRobot2015.chainLiftSubsystem.isPastTop)) || FishyRobot2015.oi.driver.isManualOverride() || (!up && (FishyRobot2015.chainLiftSubsystem.isResetLimitPressed() ||  FishyRobot2015.chainLiftSubsystem.isPastBottom)) || FishyRobot2015.chainLiftSubsystem.isStalling();
     }
 
     // Called once after isFinished returns true

@@ -24,6 +24,7 @@ import org.usfirst.frc.team649.robot.commands.intakecommands.SetIntakeArmPositio
 import org.usfirst.frc.team649.robot.commands.intakecommands.SetIntakeArmPositionWithoutPIDThreeState;
 import org.usfirst.frc.team649.robot.commands.lift.ChangeLiftHeight;
 import org.usfirst.frc.team649.robot.commands.lift.PickUpContainer;
+import org.usfirst.frc.team649.robot.commands.lift.RaiseToteWithoutPID;
 //import org.usfirst.frc.team649.robot.commands.lift.RaiseTote;
 import org.usfirst.frc.team649.robot.commands.lift.RunLift; //my name is suneel
 import org.usfirst.frc.team649.robot.commands.lift.RunTilResetLimit;
@@ -194,7 +195,7 @@ public class FishyRobot2015 extends IterativeRobot {
 	
 		new RunRollers(0,0).start();
 		//new AutoWithContainerPickUp().start();
-		new AutoPickUpOneTote().start();
+		//new AutoPickUpOneTote().start();
 	}
 
 	/**
@@ -316,6 +317,7 @@ public class FishyRobot2015 extends IterativeRobot {
 		if (oi.operator.raiseToteButton.get() && !prevStateRaiseTote) {
 			SmartDashboard.putString("FIRST CONTAINER OFFSET", "no");
 			new OpenArmsAndRaiseTote(true).start();	
+			//new RaiseToteWithoutPID(true).start();
 		}
 		else if (oi.operator.containerSequenceButton.get() && !prevStateContainerSequence){
 			SmartDashboard.putBoolean("ENTERED CONTAINER LOOP", true);
@@ -328,6 +330,7 @@ public class FishyRobot2015 extends IterativeRobot {
 
 		if (oi.operator.lowerToteButton.get() && !prevStateLowerTote) {
 			new OpenArmsAndRaiseTote(false).start();
+			//new RaiseToteWithoutPID(false).start();
 		}
 		
 		//actually must be double pressed if you want a full score, e.g. no container
@@ -425,7 +428,7 @@ public class FishyRobot2015 extends IterativeRobot {
 			}
 			
 		
-			intakeLeftSubsystem.roller.set(oi.manual.getRollerPower());
+			intakeLeftSubsystem.roller.set(-oi.manual.getRollerPower());
 			intakeRightSubsystem.roller.set(-oi.manual.getRollerPower());
 
 		}

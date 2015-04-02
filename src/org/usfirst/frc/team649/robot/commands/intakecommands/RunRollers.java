@@ -16,7 +16,7 @@ public class RunRollers extends Command {
 	//allows for a command to stop
 	public RunRollers(double speedRight, double speedLeft){
 		choosenSpeedRight = -speedRight;
-		choosenSpeedLeft = speedLeft;
+		choosenSpeedLeft = -speedLeft;
 	}
 	@Override
 	protected void initialize() {

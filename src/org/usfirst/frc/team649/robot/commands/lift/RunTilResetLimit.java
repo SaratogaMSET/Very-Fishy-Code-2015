@@ -28,7 +28,7 @@ public class RunTilResetLimit extends Command {
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
     	SmartDashboard.putString("ACTIVE COMMAND", "Run Til Reset");
-    	 FishyRobot2015.chainLiftSubsystem.setPowerSafe(ChainLiftSubsystem.PIDConstants.UNLOAD_TOTES_MOTOR_POWER);
+    	 FishyRobot2015.chainLiftSubsystem.setPower(ChainLiftSubsystem.PIDConstants.UNLOAD_TOTES_MOTOR_POWER);
     	 
     }
 
@@ -36,7 +36,7 @@ public class RunTilResetLimit extends Command {
     protected boolean isFinished() {
     	//when its reached the bottom
     	
-        return isTimedOut() || FishyRobot2015.chainLiftSubsystem.isResetLimitPressed() || FishyRobot2015.oi.driver.isManualOverride();
+        return isTimedOut() || FishyRobot2015.chainLiftSubsystem.isResetLimitPressed() || FishyRobot2015.oi.driver.isManualOverride() || FishyRobot2015.chainLiftSubsystem.isStalling();
     }
 
     // Called once after isFinished returns true

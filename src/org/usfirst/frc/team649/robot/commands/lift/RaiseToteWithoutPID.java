@@ -46,12 +46,12 @@ public class RaiseToteWithoutPID extends Command {
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
     	if(upOrDown && (FishyRobot2015.chainLiftSubsystem.getHeight() < FishyRobot2015.chainLiftSubsystem.setpointHeight)) {
-    		FishyRobot2015.chainLiftSubsystem.setPowerSafe(ChainLiftSubsystem.PIDConstants.CONSTANT_POWER_UP_VALUE);
+    		FishyRobot2015.chainLiftSubsystem.setPower(ChainLiftSubsystem.PIDConstants.CONSTANT_POWER_UP_VALUE);
     	} else if(!upOrDown && (FishyRobot2015.chainLiftSubsystem.getHeight() > FishyRobot2015.chainLiftSubsystem.setpointHeight)) {
-    		FishyRobot2015.chainLiftSubsystem.setPowerSafe(ChainLiftSubsystem.PIDConstants.CONSTANT_POWER_DOWN_VALUE);
+    		FishyRobot2015.chainLiftSubsystem.setPower(ChainLiftSubsystem.PIDConstants.CONSTANT_POWER_DOWN_VALUE);
     	} else {
     		done = true;
-    		FishyRobot2015.chainLiftSubsystem.setPowerSafe(0);
+    		FishyRobot2015.chainLiftSubsystem.setPower(0);
     	}
     	
 
@@ -60,7 +60,7 @@ public class RaiseToteWithoutPID extends Command {
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return done || (FishyRobot2015.chainLiftSubsystem.isMaxLimitPressed() && upOrDown) ||  (FishyRobot2015.chainLiftSubsystem.isResetLimitPressed() && !upOrDown) || FishyRobot2015.oi.driver.isManualOverride();
+        return done || (FishyRobot2015.chainLiftSubsystem.isMaxLimitPressed() && upOrDown) ||  (FishyRobot2015.chainLiftSubsystem.isResetLimitPressed() && !upOrDown) || FishyRobot2015.oi.driver.isManualOverride() || FishyRobot2015.chainLiftSubsystem.isStalling();
     }
 
     // Called once after isFinished returns true
@@ -71,6 +71,11 @@ public class RaiseToteWithoutPID extends Command {
 				FishyRobot2015.chainLiftSubsystem.isPastTop = true;
 			}
 			FishyRobot2015.chainLiftSubsystem.isPastBottom = false;
+			
+			//check for making setPoint height current position if it stopped in the middle
+			if (FishyRobot2015.chainLiftSubsystem.isMaxLimitPressed() ||FishyRobot2015.chainLiftSubsystem.isPastTop){
+				FishyRobot2015.chainLiftSubsystem.setpointHeight = FishyRobot2015.chainLiftSubsystem.getNumTotes() * PIDConstants.TOTE_PICK_UP_HEIGHT;
+			}
 		}
 		else{
 			FishyRobot2015.chainLiftSubsystem.isPastTop = false;
