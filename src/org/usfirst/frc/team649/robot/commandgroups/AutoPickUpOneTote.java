@@ -40,7 +40,7 @@ public class AutoPickUpOneTote extends CommandGroup {
 		
 		addSequential(new OpenArmsAndRaiseTote(true));	
 		addSequential(new TurnWithPIDCommand(-45, -0.7, -0.3));
-		addSequential(new DriveSetDistanceWithPID(-EncoderBasedDriving.AUTO_TOTE_TO_AUTO_ZONE, -0.5, -0.1));
+		addSequential(new DriveSetDistanceWithPID(-EncoderBasedDriving.AUTO_TOTE_TO_AUTO_ZONE, -0.3, -0.1));
 		//wait til intakes are done
 		//addSequential(new WaitForChildren());
 		

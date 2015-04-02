@@ -1,6 +1,7 @@
 package org.usfirst.frc.team649.robot.commandgroups;
 
 import org.usfirst.frc.team649.robot.commands.drivetraincommands.DriveSetDistanceWithPID;
+import org.usfirst.frc.team649.robot.commands.drivetraincommands.TurnWithPIDCommand;
 import org.usfirst.frc.team649.robot.commands.intakecommands.RunRollers;
 import org.usfirst.frc.team649.robot.commands.intakecommands.SetIntakeArmPositionWithoutPID;
 import org.usfirst.frc.team649.robot.commands.lift.ChangeLiftHeight;
@@ -41,7 +42,8 @@ public class AutoWithContainerPickUp extends CommandGroup {
 		addSequential(new RunRollers(0,0));
 		
 		//drive back into autozone
-		addSequential(new DriveSetDistanceWithPID(-EncoderBasedDriving.AUTO_TOTE_TO_AUTO_ZONE, -0.4, -0.1)); //BACKWARDS
+		addSequential(new TurnWithPIDCommand(45));
+		addSequential(new DriveSetDistanceWithPID(-EncoderBasedDriving.AUTO_TOTE_TO_AUTO_ZONE, -0.3, -0.1)); //BACKWARDS
 		
 	}
 }

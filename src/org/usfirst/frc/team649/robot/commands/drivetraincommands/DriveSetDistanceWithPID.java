@@ -32,14 +32,14 @@ public class DriveSetDistanceWithPID extends Command {
 	public DriveSetDistanceWithPID(double distance) {
 		this.distance = distance;
 		if(distance < 0) {
-			this.maxDriveSpeed = -0.15;
 			this.minDriveSpeed = -0.5;
+			this.maxDriveSpeed = -0.15;
 		} else if( distance > 0){
-		this.minDriveSpeed = 0.15;
-		this.maxDriveSpeed = 0.5;
+			this.minDriveSpeed = 0.15;
+			this.maxDriveSpeed = 0.5;
 		} else {
-			this.maxDriveSpeed = 0.0;
 			this.minDriveSpeed = 0.0;
+			this.maxDriveSpeed = 0.0;
 		}
 
 		this.pid = FishyRobot2015.drivetrainSubsystem.encoderDrivePID;

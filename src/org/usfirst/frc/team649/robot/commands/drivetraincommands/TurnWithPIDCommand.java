@@ -22,8 +22,16 @@ public class TurnWithPIDCommand extends Command {
 	
     public TurnWithPIDCommand(double angle) {
     	deltaTranslationalDistance = (angle / 360.0) * (36.0 * Math.PI);
-    	minimumPower = 0.2;
-    	maximumPower = 0.5;
+    	if(angle > 0) {
+    		minimumPower = 0.3;
+    		maximumPower = 0.7;
+    	} else if (angle < 0) {
+        	minimumPower = -0.7;
+        	maximumPower = -0.3;
+    	} else {
+        	minimumPower = 0.0;
+        	maximumPower = 0.0;
+    	}
     }
     
     public TurnWithPIDCommand(double angle, double minPower, double maxPower) {

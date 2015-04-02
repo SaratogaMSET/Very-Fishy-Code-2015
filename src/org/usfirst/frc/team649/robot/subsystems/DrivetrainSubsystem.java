@@ -41,7 +41,7 @@ public class DrivetrainSubsystem extends PIDSubsystem implements PIDSource, PIDO
     	//pick up
     	public static final double AUTO_START_TO_TOTE = 10;
     	public static final double AUTO_BETWEEN_TOTES = 84;
-    	public static final double AUTO_TOTE_TO_AUTO_ZONE = 63;
+    	public static final double AUTO_TOTE_TO_AUTO_ZONE = 100;
     	
     	
         //others
