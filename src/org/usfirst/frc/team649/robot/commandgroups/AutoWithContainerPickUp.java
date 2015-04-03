@@ -43,7 +43,7 @@ public class AutoWithContainerPickUp extends CommandGroup {
 		
 		//drive back into autozone
 		addSequential(new TurnWithPIDCommand(45));
-		addSequential(new DriveSetDistanceWithPID(-EncoderBasedDriving.AUTO_TOTE_TO_AUTO_ZONE, -0.3, -0.1)); //BACKWARDS
-		
+		addSequential(new DriveSetDistanceWithPID(-EncoderBasedDriving.AUTO_TOTE_TO_AUTO_ZONE, -0.35, -0.1)); //BACKWARDS
+		//addSequential(new OpenArmsAndRaiseTote(true));
 	}
 }

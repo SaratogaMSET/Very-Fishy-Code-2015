@@ -192,8 +192,9 @@ public class FishyRobot2015 extends IterativeRobot {
 	//	new TurnAndPickUpToteAuto().start();
 //	new ContainerAndToteAuto().start();
 		//new TurnSetTimeCommand(1).start();
-	
+	//	new Run
 		new RunRollers(0,0).start();
+		new PickUpToteSequence().start();
 		//new AutoWithContainerPickUp().start();
 		//new AutoPickUpOneTote().start();
 	}

@@ -18,6 +18,9 @@ public class ContainerFirstToteSemiAuto extends CommandGroup {
 	public ContainerFirstToteSemiAuto(double numTotes){
 		//down 2 totes
 		System.out.println("Entered Cont Semi Auto");
+		addSequential(new RunRollers(-0.2, -0.2));
+		addSequential(new WaitCommand(0.08));
+		addSequential(new RunRollers(0,0));
 		addSequential(new OpenArmsAndRaiseTote(ChainLiftSubsystem.PIDConstants.DOWN));
 		
 		//second stage, run rollers quickly before pick up

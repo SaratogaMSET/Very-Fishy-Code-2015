@@ -12,7 +12,7 @@ public class IntakeTote extends Command {
 	@Override
 	protected void initialize() {
 		// TODO Auto-generated method stub
-		FishyRobot2015.intakeLeftSubsystem.roller.set(IntakePortSubsystem.INTAKE_ROLLER_SPEED);
+		FishyRobot2015.intakeLeftSubsystem.roller.set(-IntakePortSubsystem.INTAKE_ROLLER_SPEED);
 		FishyRobot2015.intakeRightSubsystem.roller.set(-IntakeStarboardSubsystem.INTAKE_ROLLER_SPEED);
 	}
 
