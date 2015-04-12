@@ -25,14 +25,13 @@ public class AutoWithContainerPickUp extends CommandGroup {
 	public AutoWithContainerPickUp(){
 		//facing robot
 		addParallel(new SetIntakeArmPositionWithoutPID(IntakePortSubsystem.PIDConstants.RELEASING_STATE));
-		addSequential(new RunTilResetLimit());
-		addSequential(new ResetEncoders());
+		addSequential(new ResetLift());
 		
 		//slow forward drive
 		//addSequential(new DriveSetDistanceWithPID(EncoderBasedDriving.AUTO_START_TO_CONTAINER, 0.1, 0.32));
-		
-		//raise up two
-		addSequential(new ChangeLiftHeight(1.0 * ChainLiftSubsystem.PIDConstants.TOTE_PICK_UP_HEIGHT));
+		addSequential(new WaitCommand(0.25));
+		//raise up two	
+		addSequential(new ChangeLiftHeight(ChainLiftSubsystem.PIDConstants.TOTE_PICK_UP_HEIGHT - 1.0));
 
 		//SmartDashboard.p
 		//grab it
@@ -42,8 +41,8 @@ public class AutoWithContainerPickUp extends CommandGroup {
 		addSequential(new RunRollers(0,0));
 		
 		//drive back into autozone
-		addSequential(new TurnWithPIDCommand(45));
-		addSequential(new DriveSetDistanceWithPID(-EncoderBasedDriving.AUTO_TOTE_TO_AUTO_ZONE, -0.35, -0.1)); //BACKWARDS
-		//addSequential(new OpenArmsAndRaiseTote(true));
+//		addSequential(new TurnWithPIDCommand(45));
+//		addSequential(new DriveSetDistanceWithPID(-EncoderBasedDriving.AUTO_TOTE_TO_AUTO_ZONE, -0.35, -0.1)); //BACKWARDS
+		//addSequential(new OpenArmsAndRaiseTote(true))
 	}
 }

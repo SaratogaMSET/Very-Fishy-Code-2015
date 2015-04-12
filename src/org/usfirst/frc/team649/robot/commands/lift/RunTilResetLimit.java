@@ -15,7 +15,7 @@ public class RunTilResetLimit extends Command {
     public RunTilResetLimit() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
-    	requires(FishyRobot2015.chainLiftSubsystem);
+    //	requires(FishyRobot2015.chainLiftSubsystem);
     	//reset to platform always if not already
     	FishyRobot2015.chainLiftSubsystem.platformOrStepOffset = true;
     }

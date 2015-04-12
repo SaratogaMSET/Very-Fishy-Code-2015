@@ -49,7 +49,7 @@ public class ChainLiftSubsystem extends PIDSubsystem{
 		public static final double D_VALUE = 0.01;
 		public static final double ENCODER_DISTANCE_PER_PULSE = (((22.0*(3.0/8.0)) * (12.0 / 60.0) * (18.0 / 42.0) * (18 / 42.0)) / 48.0);
 		public static final double ABS_TOLERANCE = 1;
-		public static final double CONSTANT_POWER_UP_VALUE = 0.6;
+		public static final double CONSTANT_POWER_UP_VALUE = 0.5;
 		public static final double CONSTANT_POWER_DOWN_VALUE = -0.4;
 
 		
@@ -66,7 +66,7 @@ public class ChainLiftSubsystem extends PIDSubsystem{
 		public static final double DOWN_TO_LIP_HEIGHT = -22;
 		public static final double CONTAINER_OFFSET = 3;
 		//public static final double CONTAINER_RELEASE_HEIGHT = -4;
-		public static final double VARIABLE_TOTE_SPACE_INCREMENT = -3.7;
+		public static final double VARIABLE_TOTE_SPACE_INCREMENT = -4;
 		
 		//under this height, the hal effect compensation is put in place when we reset
 		//so that we dont go up first if we score from about this height
@@ -81,11 +81,11 @@ public class ChainLiftSubsystem extends PIDSubsystem{
 		public static final boolean UP = true;
 		public static final boolean DOWN = false;
 		//Other
-		public static final double UNLOAD_TOTES_MOTOR_POWER = -.6;
+		public static final double UNLOAD_TOTES_MOTOR_POWER = -.5;
 	    public static final double CURRENT_CAP = 10;
 	    public static final double MAX_ENCODER_HEIGHT = 65;
 	    public static final double MAX_LIFT_ENCODER_SPEED = 3;
-	    public static final double CONTAINER_RESET_OFFSET = -2; //past the limit switch
+	    public static final double CONTAINER_RESET_OFFSET = -1; //past the limit switch
 	    
 	    
 	    public static final double ENCODER_RESET_OFFSET = 3.0;
@@ -176,21 +176,22 @@ public class ChainLiftSubsystem extends PIDSubsystem{
     public void resetEncodersAndVariables() {
         resetEncoders();
         
-        setpointHeight = 
-        		0;
-        isPastTop = false;
-        isPastBottom = true;
-        firstStageOfScore = true;
-        readyToPickContainer = true;
-    }
-    
-    public void resetVariables() {
         setpointHeight = 0;
         isPastTop = false;
         isPastBottom = true;
         firstStageOfScore = true;
         readyToPickContainer = true;
     }
+    
+    public void resetLimitedVariables() {
+        //setpointHeight = 0;
+        isPastTop = false;
+        //isPastBottom = true;
+        firstStageOfScore = true;
+        readyToPickContainer = true;
+    }
+    
+    
     
     //again based on height
     public int getNumTotes(){        //NEW

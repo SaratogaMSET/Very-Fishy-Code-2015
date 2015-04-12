@@ -194,9 +194,10 @@ public class FishyRobot2015 extends IterativeRobot {
 		//new TurnSetTimeCommand(1).start();
 	//	new Run
 		new RunRollers(0,0).start();
-		new PickUpToteSequence().start();
-		//new AutoWithContainerPickUp().start();
+	//	new PickUpToteSequence().start();
+	//	new AutoWithContainerPickUp().start();
 		//new AutoPickUpOneTote().start();
+	//	new TurnWithPIDCommand(45).start();
 	}
 
 	/**
@@ -248,11 +249,8 @@ public class FishyRobot2015 extends IterativeRobot {
 
 		SmartDashboard.putBoolean("IS RESET TRIPPED AT ALL", false);
 		
+		chainLiftSubsystem.resetLimitedVariables();
 		//chainLiftSubsystem.resetEncodersAndVariables();
-		
-	//	new AutoWithContainerPickUp().start();
-		//new AutoPickUpThreeTotes().start();
-		//new TurnWithPIDCommand(-45, -0.5, -0.1).start();
 	}
 
 	/**
@@ -306,9 +304,9 @@ public class FishyRobot2015 extends IterativeRobot {
 		} else if (oi.operator.intakeButton.get() && oi.operator.twistLeft()) {
 			new RunRollers(-0.25, 0.25).start();
 		} else if (oi.operator.intakeButton.get()) {
-			new RunRollers(0.7, 0.7).start();
+			new RunRollers(0.6, 0.6).start();
 		} else if (oi.operator.purgeButton.get()) {
-			new RunRollers(-0.7, -0.7).start();
+			new RunRollers(-0.5, -0.5).start();
 		} else if ((!oi.operator.intakeButton.get() && prevStateIntake) || (!oi.operator.purgeButton.get() && prevStatePurge)){
 			new RunRollers(0,0).start();
 		}
@@ -338,7 +336,7 @@ public class FishyRobot2015 extends IterativeRobot {
 		if (oi.operator.scoreAllButton.get() && oi.operator.scoreAllSafteyButton.get() && !prevStateScore) {
 			//only if it is in the first stage will the button trigger a new command
 			if (chainLiftSubsystem.firstStageOfScore){
-				new ScoreTotesOnPlatform().start();
+				new ScoreTotesOnPlatform(chainLiftSubsystem.getNumTotes()).start();
 				chainLiftSubsystem.firstStageOfScore = false;
 			}
 		}
@@ -478,6 +476,7 @@ public class FishyRobot2015 extends IterativeRobot {
 		SmartDashboard.putNumber("LEFT arm STATE", intakeLeftSubsystem.state);
 		SmartDashboard.putNumber("RIGHT arm STATE", intakeRightSubsystem.state);
 		SmartDashboard.putBoolean("Ready to pick up cont", chainLiftSubsystem.readyToPickContainer);
+		SmartDashboard.putBoolean("First Stage of Score", chainLiftSubsystem.firstStageOfScore);
 //		
 		if (chainLiftSubsystem.isResetLimitPressed()){
 			SmartDashboard.putBoolean("IS RESET TRIPPED AT ALL", true);

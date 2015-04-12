@@ -31,7 +31,13 @@ public class ContainerFirstToteSemiAuto extends CommandGroup {
 		addSequential(new WaitCommand(0.7));
 		addSequential(new RunRollers(0,0));
 		
+		addSequential(new WaitCommand(0.7));
+		addSequential(new RunRollers(IntakePortSubsystem.INTAKE_ROLLER_SPEED/0.8, IntakeStarboardSubsystem.INTAKE_ROLLER_SPEED/0.8));
+		addSequential(new WaitCommand(0.08));
+		addSequential(new RunRollers(0,0));
 		addSequential(new WaitCommand(0.5));
+		
+		
 		
 		addSequential(new OpenArmsAndRaiseTote(ChainLiftSubsystem.PIDConstants.UP));
 	}

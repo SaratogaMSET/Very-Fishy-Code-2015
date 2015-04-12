@@ -1,3 +1,4 @@
+
 package org.usfirst.frc.team649.robot.commands.lift;
 
 import org.usfirst.frc.team649.robot.FishyRobot2015;
@@ -21,7 +22,7 @@ public class RaiseToteWithoutPID extends Command {
         // eg. requires(chassis);
 		upOrDown = up;
 		done = false;
-    	requires(FishyRobot2015.chainLiftSubsystem);
+    	//requires(FishyRobot2015.chainLiftSubsystem);
 		heightChangeReference = PIDConstants.TOTE_PICK_UP_HEIGHT;
     }
 
@@ -31,16 +32,17 @@ public class RaiseToteWithoutPID extends Command {
 			heightChangeReference = 0;
 			done = true;
 		} else{
-			if (upOrDown) {
+			if (upOrDown) { //going up
 				if(FishyRobot2015.chainLiftSubsystem.isAtBase || FishyRobot2015.chainLiftSubsystem.isPastBottom) {
 					//offset initial
 					heightChangeReference += PIDConstants.HEIGHT_OFFSET_FIRST_PICK_UP;
 				}
-				 FishyRobot2015.chainLiftSubsystem.setpointHeight += heightChangeReference;
-			} else {
-				 FishyRobot2015.chainLiftSubsystem.setpointHeight -= heightChangeReference;
+				FishyRobot2015.chainLiftSubsystem.setpointHeight += heightChangeReference;
+			} else { //going down
+ 				 FishyRobot2015.chainLiftSubsystem.setpointHeight -= heightChangeReference;
 			}
 		}
+    	
     }
 
     // Called repeatedly when this Command is scheduled to run

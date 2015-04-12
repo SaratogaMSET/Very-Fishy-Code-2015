@@ -14,7 +14,7 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 
 public class ScoreAllAndResetFromTop extends CommandGroup {
 
-	public ScoreAllAndResetFromTop(){
+	public ScoreAllAndResetFromTop(int numTotes){
 		//COMMONALITIES
 		
 		//up first and then down to score all
@@ -26,7 +26,12 @@ public class ScoreAllAndResetFromTop extends CommandGroup {
 		//2 inches for clearance
 		if (FishyRobot2015.chainLiftSubsystem.setpointHeight >= 2 + Math.abs(PIDConstants.VARIABLE_TOTE_SPACE_INCREMENT)){
 			//double chainOffset = ;//(FishyRobot2015.chainLiftSubsystem.getNumTotes()) * PIDConstants.VARIABLE_TOTE_SPACE_INCREMENT + PIDConstants.CONTAINER_RELEASE_HEIGHT;
-			addSequential(new ChangeLiftHeight(FishyRobot2015.chainLiftSubsystem.getNumTotes() * PIDConstants.VARIABLE_TOTE_SPACE_INCREMENT + 1.8)); //9.5 for right to the top of the 2nd hook tote
+			double deltaHeight = numTotes * PIDConstants.VARIABLE_TOTE_SPACE_INCREMENT + 1.8;
+			if(numTotes >= 5) {
+				deltaHeight -=  15.0;
+			}
+			addSequential(new ChangeLiftHeight(deltaHeight)); //9.5 for right to the top of the 2nd hook tote
+			
 		}
 		
 		//DRIVER BACKS OUT, MANUAL OVERRIDE IF NOT GOOD

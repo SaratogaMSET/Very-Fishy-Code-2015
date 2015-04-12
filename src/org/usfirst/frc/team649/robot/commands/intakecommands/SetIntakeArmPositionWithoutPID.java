@@ -33,15 +33,15 @@ public class SetIntakeArmPositionWithoutPID extends Command {
     	if(state == IntakePortSubsystem.PIDConstants.GRABBING_STATE) {
     		SmartDashboard.putNumber("Setpoint Left", IntakePortSubsystem.PIDConstants.ARM_POS_GRABBING);
     		SmartDashboard.putNumber("Setpoint Right", IntakeStarboardSubsystem.PIDConstants.ARM_POS_GRABBING);
-    	}else if(state ==IntakePortSubsystem.PIDConstants.RELEASING_STATE) {
+    	}
+    	else if(state ==IntakePortSubsystem.PIDConstants.RELEASING_STATE) {
     		SmartDashboard.putNumber("Setpoint Left", IntakePortSubsystem.PIDConstants.ARM_POS_RELEASE);
     		SmartDashboard.putNumber("Setpoint Right", IntakeStarboardSubsystem.PIDConstants.ARM_POS_RELEASE);
-    	}  else if (state == PIDConstants.STORE_STATE) {
-    		SmartDashboard.putNumber("Setpoint Left", IntakePortSubsystem.PIDConstants.ARM_POS_STORING);
-    		SmartDashboard.putNumber("Setpoint Right", IntakeStarboardSubsystem.PIDConstants.ARM_POS_STORING);
-
     	}
-    	
+    	else {
+    		SmartDashboard.putNumber("Setpoint Left", FishyRobot2015.intakeLeftSubsystem.getPot());
+    		SmartDashboard.putNumber("Setpoint Right", FishyRobot2015.intakeRightSubsystem.getPot());
+    	}
     }
 
     // Called repeatedly when this Command is scheduled to run

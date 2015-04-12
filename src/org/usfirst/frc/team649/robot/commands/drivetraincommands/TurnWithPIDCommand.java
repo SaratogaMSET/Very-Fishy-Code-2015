@@ -21,7 +21,7 @@ public class TurnWithPIDCommand extends Command {
 	PIDController pid;
 	
     public TurnWithPIDCommand(double angle) {
-    	deltaTranslationalDistance = (angle / 360.0) * (36.0 * Math.PI);
+    	deltaTranslationalDistance = (angle / 360.0) * (16.5 * Math.PI);
     	if(angle > 0) {
     		minimumPower = 0.3;
     		maximumPower = 0.7;
@@ -35,7 +35,7 @@ public class TurnWithPIDCommand extends Command {
     }
     
     public TurnWithPIDCommand(double angle, double minPower, double maxPower) {
-    	deltaTranslationalDistance = (angle / 360.0) * (36.0 * Math.PI);
+    	deltaTranslationalDistance = (angle / 360.0) * (16.5 * Math.PI);
     	minimumPower = minPower;
     	maximumPower = maxPower;
     }
