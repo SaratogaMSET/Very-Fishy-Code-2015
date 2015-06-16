@@ -70,4 +70,14 @@ public class RobotMap {
 //		public static final int PISTON_2_FORWARD_CHANNEL = 2;
 //		public static final int PISTON_2_REVERSE_CHANNEL = 3;
 	}
+	public static final class CAN_GRABBER {
+	public static final int SHOOTY_SHOOTER_LEFT = 0;
+	public static final int SHOOTY_SHOOTER_RIGHT = 0;
+
+	public static final int SHOOTY_WINDER_LEFT = 0;
+	public static final int SHOOTY_WINDER_RIGHT = 0;
+
+
+	
+	}
 }

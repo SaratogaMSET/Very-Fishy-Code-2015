@@ -30,6 +30,8 @@ import org.usfirst.frc.team649.robot.commands.lift.RunLift; //my name is suneel
 import org.usfirst.frc.team649.robot.commands.lift.RunTilResetLimit;
 import org.usfirst.frc.team649.robot.subsystems.AutoWinchSubsystem;
 import org.usfirst.frc.team649.robot.subsystems.CameraSubsystem;
+import org.usfirst.frc.team649.robot.subsystems.CanGrabberLeftSubsystem;
+import org.usfirst.frc.team649.robot.subsystems.CanGrabberRightSubsytem;
 import org.usfirst.frc.team649.robot.subsystems.ChainLiftSubsystem;
 import org.usfirst.frc.team649.robot.subsystems.ChainLiftSubsystem.PIDConstants;
 import org.usfirst.frc.team649.robot.subsystems.DrivetrainSubsystem;
@@ -71,7 +73,11 @@ public class FishyRobot2015 extends IterativeRobot {
 	public static IntakePortSubsystem intakeLeftSubsystem;
 	public static IntakeStarboardSubsystem intakeRightSubsystem;
 	public static AutoWinchSubsystem autoWinchSubsystem;
-	public static CameraSubsystem cameraSubsystem;
+	
+	public static CanGrabberLeftSubsystem canGrabberLeftSubsystem;
+	public static CanGrabberRightSubsytem canGrabberRightSubsystem;
+	
+	public static CameraSubsystem cameraSubsystemSubsystem;
 	public static PowerDistributionPanel pdp;
 
 	// previous states for button press v hold
@@ -186,7 +192,7 @@ public class FishyRobot2015 extends IterativeRobot {
 		}
 		
 	//	new PickUpToteSequence().start();
-		//new DriveSetDistanceWithPID(-63).start();
+		new DriveSetDistanceWithPID(-48).start();
 		//new DriveBackAndTurnAuto().start();
 		//new TurnWithPIDCommand(-45, -0.7, -0.3).start();
 	//	new TurnAndPickUpToteAuto().start();
@@ -300,9 +306,9 @@ public class FishyRobot2015 extends IterativeRobot {
 		// }
 		
 		if (oi.operator.intakeButton.get() && oi.operator.twistRight()) {
-			new RunRollers(0.25, -0.25).start();
+			new RunRollers(0.3, -0.3).start();
 		} else if (oi.operator.intakeButton.get() && oi.operator.twistLeft()) {
-			new RunRollers(-0.25, 0.25).start();
+			new RunRollers(-0.3, 0.3).start();
 		} else if (oi.operator.intakeButton.get()) {
 			new RunRollers(0.6, 0.6).start();
 		} else if (oi.operator.purgeButton.get()) {
@@ -335,10 +341,8 @@ public class FishyRobot2015 extends IterativeRobot {
 		//actually must be double pressed if you want a full score, e.g. no container
 		if (oi.operator.scoreAllButton.get() && oi.operator.scoreAllSafteyButton.get() && !prevStateScore) {
 			//only if it is in the first stage will the button trigger a new command
-			if (chainLiftSubsystem.firstStageOfScore){
-				new ScoreTotesOnPlatform(chainLiftSubsystem.getNumTotes()).start();
-				chainLiftSubsystem.firstStageOfScore = false;
-			}
+			//new ScoreAllAndResetFromTop().start();
+			new ScoreTotesOnPlatform().start();
 		}
 
 		

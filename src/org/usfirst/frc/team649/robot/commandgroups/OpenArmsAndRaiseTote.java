@@ -18,13 +18,13 @@ public class OpenArmsAndRaiseTote extends CommandGroup {
     public  OpenArmsAndRaiseTote(boolean up) {
     	SmartDashboard.putString("Now setting arms", "to release");
     	
-	    	//addSequential(new SetIntakeArmPositionWithoutPIDThreeState(IntakePortSubsystem.PIDConstants.RELEASING_STATE));
-	    	addSequential(new SetIntakeArmPositionWithoutPID(IntakePortSubsystem.PIDConstants.RELEASING_STATE));
+	    	addParallel(new SetIntakeArmPositionWithoutPIDThreeState(IntakePortSubsystem.PIDConstants.STORE_STATE));
+	    //	addSequential(new SetIntakeArmPositionWithoutPID(IntakePortSubsystem.PIDConstants.RELEASING_STATE));
   
 	    	//addSequential(new WaitCommand(1));
     	addSequential(new RaiseToteWithoutPID(up));
-        //addSequential(new SetIntakeArmPositionWithoutPIDThreeState(IntakePortSubsystem.PIDConstants.GRABBING_STATE));
-       addSequential(new SetIntakeArmPositionWithoutPID(IntakePortSubsystem.PIDConstants.GRABBING_STATE));
+        addSequential(new SetIntakeArmPositionWithoutPIDThreeState(IntakePortSubsystem.PIDConstants.GRABBING_STATE));
+       //addSequential(new SetIntakeArmPositionWithoutPID(IntakePortSubsystem.PIDConstants.GRABBING_STATE));
         
     }
 }

@@ -41,11 +41,11 @@ public class IntakePortSubsystem extends PIDSubsystem {
 		
 		public static final double ARM_POS_RELEASE = 1.73;//NESSY: 1.43; PBOT:  //200 * CONVERSION_DEGREES_TO_POT;
 		//for pulling in totes
-		public static final double ARM_POS_GRABBING = 1.51;//NESSY: 1.2; PBOT: //225 * CONVERSION_DEGREES_TO_POT;
+		public static final double ARM_POS_GRABBING = 1.47;//NESSY: 1.2; PBOT: //225 * CONVERSION_DEGREES_TO_POT;
 		//for both arms completely back
-		public static final double ARM_POS_STORING = 2.0; // * CONVERSION_DEGREES_TO_POT; //228
+		public static final double ARM_POS_STORING = 1.9; // * CONVERSION_DEGREES_TO_POT; //228
 		
-		public static final double NO_PID_TOLERANCE = 0.04;
+		public static final double NO_PID_TOLERANCE = 0.07;
 		
 		public static final int GRABBING_STATE = 0;
 		public static final int RELEASING_STATE = 1;
@@ -57,7 +57,7 @@ public class IntakePortSubsystem extends PIDSubsystem {
 		
 		public static final int POT_SAMPLES_TO_AVERAGE = 3;
 		public static final double ARMS_IN_POWER = -0.1;
-		public static final double ARMS_OUT_POWER = 0.3;
+		public static final double ARMS_OUT_POWER = 0.25;
 	}
 	
 	public IntakePortSubsystem(){
@@ -116,7 +116,7 @@ public class IntakePortSubsystem extends PIDSubsystem {
 	}
 	
 	public void setStateBasedOnPID(){
-		double tolerance = 0.08;
+		double tolerance = 0.1;
 		if (getPot() > PIDConstants.ARM_POS_STORING-tolerance){
 			state = PIDConstants.STORE_STATE;
 		}

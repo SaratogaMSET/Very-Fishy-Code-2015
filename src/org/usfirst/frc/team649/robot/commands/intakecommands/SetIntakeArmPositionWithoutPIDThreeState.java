@@ -28,21 +28,53 @@ public class SetIntakeArmPositionWithoutPIDThreeState extends Command {
 		rightDone = false;
 		
 		localState = st;
-		currentLeftState = FishyRobot2015.intakeLeftSubsystem.state;
+				//POWER SKETCHY STUFF
+//		if (FishyRobot2015.intakeLeftSubsystem.getPot() > relevantSetpointLeft){ //> IntakePortSubsystem.PIDConstants.NO_PID_TOLERANCE){
+//			leftArmPower = IntakePortSubsystem.PIDConstants.ARMS_IN_POWER;
+//		}
+//		else if (FishyRobot2015.intakeLeftSubsystem.getPot() < relevantSetpointLeft){ //< -IntakePortSubsystem.PIDConstants.NO_PID_TOLERANCE){
+//			leftArmPower = IntakePortSubsystem.PIDConstants.ARMS_OUT_POWER;
+//		}
+//		else{
+//			leftArmPower = 0;
+//			leftDone = true;
+//		}
+//		
+//		if (FishyRobot2015.intakeRightSubsystem.getPot() > relevantSetpointRight){ //> IntakeStarboardSubsystem.PIDConstants.NO_PID_TOLERANCE){
+//			rightArmPower = IntakeStarboardSubsystem.PIDConstants.ARMS_IN_POWER;
+//		}
+//		else if (FishyRobot2015.intakeRightSubsystem.getPot() < relevantSetpointRight){ //< -IntakeStarboardSubsystem.PIDConstants.NO_PID_TOLERANCE){
+//			rightArmPower = IntakeStarboardSubsystem.PIDConstants.ARMS_OUT_POWER;
+//		}
+//		else{
+//			rightArmPower = 0;
+//			rightDone = true;
+//		}
+	}
+
+	@Override
+	protected void initialize() {
+		// TODO Auto-generated method stub
+		SmartDashboard.putNumber("Setpoint Left", relevantSetpointLeft);
+    	SmartDashboard.putNumber("Setpoint Right", relevantSetpointRight);
+    	
+//    	FishyRobot2015.intakeRightSubsystem.state = localState;
+//    	FishyRobot2015.intakeLeftSubsystem.state = localState;
+    	currentLeftState = FishyRobot2015.intakeLeftSubsystem.state;
 		currentRightState = FishyRobot2015.intakeRightSubsystem.state;
 		
 		//0 is grabbing, 1 is releasing, 2 is storage
-		if (st == PIDConstants.GRABBING_STATE){
+		if (localState == PIDConstants.GRABBING_STATE){
 			 relevantSetpointRight = IntakeStarboardSubsystem.PIDConstants.ARM_POS_GRABBING;
 			 relevantSetpointLeft = IntakePortSubsystem.PIDConstants.ARM_POS_GRABBING;
 			 
 		 }
-		 else if (st == PIDConstants.RELEASING_STATE){
+		 else if (localState == PIDConstants.RELEASING_STATE){
 			 relevantSetpointRight = IntakeStarboardSubsystem.PIDConstants.ARM_POS_RELEASE;
 			 relevantSetpointLeft = IntakePortSubsystem.PIDConstants.ARM_POS_RELEASE;
 
 		 }
-		 else if (st == PIDConstants.STORE_STATE){
+		 else if (localState == PIDConstants.STORE_STATE){
 			 relevantSetpointRight = IntakeStarboardSubsystem.PIDConstants.ARM_POS_STORING;
 			 relevantSetpointLeft = IntakePortSubsystem.PIDConstants.ARM_POS_STORING;
 		 }
@@ -81,38 +113,7 @@ public class SetIntakeArmPositionWithoutPIDThreeState extends Command {
 			rightArmPower = IntakeStarboardSubsystem.PIDConstants.ARMS_OUT_POWER;
 		}
 		
-		//POWER SKETCHY STUFF
-//		if (FishyRobot2015.intakeLeftSubsystem.getPot() > relevantSetpointLeft){ //> IntakePortSubsystem.PIDConstants.NO_PID_TOLERANCE){
-//			leftArmPower = IntakePortSubsystem.PIDConstants.ARMS_IN_POWER;
-//		}
-//		else if (FishyRobot2015.intakeLeftSubsystem.getPot() < relevantSetpointLeft){ //< -IntakePortSubsystem.PIDConstants.NO_PID_TOLERANCE){
-//			leftArmPower = IntakePortSubsystem.PIDConstants.ARMS_OUT_POWER;
-//		}
-//		else{
-//			leftArmPower = 0;
-//			leftDone = true;
-//		}
-//		
-//		if (FishyRobot2015.intakeRightSubsystem.getPot() > relevantSetpointRight){ //> IntakeStarboardSubsystem.PIDConstants.NO_PID_TOLERANCE){
-//			rightArmPower = IntakeStarboardSubsystem.PIDConstants.ARMS_IN_POWER;
-//		}
-//		else if (FishyRobot2015.intakeRightSubsystem.getPot() < relevantSetpointRight){ //< -IntakeStarboardSubsystem.PIDConstants.NO_PID_TOLERANCE){
-//			rightArmPower = IntakeStarboardSubsystem.PIDConstants.ARMS_OUT_POWER;
-//		}
-//		else{
-//			rightArmPower = 0;
-//			rightDone = true;
-//		}
-	}
 
-	@Override
-	protected void initialize() {
-		// TODO Auto-generated method stub
-		SmartDashboard.putNumber("Setpoint Left", relevantSetpointLeft);
-    	SmartDashboard.putNumber("Setpoint Right", relevantSetpointRight);
-    	
-//    	FishyRobot2015.intakeRightSubsystem.state = localState;
-//    	FishyRobot2015.intakeLeftSubsystem.state = localState;
 	}
 
 	@Override
