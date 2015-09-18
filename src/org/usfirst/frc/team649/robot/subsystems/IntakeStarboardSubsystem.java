@@ -46,9 +46,9 @@ public class IntakeStarboardSubsystem extends PIDSubsystem {
 
 		public static final double CONVERSION_DEGREES_TO_POT = 1.0/270;
 		
-		public static final double ARM_POS_RELEASE = 2.20;//NESSY: 0.7; //OLD: 1.50; //89.0 * CONVERSION_DEGREES_TO_POT;
-		public static final double ARM_POS_GRABBING = 1.92;//NESSY: 0.5; //OLD: 1.3; //* CONVERSION_DEGREES_TO_POT;
-		public static final double ARM_POS_STORING = 2.45;//NESSY: 1.05; //OLD: 3.1; // * CONVERSION_DEGREES_TO_POT; //261
+		public static final double ARM_POS_RELEASE = 1.80;//NESSY: 0.7; //OLD: 1.50; //89.0 * CONVERSION_DEGREES_TO_POT;
+		public static final double ARM_POS_GRABBING = 1.52;//NESSY: 0.5; //OLD: 1.3; //* CONVERSION_DEGREES_TO_POT;
+		public static final double ARM_POS_STORING = 2.05;//NESSY: 1.05; //OLD: 3.1; // * CONVERSION_DEGREES_TO_POT; //261
 		
 		public static final double NO_PID_TOLERANCE = 0.06;
 		
@@ -58,7 +58,7 @@ public class IntakeStarboardSubsystem extends PIDSubsystem {
 		public static final int CURRENT_STATE = 3;
 		
 		public static final double MAX_REASONABLE_VOLTAGE = 2.85;//NESSY: 1.4;
-		public static final double MIN_REASONABLE_VOLTAGE = 1.7;//NESSY: .22; //OLD: 1.2;
+		public static final double MIN_REASONABLE_VOLTAGE = 1.3;//NESSY: .22; //OLD: 1.2;
 		public static final double ARMS_IN_POWER = 0.1;
 		public static final double ARMS_OUT_POWER = -0.25;
 	}	

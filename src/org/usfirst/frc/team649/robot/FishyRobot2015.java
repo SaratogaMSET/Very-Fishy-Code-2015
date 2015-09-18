@@ -30,8 +30,6 @@ import org.usfirst.frc.team649.robot.commands.lift.RunLift; //my name is suneel
 import org.usfirst.frc.team649.robot.commands.lift.RunTilResetLimit;
 import org.usfirst.frc.team649.robot.subsystems.AutoWinchSubsystem;
 import org.usfirst.frc.team649.robot.subsystems.CameraSubsystem;
-import org.usfirst.frc.team649.robot.subsystems.CanGrabberLeftSubsystem;
-import org.usfirst.frc.team649.robot.subsystems.CanGrabberRightSubsytem;
 import org.usfirst.frc.team649.robot.subsystems.ChainLiftSubsystem;
 import org.usfirst.frc.team649.robot.subsystems.ChainLiftSubsystem.PIDConstants;
 import org.usfirst.frc.team649.robot.subsystems.DrivetrainSubsystem;
@@ -74,8 +72,6 @@ public class FishyRobot2015 extends IterativeRobot {
 	public static IntakeStarboardSubsystem intakeRightSubsystem;
 	public static AutoWinchSubsystem autoWinchSubsystem;
 	
-	public static CanGrabberLeftSubsystem canGrabberLeftSubsystem;
-	public static CanGrabberRightSubsytem canGrabberRightSubsystem;
 	
 	public static CameraSubsystem cameraSubsystemSubsystem;
 	public static PowerDistributionPanel pdp;
