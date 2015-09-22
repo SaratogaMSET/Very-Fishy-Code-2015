@@ -5,6 +5,7 @@ import org.usfirst.frc.team649.robot.commandgroups.AutoWithContainerPickUp;
 import org.usfirst.frc.team649.robot.commandgroups.ContainerAndToteAuto;
 import org.usfirst.frc.team649.robot.commandgroups.ContainerFirstToteSemiAuto;
 import org.usfirst.frc.team649.robot.commandgroups.DriveBackAndTurnAuto;
+import org.usfirst.frc.team649.robot.commandgroups.ThreeToteAutoCalGames;
 import org.usfirst.frc.team649.robot.commandgroups.ThreeToteAutoFull;
 import org.usfirst.frc.team649.robot.commandgroups.ThreeToteAutoPart1;
 import org.usfirst.frc.team649.robot.commandgroups.Debug;
@@ -186,20 +187,18 @@ public class FishyRobot2015 extends IterativeRobot {
 		if (autoCommand != null) { // for the case of none
 			autoCommand.start();
 		}
+		//OLD DRIVE BACK
+		//new DriveSetDistanceWithPID(-48).start();
 		
-	//	new PickUpToteSequence().start();
-		new DriveSetDistanceWithPID(-48).start();
-		//new DriveBackAndTurnAuto().start();
-		//new TurnWithPIDCommand(-45, -0.7, -0.3).start();
-	//	new TurnAndPickUpToteAuto().start();
-//	new ContainerAndToteAuto().start();
-		//new TurnSetTimeCommand(1).start();
 	//	new Run
 		new RunRollers(0,0).start();
 	//	new PickUpToteSequence().start();
 	//	new AutoWithContainerPickUp().start();
 		//new AutoPickUpOneTote().start();
 	//	new TurnWithPIDCommand(45).start();
+		
+		//CAL GAMES AUTO BETA
+		//new ThreeToteAutoCalGames().start();
 	}
 
 	/**
