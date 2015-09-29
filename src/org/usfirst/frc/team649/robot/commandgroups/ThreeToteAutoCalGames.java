@@ -10,6 +10,7 @@ import org.usfirst.frc.team649.robot.commands.intakecommands.SetIntakeArmPositio
 import org.usfirst.frc.team649.robot.commands.lift.ChangeLiftHeight;
 import org.usfirst.frc.team649.robot.commands.lift.ResetEncoders;
 import org.usfirst.frc.team649.robot.commands.lift.RunTilResetLimit;
+import org.usfirst.frc.team649.robot.subsystems.ChainLiftSubsystem;
 import org.usfirst.frc.team649.robot.subsystems.DrivetrainSubsystem.EncoderBasedDriving;
 import org.usfirst.frc.team649.robot.subsystems.IntakePortSubsystem.PIDConstants;
 
@@ -23,7 +24,7 @@ import edu.wpi.first.wpilibj.command.WaitForChildren;
 public class ThreeToteAutoCalGames extends CommandGroup {
     
     public  ThreeToteAutoCalGames() {
-    	double pickUpTime = 1.1;
+    	double pickUpTime = 1.2;
     	addSequential(new ResetEncoders());
 		//move in, assume already with tote inside
     	//addSequential(new SetIntakeArmPositionWithoutPID(PIDConstants.GRABBING_STATE));
@@ -33,7 +34,7 @@ public class ThreeToteAutoCalGames extends CommandGroup {
 //    	addSequential(new RunRollers(0,0));
     	
     	addSequential(new AutoOpenArmsAndRaiseTote(true));
-    	addSequential(new DriveSetDistanceWithPID(EncoderBasedDriving.AUTO_BETWEEN_TOTES));
+    	addSequential(new DriveSetDistanceWithPID(EncoderBasedDriving.AUTO_START_TO_TOTE));
     	
     	//addSequential(new WaitCommand(1.2));
     	
@@ -41,7 +42,12 @@ public class ThreeToteAutoCalGames extends CommandGroup {
     	addParallel(new SetIntakeArmPositionWithoutPID(PIDConstants.GRABBING_STATE));
 
     	addSequential(new RunRollers(0.6, 0.6));
-    	addSequential(new WaitCommand(pickUpTime));
+    	addSequential(new WaitCommand(pickUpTime - 0.2));
+    	addSequential(new RunRollers(0,0));
+    	addSequential(new WaitCommand(0.2));
+    	
+    	addSequential(new RunRollers(0.5, 0.5));
+    	addSequential(new WaitCommand(0.2));
     	addSequential(new RunRollers(0,0));
     	
     	addSequential(new WaitForChildren());
@@ -67,11 +73,13 @@ public class ThreeToteAutoCalGames extends CommandGroup {
     	//addSequential(new WaitCommand(0.5));
     	addSequential(new RunRollers(0,0));
     	addSequential(new SetIntakeArmPositionWithoutPID(PIDConstants.RELEASING_STATE));
+    	addSequential(new ChangeLiftHeight(-ChainLiftSubsystem.PIDConstants.TOTE_PICK_UP_HEIGHT/2.40));
+    	
+    	addParallel(new DriveSetDistanceWithPID(-5.0));
     	addSequential(new RunTilResetLimit());
 		//addSequential(new ChangeLiftHeight(ChainLiftSubsystem.PIDConstants.ENCODER_RESET_OFFSET));
 		addSequential(new ResetEncoders());
 		
-		addSequential(new DriveSetDistanceWithPID(-5.0));
 		//^^automatically makes the firstStageOfScore variable true again
     	
     }

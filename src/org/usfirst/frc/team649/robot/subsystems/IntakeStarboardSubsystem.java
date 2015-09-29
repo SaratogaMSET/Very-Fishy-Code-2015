@@ -47,7 +47,7 @@ public class IntakeStarboardSubsystem extends PIDSubsystem {
 		public static final double CONVERSION_DEGREES_TO_POT = 1.0/270;
 		
 		public static final double ARM_POS_RELEASE = 1.80;//NESSY: 0.7; //OLD: 1.50; //89.0 * CONVERSION_DEGREES_TO_POT;
-		public static final double ARM_POS_GRABBING = 1.52;//NESSY: 0.5; //OLD: 1.3; //* CONVERSION_DEGREES_TO_POT;
+		public static final double ARM_POS_GRABBING = 1.58;//NESSY: 0.5; //OLD: 1.3; //* CONVERSION_DEGREES_TO_POT;
 		public static final double ARM_POS_STORING = 2.05;//NESSY: 1.05; //OLD: 3.1; // * CONVERSION_DEGREES_TO_POT; //261
 		
 		public static final double NO_PID_TOLERANCE = 0.06;

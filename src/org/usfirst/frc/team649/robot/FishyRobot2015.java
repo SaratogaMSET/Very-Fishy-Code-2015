@@ -199,7 +199,7 @@ public class FishyRobot2015 extends IterativeRobot {
 	//	new TurnWithPIDCommand(45).start();
 		
 		//CAL GAMES AUTO BETA
-		//new ThreeToteAutoCalGames().start();
+		new ThreeToteAutoCalGames().start();
 	}
 
 	/**
