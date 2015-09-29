@@ -35,7 +35,7 @@ public class ContainerAndToteAuto extends CommandGroup {
     	addSequential(new RunRollers(0.0, 0.0));
  
     	//turn
-    	addSequential(new TurnSetTimeCommand(1));
+    	addSequential(new TurnSetTimeCommand(1, 0.0, 0.3));
     	addSequential(new DriveSetDistanceWithPID(32, 0.1, 0.5));
 
     }

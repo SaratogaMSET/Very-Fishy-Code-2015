@@ -13,16 +13,19 @@ public class TurnSetTimeCommand extends Command {
 
 	double timeToDrive;
 	Timer timer;
-    public TurnSetTimeCommand(double time) {
+	double lS, rS;
+    public TurnSetTimeCommand(double time, double leftSpeed, double rightSpeed) {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
     	timeToDrive = time;
     	timer = new Timer();
+    	lS = leftSpeed;
+    	rS = rightSpeed;
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	FishyRobot2015.drivetrainSubsystem.driveFwdRot(0.0, 0.3);
+    	FishyRobot2015.drivetrainSubsystem.rawDrive(lS, rS);
     	timer.start();
     }
     

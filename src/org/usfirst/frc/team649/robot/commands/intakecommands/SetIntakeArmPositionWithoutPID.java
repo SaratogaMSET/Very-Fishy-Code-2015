@@ -29,9 +29,9 @@ public class SetIntakeArmPositionWithoutPID extends Command {
 		 leftDone = false;
 		 rightDone = false;
 		 
-		 leftGrab = 2.94;
+		 leftGrab = 3.0;
 		 leftRelease = 3.19;
-		 rightGrab = 1.61;
+		 rightGrab = 1.68;
 		 rightRelease = 1.89;
     }
 
