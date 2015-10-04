@@ -155,7 +155,7 @@ public class FishyRobot2015 extends IterativeRobot {
 	public void disabledPeriodic() {
 		Scheduler.getInstance().run();
 	}
-
+	
 	public void autonomousInit() {
 		containerState = (boolean) containerChooser.getSelected();
 		
@@ -365,12 +365,12 @@ public class FishyRobot2015 extends IterativeRobot {
 
 		// throttle
 		if (oi.operator.releaseButton.get() && !prevStateRelease) {
-			new SetIntakeArmPositionWithoutPIDThreeState(IntakePortSubsystem.PIDConstants.RELEASING_STATE).start();
+			new SetIntakeArmPositionWithoutPID(IntakePortSubsystem.PIDConstants.RELEASING_STATE).start();
 		} else if (oi.operator.grabButton.get() && !prevStateGrab) {
-			new SetIntakeArmPositionWithoutPIDThreeState(IntakePortSubsystem.PIDConstants.GRABBING_STATE).start();
+			new SetIntakeArmPositionWithoutPID(IntakePortSubsystem.PIDConstants.GRABBING_STATE).start();
 		} 
 		else if(oi.operator.storeButton.get() && !prevStateStore) {
-			new SetIntakeArmPositionWithoutPIDThreeState(IntakePortSubsystem.PIDConstants.STORE_STATE).start();
+			new SetIntakeArmPositionWithoutPID(IntakePortSubsystem.PIDConstants.RELEASING_STATE).start();
 		}
 	
 	

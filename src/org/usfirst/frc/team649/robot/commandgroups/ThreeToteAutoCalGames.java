@@ -24,7 +24,7 @@ import edu.wpi.first.wpilibj.command.WaitForChildren;
 public class ThreeToteAutoCalGames extends CommandGroup {
     
     public  ThreeToteAutoCalGames() {
-    	double pickUpTime = 1.2;
+    	double pickUpTime = 1.5;
     	addSequential(new ResetEncoders());
 		//move in, assume already with tote inside
     	//addSequential(new SetIntakeArmPositionWithoutPID(PIDConstants.GRABBING_STATE));
@@ -42,7 +42,7 @@ public class ThreeToteAutoCalGames extends CommandGroup {
     	addParallel(new SetIntakeArmPositionWithoutPID(PIDConstants.GRABBING_STATE));
 
     	addSequential(new RunRollers(0.6, 0.6));
-    	addSequential(new WaitCommand(pickUpTime - 0.2));
+    	addSequential(new WaitCommand(pickUpTime));
     	addSequential(new RunRollers(0,0));
     	addSequential(new WaitCommand(0.2));
     	
@@ -63,7 +63,8 @@ public class ThreeToteAutoCalGames extends CommandGroup {
 //    	addSequential(new WaitCommand(pickUpTime));
 //    	addSequential(new RunRollers(0,0));
     	
-    	addSequential(new WaitForChildren());
+    //	addSequential(new WaitForChildren());
+    	addSequential(new WaitCommand(.1));
     	
     	//addSequential(new AutoOpenArmsAndRaiseTote(true));
     	addSequential(new TurnSetTimeCommand(1.2, 0.7, 0.03));
@@ -73,7 +74,7 @@ public class ThreeToteAutoCalGames extends CommandGroup {
     	//addSequential(new WaitCommand(0.5));
     	addSequential(new RunRollers(0,0));
     	addSequential(new SetIntakeArmPositionWithoutPID(PIDConstants.RELEASING_STATE));
-    	addSequential(new ChangeLiftHeight(-ChainLiftSubsystem.PIDConstants.TOTE_PICK_UP_HEIGHT/2.40));
+    	addSequential(new ChangeLiftHeight(-ChainLiftSubsystem.PIDConstants.TOTE_PICK_UP_HEIGHT));
     	
     	addParallel(new DriveSetDistanceWithPID(-5.0));
     	addSequential(new RunTilResetLimit());

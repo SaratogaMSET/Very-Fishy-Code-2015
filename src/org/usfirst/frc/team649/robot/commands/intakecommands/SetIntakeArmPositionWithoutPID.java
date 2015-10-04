@@ -71,18 +71,18 @@ public class SetIntakeArmPositionWithoutPID extends Command {
 //    		FishyRobot2015.intakeRightSubsystem.arm.set(0.0);
 //    	}
     	
-    	if(state == IntakePortSubsystem.PIDConstants.GRABBING_STATE && FishyRobot2015.intakeLeftSubsystem.getPot() >= leftGrab) {
+    	if(state == IntakePortSubsystem.PIDConstants.GRABBING_STATE && FishyRobot2015.intakeLeftSubsystem.getPot() >= IntakePortSubsystem.PIDConstants.ARM_POS_GRABBING) {
     		FishyRobot2015.intakeLeftSubsystem.arm.set(IntakePortSubsystem.PIDConstants.ARMS_IN_POWER);
-    	} else if(state == IntakePortSubsystem.PIDConstants.RELEASING_STATE && FishyRobot2015.intakeLeftSubsystem.getPot() <= leftRelease) {
+    	} else if(state == IntakePortSubsystem.PIDConstants.RELEASING_STATE && FishyRobot2015.intakeLeftSubsystem.getPot() <= IntakePortSubsystem.PIDConstants.ARM_POS_RELEASE) {
     		FishyRobot2015.intakeLeftSubsystem.arm.set(IntakePortSubsystem.PIDConstants.ARMS_OUT_POWER);
     	} else {
     		leftDone = true;
     		FishyRobot2015.intakeLeftSubsystem.arm.set(0.0);
     	}
     	
-    	if(state == IntakeStarboardSubsystem.PIDConstants.GRABBING_STATE && FishyRobot2015.intakeRightSubsystem.getPot() >= rightGrab) {
+    	if(state == IntakeStarboardSubsystem.PIDConstants.GRABBING_STATE && FishyRobot2015.intakeRightSubsystem.getPot() >= IntakeStarboardSubsystem.PIDConstants.ARM_POS_GRABBING) {
     		FishyRobot2015.intakeRightSubsystem.arm.set(IntakeStarboardSubsystem.PIDConstants.ARMS_IN_POWER);
-    	} else if(state == IntakeStarboardSubsystem.PIDConstants.RELEASING_STATE && FishyRobot2015.intakeRightSubsystem.getPot() <= rightRelease) {
+    	} else if(state == IntakeStarboardSubsystem.PIDConstants.RELEASING_STATE && FishyRobot2015.intakeRightSubsystem.getPot() <= IntakeStarboardSubsystem.PIDConstants.ARM_POS_RELEASE) {
     		FishyRobot2015.intakeRightSubsystem.arm.set(IntakeStarboardSubsystem.PIDConstants.ARMS_OUT_POWER);
     	} else {
     		rightDone = true;
